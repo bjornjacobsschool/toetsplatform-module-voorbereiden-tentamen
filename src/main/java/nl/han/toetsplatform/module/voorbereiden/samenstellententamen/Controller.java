@@ -1,4 +1,4 @@
-package main.nl.han.toetsplatform.module.voorbereiden.samenstellententamen;
+package nl.han.toetsplatform.module.voorbereiden.samenstellententamen;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
