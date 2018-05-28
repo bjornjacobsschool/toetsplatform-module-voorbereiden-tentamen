@@ -1,0 +1,42 @@
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<GridPane fx:controller="main.nl.han.toetsplatform.module.voorbereiden.samenstellententamen.Controller"
+          xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Naam label en invoerveld -->
+    <Label text="Tentamen voorblad"  GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1"><font>
+        <Font size="20.0" />
+    </font></Label>
+
+    <!-- Naam label en invoerveld -->
+    <Label text="Naam:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <TextField fx:id="naamField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <!-- Klas label en invoerveld -->
+    <Label text="Klas:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <TextField fx:id="klasField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <!-- Beschrijving label en invoerveld -->
+    <Label text="Beschrijving:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <TextField fx:id="beschrijvingField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+    <!-- Vrije invoerveld -->
+    <TextArea fx:id="vrijeInvoerField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+    <!-- Knoppen -->
+    <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <Button text="Annuleren" onAction="#handleAnnulerenButtonAction"/>
+        <Pane HBox.hgrow="ALWAYS" />
+        <Button text="Voorblad aanmaken" onAction="#handleVoorbladAanmakenButtonAction"/>
+    </HBox>
+</GridPane>
