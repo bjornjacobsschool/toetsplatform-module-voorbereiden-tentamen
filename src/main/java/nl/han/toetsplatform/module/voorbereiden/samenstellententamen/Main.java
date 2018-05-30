@@ -1,16 +1,24 @@
 package nl.han.toetsplatform.module.voorbereiden.samenstellententamen;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+import com.cathive.fx.guice.GuiceApplication;
+import com.cathive.fx.guice.GuiceFXMLLoader;
+import com.google.inject.Module;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nl.han.toetsplatform.module.voorbereiden.guice.GuiceModule;
 
-public class Main extends Application {
+import javax.inject.Inject;
+import java.util.List;
+
+public class Main extends GuiceApplication {
+
+    @Inject
+    private GuiceFXMLLoader fxmlLoader;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/samenstellententamen-samenstellen.fxml"));
+        Parent root = fxmlLoader.load(getClass().getResource("/fxml/samenstellententamen-samenstellen.fxml"), null).getRoot();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 700, 500));
         primaryStage.show();
@@ -18,5 +26,10 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void init(List<Module> modules) throws Exception {
+        modules.add(new GuiceModule());
     }
 }
