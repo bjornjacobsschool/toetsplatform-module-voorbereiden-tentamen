@@ -1,7 +1,7 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen.controllers;
+package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 
-import nl.han.toetsplatform.module.voorbereiden.classes.IInterfaceOmTeDemostrerenDatDIWerkt;;
+import nl.han.toetsplatform.module.voorbereiden.temp.IInterfaceOmTeDemostrerenDatDIWerkt;;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

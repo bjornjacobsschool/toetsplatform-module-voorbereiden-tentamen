@@ -1,4 +1,4 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen;
+package nl.han.toetsplatform.module.voorbereiden;
 
 import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;

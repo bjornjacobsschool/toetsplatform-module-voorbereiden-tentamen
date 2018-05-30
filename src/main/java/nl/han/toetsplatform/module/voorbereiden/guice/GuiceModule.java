@@ -1,8 +1,8 @@
 package nl.han.toetsplatform.module.voorbereiden.guice;
 
 import com.google.inject.AbstractModule;
-import nl.han.toetsplatform.module.voorbereiden.classes.IInterfaceOmTeDemostrerenDatDIWerkt;
-import nl.han.toetsplatform.module.voorbereiden.classes.ImplementatieOmTeDemostrerenDatDIWerkt;
+import nl.han.toetsplatform.module.voorbereiden.temp.IInterfaceOmTeDemostrerenDatDIWerkt;
+import nl.han.toetsplatform.module.voorbereiden.temp.ImplementatieOmTeDemostrerenDatDIWerkt;
 
 public class GuiceModule extends AbstractModule {
 

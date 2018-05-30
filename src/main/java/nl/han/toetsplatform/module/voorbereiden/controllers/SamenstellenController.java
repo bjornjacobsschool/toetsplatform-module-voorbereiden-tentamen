@@ -1,4 +1,4 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen.controllers;
+package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import nl.han.toetsplatform.module.voorbereiden.classes.IInterfaceOmTeDemostrerenDatDIWerkt;
+import nl.han.toetsplatform.module.voorbereiden.temp.IInterfaceOmTeDemostrerenDatDIWerkt;
 
 public class SamenstellenController {
     public AnchorPane childPane;
@@ -38,7 +38,7 @@ public class SamenstellenController {
     }
 
     @FXML
-    protected void handleTentamenOpslaanButtonAction(ActionEvent event) {
+    public void handleTentamenOpslaanButtonAction(ActionEvent event) {
         System.out.println("Tentamen opslaan");
         System.out.println(_interfaceOmTeDemostrerenDatDIWerkt.getSampleText());
         // actie voor voorblad aanmaken
