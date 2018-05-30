@@ -24,7 +24,7 @@
     <!--<ListView GridPane.columnIndex="0" GridPane.RowIndex="1"></ListView>-->
 
     <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
-        <Button text="Vraag toevoegen" onAction="#handleVraagToevoegenButtonAction"/>
+        <Button fx:id="vraagToevoegenButton" text="Vraag toevoegen" onAction="#handleVraagToevoegenButtonAction"/>
     </HBox>
 
     <GridPane fx:id="vragenPane" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
@@ -34,9 +34,9 @@
     <GridPane  GridPane.columnIndex="1"  GridPane.columnSpan="2"  GridPane.rowIndex="2">
         <!-- Knoppen -->
         <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
-            <Button text="Annuleren" onAction="#handleAnnulerenButtonAction"/>
+            <Button fx:id="annulerenButton" text="Annuleren" onAction="#handleAnnulerenButtonAction"/>
             <Pane HBox.hgrow="ALWAYS" />
-            <Button text="Tentamen opslaan" onAction="#handleTentamenOpslaanButtonAction"/>
+            <Button fx:id="tentamenOpslaanButton" text="Tentamen opslaan" onAction="#handleTentamenOpslaanButtonAction"/>
         </HBox>
     </GridPane>
 </GridPane>

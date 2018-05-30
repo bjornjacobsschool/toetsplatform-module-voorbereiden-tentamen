@@ -19,7 +19,6 @@ public class SamenstellenController {
         this._interfaceOmTeDemostrerenDatDIWerkt = testClass;
     }
 
-
     @FXML
     protected void initialize() {
         vragenPane.setStyle("-fx-border-style: solid");
@@ -27,7 +26,9 @@ public class SamenstellenController {
 
     @FXML
     protected void handleVraagToevoegenButtonAction(ActionEvent event) {
-        childPane.getChildren().add(new Label(_interfaceOmTeDemostrerenDatDIWerkt.getSampleText()));
+        Label label = new Label(_interfaceOmTeDemostrerenDatDIWerkt.getSampleText());
+        label.setId("toegevoegdeLabel");
+        childPane.getChildren().add(label);
         // actie voor inladen vraag toevoegen
     }
 
@@ -40,7 +41,6 @@ public class SamenstellenController {
     @FXML
     public void handleTentamenOpslaanButtonAction(ActionEvent event) {
         System.out.println("Tentamen opslaan");
-        System.out.println(_interfaceOmTeDemostrerenDatDIWerkt.getSampleText());
         // actie voor voorblad aanmaken
     }
 }
