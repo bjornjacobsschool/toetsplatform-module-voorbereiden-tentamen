@@ -27,18 +27,14 @@ public class VraagOpstellenMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         Vraag vraag = new Vraag();
         vraag.setPlugin("nl.han.toetsapplicatie.plugin.GraphPlugin");
-        vraag.setData("\"{\\\"nodes\\\":[{\\\"name\\\":\\\"B\\\",\\\"connectedNodes\\\":[{\\\"nodeInfo\\\":\\\"D\\\",\\\"distance\\\":2}]},{\\\"name\\\":\\\"A\\\",\\\"connectedNodes\\\":[{\\\"nodeInfo\\\":\\\"B\\\",\\\"distance\\\":33},{\\\"nodeInfo\\\":\\\"B\\\",\\\"distance\\\":33}]},{\\\"name\\\":\\\"D\\\",\\\"connectedNodes\\\":[]}],\\\"vraagText\\\":\\\"Hallo\\\"}\\n\"");
-
-        vraag.setId(1);
-        vraag.setName("test");
         this.primaryStage = primaryStage;
         Scene scene = new Scene(new Label("If you see this something is wrong"), 1024, 700);
         primaryStage.setScene(scene);
         primaryStage.setTitle("HAN - Student Applicatie");
         primaryStage.show();
         loadVraagEdit(new VraagOpslaanDAO() {
-            public void nieuweVraagOpslaan(String vraag) {
-                System.out.println(vraag);
+            public void nieuweVraagOpslaan(Vraag vraag) {
+                System.out.println(vraag.getData());
             }
         }, vraag);
     }

@@ -2,17 +2,19 @@ package nl.han.toetsplatform.module.voorbereiden.samenstellententamen.Controller
 
 import javafx.event.ActionEvent;
 
-import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import nl.han.toetsplatform.module.voorbereiden.samenstellententamen.data.VraagOpslaanDAO;
 import nl.han.toetsapplicatie.module.model.Vraag;
 import nl.han.toetsapplicatie.module.plugin.Plugin;
 import nl.han.toetsapplicatie.module.plugin.PluginLoader;
 
+import java.util.UUID;
+
 
 public class VraagOpstelController {
 
-    public Label lblVraagName;
+    public TextField lblVraagName;
     public AnchorPane opstelContainer;
     Vraag vraag;
     Plugin plugin;
@@ -30,7 +32,6 @@ public class VraagOpstelController {
 
     public void setVraag(Vraag vraag) {
         this.vraag = vraag;
-        lblVraagName.setText(vraag.getName());
         try {
             plugin = PluginLoader.getPlugin(vraag);
         } catch (ClassNotFoundException e) {
@@ -46,7 +47,13 @@ public class VraagOpstelController {
     }
 
     public void btnOpslaanPressed(ActionEvent event){
-      String vraag = plugin.getVraagCreatorView().getQuestionData();
+      vraag.setData(plugin.getVraagCreatorView().getQuestionData());
+      UUID uuid = UUID.randomUUID();
+      String randomUUIDString = uuid.toString();
+        //Deze kan straks weg. Is nu puur voor testdoeleinden.
+        //Wordt straks vraag.setId(randomUUIDString);
+        System.out.println(randomUUIDString);
+      vraag.setId(1);
       vraagOpslaan.nieuweVraagOpslaan(vraag);
       if(onAnnuleer != null)
           onAnnuleer.run();
