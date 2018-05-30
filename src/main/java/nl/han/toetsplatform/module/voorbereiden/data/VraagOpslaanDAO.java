@@ -1,4 +1,4 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen.data;
+package nl.han.toetsplatform.module.voorbereiden.data;
 
 public interface VraagOpslaanDAO {
 

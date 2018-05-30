@@ -1,4 +1,4 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen;
+package nl.han.toetsplatform.module.voorbereiden;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,8 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import nl.han.toetsplatform.module.voorbereiden.samenstellententamen.Controllers.VraagOpstelController;
-import nl.han.toetsplatform.module.voorbereiden.samenstellententamen.data.VraagOpslaanDAO;
+import nl.han.toetsplatform.module.voorbereiden.controllers.VraagOpstelController;
+import nl.han.toetsplatform.module.voorbereiden.data.VraagOpslaanDAO;
 import nl.han.toetsapplicatie.module.model.Vraag;
 
 import java.io.IOException;

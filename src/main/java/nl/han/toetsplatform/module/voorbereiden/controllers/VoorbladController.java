@@ -1,4 +1,4 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen.Controllers;
+package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

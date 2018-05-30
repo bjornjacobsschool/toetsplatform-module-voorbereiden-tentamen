@@ -1,10 +1,10 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen.Controllers;
+package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import nl.han.toetsplatform.module.voorbereiden.samenstellententamen.data.VraagOpslaanDAO;
+import nl.han.toetsplatform.module.voorbereiden.data.VraagOpslaanDAO;
 import nl.han.toetsapplicatie.module.model.Vraag;
 import nl.han.toetsapplicatie.module.plugin.Plugin;
 import nl.han.toetsapplicatie.module.plugin.PluginLoader;

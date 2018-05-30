@@ -1,4 +1,4 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen.util;
+package nl.han.toetsplatform.module.voorbereiden.util;
 
 import java.util.function.Consumer;
 
