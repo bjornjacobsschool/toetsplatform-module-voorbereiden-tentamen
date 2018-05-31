@@ -1,6 +1,7 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 import com.cathive.fx.guice.GuiceFXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.SamenstellenTentamenFXMLFiles;
@@ -24,6 +25,7 @@ public class SamenstellenMainController {
 
     public void initialize() throws IOException {
         GuiceFXMLLoader.Result voorbladView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.TentamenSamenstellenVoorblad), null);
+        setAnchorFull(voorbladView.getRoot());
         mainContainer.getChildren().add(voorbladView.getRoot());
         VoorbladController voorbladController = voorbladView.getController();
         voorbladController.setOnVoorbladAanmaken(this::onVoorbladAangemaakt);
@@ -46,6 +48,7 @@ public class SamenstellenMainController {
         try {
             GuiceFXMLLoader.Result vraagOpstellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.OpstellenVraag), null);
             mainContainer.getChildren().clear();
+            setAnchorFull(vraagOpstellenView.getRoot());
             mainContainer.getChildren().add(vraagOpstellenView.getRoot());
             VraagOpstelController vraagOpstelController = vraagOpstellenView.getController();
             vraagOpstelController.onVraagSave = (vraag) -> {
@@ -70,6 +73,14 @@ public class SamenstellenMainController {
     private void showSamenstellenTentamen() {
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(samenStellenView.getRoot());
+        setAnchorFull(samenStellenView.getRoot());
+    }
+
+    private void setAnchorFull(Node node){
+        AnchorPane.setBottomAnchor(node, 0D);
+        AnchorPane.setLeftAnchor(node, 0D);
+        AnchorPane.setRightAnchor(node, 0D);
+        AnchorPane.setTopAnchor(node, 0D);
     }
 
 

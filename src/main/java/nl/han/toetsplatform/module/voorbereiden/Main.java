@@ -23,7 +23,7 @@ public class Main extends GuiceApplication {
     public void start(Stage primaryStage) throws Exception{
         Parent root = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.SamenstellenMain), null).getRoot();
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 700, 500));
+        primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
     }
 
