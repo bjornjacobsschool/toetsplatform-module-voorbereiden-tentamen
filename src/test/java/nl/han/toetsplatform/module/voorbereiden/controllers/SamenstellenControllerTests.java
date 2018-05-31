@@ -1,17 +1,19 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 
-import nl.han.toetsplatform.module.voorbereiden.temp.IInterfaceOmTeDemostrerenDatDIWerkt;;
+import javafx.scene.layout.AnchorPane;
+import nl.han.toetsplatform.module.voorbereiden.applicationlayer.IInterfaceOmTeDemostrerenDatDIWerkt;;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.testfx.framework.junit.ApplicationTest;
 
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SamenstellenControllerTests {
+public class SamenstellenControllerTests extends ApplicationTest {
 
     @Mock
     private IInterfaceOmTeDemostrerenDatDIWerkt _interfaceMock;
@@ -20,8 +22,7 @@ public class SamenstellenControllerTests {
     private SamenstellenController _controller;
 
     @Test
-    public void test()  {
+    public void VoorbeeldVoorMockito()  {
         when(_interfaceMock.getSampleText()).thenReturn("Henk");
-        _controller.handleTentamenOpslaanButtonAction(null);
     }
 }

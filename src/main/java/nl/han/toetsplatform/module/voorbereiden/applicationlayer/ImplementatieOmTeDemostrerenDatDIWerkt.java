@@ -1,4 +1,4 @@
-package nl.han.toetsplatform.module.voorbereiden.temp;
+package nl.han.toetsplatform.module.voorbereiden.applicationlayer;
 
 public class ImplementatieOmTeDemostrerenDatDIWerkt implements IInterfaceOmTeDemostrerenDatDIWerkt {
     @Override
