@@ -6,6 +6,8 @@ import com.google.inject.Module;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
+import nl.han.toetsplatform.module.voorbereiden.config.SamenstellenTentamenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.guice.GuiceModule;
 
 import javax.inject.Inject;
@@ -18,7 +20,7 @@ public class Main extends GuiceApplication {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = fxmlLoader.load(getClass().getResource("/fxml/samenstellententamen-samenstellen.fxml"), null).getRoot();
+        Parent root = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.TentamenSamenstellen), null).getRoot();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 700, 500));
         primaryStage.show();

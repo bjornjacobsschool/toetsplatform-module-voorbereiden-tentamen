@@ -17,7 +17,7 @@ public class SamenstellenTentamenWindowStub extends GuiceApplication {
 
     @Override
     public void start(Stage primaryStage)  throws Exception{
-        Parent root = fxmlLoader.load(getClass().getResource("/fxml/samenstellententamen-samenstellen.fxml"), null).getRoot();
+        Parent root = fxmlLoader.load(getClass().getResource("/fxml/TentamenSamenstellen.fxml"), null).getRoot();
         primaryStage.setTitle("Hello Test");
         primaryStage.setScene(new Scene(root, 700, 500));
         primaryStage.show();

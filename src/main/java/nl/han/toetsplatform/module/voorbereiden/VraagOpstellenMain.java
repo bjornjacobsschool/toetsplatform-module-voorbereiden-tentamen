@@ -43,7 +43,7 @@ public class VraagOpstellenMain extends Application {
 
     public Node loadVraagEdit(VraagOpslaanDAO vraagOpslaan, Vraag vraag){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/vraagOpstel.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OpstellenVraag.fxml"));
             Parent toetsMakeParent = loader.load();
             VraagOpstelController controller = loader.getController();
             controller.setVraagOpslaan(vraagOpslaan);
