@@ -20,7 +20,7 @@ public class Main extends GuiceApplication {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.TentamenSamenstellenVoorblad), null).getRoot();
+        Parent root = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.TentamenSamenstellen), null).getRoot();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 700, 500));
         primaryStage.show();
@@ -32,6 +32,6 @@ public class Main extends GuiceApplication {
 
     @Override
     public void init(List<Module> modules) throws Exception {
-        modules.add(new GuiceModule());
+        modules.add(ConfigTentamenVoorbereidenModule.getModule());
     }
 }

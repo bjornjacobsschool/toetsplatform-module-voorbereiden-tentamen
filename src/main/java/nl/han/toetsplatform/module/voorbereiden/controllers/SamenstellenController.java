@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.IInterfaceOmTeDemostrerenDatDIWerkt;
 
 public class SamenstellenController {
@@ -14,10 +15,12 @@ public class SamenstellenController {
     public GridPane vragenPane;
 
     private IInterfaceOmTeDemostrerenDatDIWerkt _interfaceOmTeDemostrerenDatDIWerkt;
+    private StorageDao _storageDAO;
 
     @Inject
-    public SamenstellenController(IInterfaceOmTeDemostrerenDatDIWerkt testClass) {
+    public SamenstellenController(IInterfaceOmTeDemostrerenDatDIWerkt testClass, StorageDao storageDao) {
         this._interfaceOmTeDemostrerenDatDIWerkt = testClass;
+        this._storageDAO = storageDao;
     }
 
     @FXML
@@ -30,6 +33,8 @@ public class SamenstellenController {
         Label label = new Label(_interfaceOmTeDemostrerenDatDIWerkt.getSampleText());
         label.setId("toegevoegdeLabel");
         childPane.getChildren().add(label);
+
+        ;
         // actie voor inladen vraag toevoegen
     }
 
