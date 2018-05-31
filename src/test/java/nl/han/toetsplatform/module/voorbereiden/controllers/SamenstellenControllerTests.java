@@ -2,7 +2,7 @@ package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 
 import javafx.scene.layout.AnchorPane;
-import nl.han.toetsplatform.module.voorbereiden.temp.IInterfaceOmTeDemostrerenDatDIWerkt;;
+import nl.han.toetsplatform.module.voorbereiden.applicationlayer.IInterfaceOmTeDemostrerenDatDIWerkt;;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
