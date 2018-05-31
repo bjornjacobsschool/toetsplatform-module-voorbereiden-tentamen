@@ -34,7 +34,7 @@ public class SamenstellenController {
         label.setId("toegevoegdeLabel");
         childPane.getChildren().add(label);
 
-        ;
+        System.out.println(this._storageDAO.getClass());
         // actie voor inladen vraag toevoegen
     }
 
