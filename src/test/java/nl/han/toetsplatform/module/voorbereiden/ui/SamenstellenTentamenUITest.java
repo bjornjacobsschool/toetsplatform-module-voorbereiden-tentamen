@@ -18,16 +18,13 @@ public class SamenstellenTentamenUITest extends ApplicationTest {
         FxToolkit.setupApplication(maintest.getClass());
     }
 
-    @Test public void should_contain_button() {
-        // expect:
+    @Test public void vraagToevoegenButtonMoetDeTekstVraagToevoegenHebben(){
         verifyThat("#vraagToevoegenButton", hasText("Vraag toevoegen"));
     }
 
-    @Test public void should_click_on_button() {
-        // when:
+    @Test public void vraagToevoegenButtonClickDanLabelMetTekstDIWerkt() {
         clickOn("#vraagToevoegenButton");
 
-        // then:
         verifyThat("#toegevoegdeLabel", hasText("DI werkt"));
     }
 }

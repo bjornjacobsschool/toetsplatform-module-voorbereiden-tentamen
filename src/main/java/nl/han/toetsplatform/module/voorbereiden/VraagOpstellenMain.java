@@ -20,9 +20,6 @@ public class VraagOpstellenMain extends Application {
     }
     Stage primaryStage;
 
-
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Vraag vraag = new Vraag();

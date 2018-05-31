@@ -18,14 +18,11 @@ public class SamenstellenControllerTests extends ApplicationTest {
     @Mock
     private IInterfaceOmTeDemostrerenDatDIWerkt _interfaceMock;
 
-    AnchorPane childPane;
-
     @InjectMocks
     private SamenstellenController _controller;
 
     @Test
-    public void test()  {
+    public void VoorbeeldVoorMockito()  {
         when(_interfaceMock.getSampleText()).thenReturn("Henk");
-        _controller.handleVraagToevoegenButtonAction(null);
     }
 }
