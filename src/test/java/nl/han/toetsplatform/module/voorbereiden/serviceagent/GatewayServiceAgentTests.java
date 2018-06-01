@@ -1,7 +1,10 @@
 package nl.han.toetsplatform.module.voorbereiden.serviceagent;
 
-import org.junit.Assert;
+import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
+import nl.han.toetsplatform.module.voorbereiden.models.GatewayTestMessage;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class GatewayServiceAgentTests {
     @Test
@@ -9,12 +12,13 @@ public class GatewayServiceAgentTests {
         GatewayServiceAgent serviceAgent = new GatewayServiceAgent();
 
         try {
-            String returnValue = serviceAgent.get("test");
-            Assert.assertEquals("{\"message\":\"Hallo wereld!\"}",returnValue);
+            GatewayTestMessage response = serviceAgent.get("test", GatewayTestMessage.class);
+
+            assertEquals("Hallo wereld!", response.message);
         }
-        catch(Exception e)
+        catch(GatewayCommunicationException e)
         {
-            Assert.fail();
+            fail();
         }
     }
 }

@@ -7,8 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class StubStorageDao implements StorageDao {
+
     @Override
-    public void setup(String s, String[] strings) throws ClassNotFoundException, SQLException {
+    public void setup(String s, String[] strings) throws SQLException {
 
     }
 
@@ -25,5 +26,10 @@ public class StubStorageDao implements StorageDao {
     @Override
     public Connection getConnection() {
         return null;
+    }
+
+    @Override
+    public void closeConnection() {
+
     }
 }

@@ -1,18 +1,12 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers;
 
-import com.google.inject.Inject;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import nl.han.toetsplatform.module.shared.storage.StorageDao;
-import nl.han.toetsplatform.module.voorbereiden.applicationlayer.IInterfaceOmTeDemostrerenDatDIWerkt;
 import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
