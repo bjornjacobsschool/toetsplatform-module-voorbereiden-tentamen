@@ -102,7 +102,6 @@ public class SamenstellenMainController {
         alert.setContentText("Tentamen is opgeslagen");
         task.setOnSucceeded(taskFinishEvent -> alert.showAndWait());
         new Thread(task).start();
-
     }
 
     private void showSamenstellenTentamen() {
