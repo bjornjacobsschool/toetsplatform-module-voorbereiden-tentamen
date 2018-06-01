@@ -1,12 +1,14 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers;
 
+import com.google.gson.Gson;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
+import nl.han.toetsapplicatie.module.model.Vraag;
+import nl.han.toetsplatform.module.voorbereiden.models.VraagTest;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
@@ -31,7 +33,10 @@ public class SamenstellenController {
     }
 
     public void voegVraagToe(Vraag vraag){
-        System.out.println(vraag);
+        //Gson gson = new Gson();
+        VraagTest watIsDeVraagVanDeVraag = new Gson().fromJson(vraag.getData(), VraagTest.class);
+        System.out.println(watIsDeVraagVanDeVraag.vraagText);
+        vragenPane.getChildren().add(new Label(vraag.getName()));
     }
 
     @FXML

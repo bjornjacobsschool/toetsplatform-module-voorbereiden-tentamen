@@ -56,3 +56,5 @@ fabric.properties
 javafx-prototype\.iml
 
 \target/
+
+\plugins/

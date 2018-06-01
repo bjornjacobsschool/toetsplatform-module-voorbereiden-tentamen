@@ -1,22 +1,23 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 import com.cathive.fx.guice.GuiceFXMLLoader;
+import com.google.gson.Gson;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.SamenstellenTentamenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
+//import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import javax.inject.Inject;
 import java.io.IOException;
 
 public class SamenstellenMainController {
     public AnchorPane mainContainer;
-
     GuiceFXMLLoader fxmlLoader;
-
     GuiceFXMLLoader.Result samenStellenView;
+
+    private Tentamen tentamen;
 
     @Inject
     public SamenstellenMainController(GuiceFXMLLoader fxmlLoader) {
@@ -33,12 +34,13 @@ public class SamenstellenMainController {
 
     public void onVoorbladAangemaakt(Tentamen voorblad){
         try {
+            tentamen = voorblad;
+
             samenStellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.TentamenSamenstellen), null);
             showSamenstellenTentamen();
             SamenstellenController samenstellenController = samenStellenView.getController();
 
             samenstellenController.setVraagToevoegen(this::vraagToevoegen);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,23 +53,22 @@ public class SamenstellenMainController {
             setAnchorFull(vraagOpstellenView.getRoot());
             mainContainer.getChildren().add(vraagOpstellenView.getRoot());
             VraagOpstelController vraagOpstelController = vraagOpstellenView.getController();
+            nl.han.toetsapplicatie.module.model.Vraag moduleVraag = new nl.han.toetsapplicatie.module.model.Vraag();
+            moduleVraag.setPlugin("nl.han.toetsapplicatie.plugin.GraphPlugin");
+            vraagOpstelController.setVraag(moduleVraag);
             vraagOpstelController.onVraagSave = (vraag) -> {
                 SamenstellenController samenstellenController = samenStellenView.getController();
                 samenstellenController.voegVraagToe(vraag);
-
+                tentamen.getVragen().add(vraag);
                 showSamenstellenTentamen();
             };
 
             vraagOpstelController.onAnnuleer = () ->{
                 showSamenstellenTentamen();
             };
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private void showSamenstellenTentamen() {
