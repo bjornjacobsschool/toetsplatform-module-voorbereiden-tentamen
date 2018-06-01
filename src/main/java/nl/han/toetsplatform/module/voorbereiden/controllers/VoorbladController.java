@@ -1,9 +1,9 @@
-package nl.han.toetsplatform.module.voorbereiden.samenstellententamen;
+package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class Controller {
+public class VoorbladController {
 
     @FXML
     protected void handleAnnulerenButtonAction(ActionEvent event)

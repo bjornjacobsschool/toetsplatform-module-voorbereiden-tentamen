@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.VraagOpstelController">
+    <Label fx:id="lblVraagName" AnchorPane.topAnchor="15"/>
+    <ScrollPane AnchorPane.topAnchor="50" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0"></ScrollPane>
+    <AnchorPane fx:id="opstelContainer" AnchorPane.topAnchor="50" AnchorPane.bottomAnchor="50" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">
+
+    </AnchorPane>
+    <Button text="Save" onAction="#btnOpslaanPressed" AnchorPane.rightAnchor="200" AnchorPane.bottomAnchor="25"/>
+    <Button text="Annuleer" onAction="#btnAnnuleerPressed" AnchorPane.leftAnchor="200" AnchorPane.bottomAnchor="25"/>
+</AnchorPane>
