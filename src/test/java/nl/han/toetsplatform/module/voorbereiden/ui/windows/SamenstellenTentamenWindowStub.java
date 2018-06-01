@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nl.han.toetsplatform.module.voorbereiden.guice.GuiceModuleStub;
+import nl.han.toetsplatform.module.voorbereiden.guice.StubGuiceModule;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -30,5 +31,6 @@ public class SamenstellenTentamenWindowStub extends GuiceApplication {
     @Override
     public void init(List<Module> modules) throws Exception {
         modules.add(new GuiceModuleStub());
+        modules.add(new StubGuiceModule());
     }
 }

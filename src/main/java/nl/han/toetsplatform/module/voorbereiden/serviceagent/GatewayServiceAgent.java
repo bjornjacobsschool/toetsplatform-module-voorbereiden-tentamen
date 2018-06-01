@@ -7,7 +7,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 
-public class GatewayServiceAgent {
+public class GatewayServiceAgent implements IGatewayServiceAgent{
     private String baseUrl;
     private Client client;
 

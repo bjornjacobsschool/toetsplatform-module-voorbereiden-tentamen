@@ -3,28 +3,29 @@ package nl.han.toetsplatform.module.voorbereiden.ui;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.*;
 import nl.han.toetsplatform.module.voorbereiden.ui.windows.SamenstellenTentamenWindowStub;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
-import org.junit.Test;
-
 public class SamenstellenTentamenUITest extends ApplicationTest {
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         SamenstellenTentamenWindowStub maintest = new SamenstellenTentamenWindowStub();
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(maintest.getClass());
     }
 
-    @Test public void vraagToevoegenButtonMoetDeTekstVraagToevoegenHebben(){
+    @Test
+    public void vraagToevoegenButtonMoetDeTekstVraagToevoegenHebben(){
         verifyThat("#vraagToevoegenButton", hasText("Vraag toevoegen"));
     }
 
-    @Test public void vraagToevoegenButtonClickDanLabelMetTekstDIWerkt() {
-        clickOn("#vraagToevoegenButton");
+    @Test
+    public void vraagToevoegenButtonClickDanLabelMetTekstDIWerkt() {
+        clickOn("#annulerenButton");
 
-        verifyThat("#toegevoegdeLabel", hasText("DI werkt"));
+        verifyThat("#asyncLabel", hasText("Running..."));
     }
 }

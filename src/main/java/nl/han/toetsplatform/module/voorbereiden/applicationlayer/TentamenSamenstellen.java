@@ -4,17 +4,18 @@ import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.GatewayServiceAgent;
+import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgent;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
 
 public class TentamenSamenstellen implements ITentamenSamenstellen {
 
-    private GatewayServiceAgent _gatewayServiceAgent;
+    private IGatewayServiceAgent _gatewayServiceAgent;
     private StorageDao _storageDAO;
 
     @Inject
-    public TentamenSamenstellen(GatewayServiceAgent gatewayServiceAgent, StorageDao storageDao)
+    public TentamenSamenstellen(IGatewayServiceAgent gatewayServiceAgent, StorageDao storageDao)
     {
         this._gatewayServiceAgent = gatewayServiceAgent;
         this._storageDAO = storageDao;
