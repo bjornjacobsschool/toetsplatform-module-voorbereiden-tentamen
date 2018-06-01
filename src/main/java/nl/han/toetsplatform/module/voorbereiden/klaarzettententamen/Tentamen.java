@@ -5,6 +5,10 @@ import javafx.beans.property.StringProperty;
 
 import java.util.Date;
 
+
+/**
+ * Tentamen class...Gebruik ik nu alleen als een test object. Dit moet nog uitgewerkt worden naar het echte tentamen object.
+ */
 public class Tentamen {
     private StringProperty naam;
     private StringProperty desc;

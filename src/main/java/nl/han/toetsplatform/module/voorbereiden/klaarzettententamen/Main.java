@@ -43,11 +43,11 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Docent app");
 
-        initRootLayour();
+        initRootLayout();
         showTentamenOverview();
     }
 
-    public void initRootLayour() {
+    public void initRootLayout() {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
@@ -91,6 +91,7 @@ public class Main extends Application {
             return false;
         }
     }
+
     private void showTentamenOverview() {
         try {
             // Load tentamen overview.
@@ -113,10 +114,8 @@ public class Main extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+
     public static void main(String[] args) {
         launch(args);
     }
-
-
-
 }

@@ -62,6 +62,10 @@ public class TentamenKlaarzettenController {
         }
     }
 
+    /**
+     * Checks if the input is valid
+     * @return
+     */
     private boolean isInputValid(){
         return true;
     }

@@ -69,6 +69,10 @@ public class TentamenOverviewController {
         tentamenTable.setItems(mainApp.getTentamenData());
     }
 
+    /**
+     * Called when the user clicks the 'Klaarzetten' button.
+     * @param actionEvent
+     */
     public void handleKlaarzettenTentamen(ActionEvent actionEvent) {
         Tentamen selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
 
