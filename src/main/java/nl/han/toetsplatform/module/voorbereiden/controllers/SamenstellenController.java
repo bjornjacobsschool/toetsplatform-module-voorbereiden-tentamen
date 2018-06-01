@@ -8,7 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import nl.han.toetsapplicatie.module.model.Vraag;
+import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.VraagTest;
+
+import java.util.function.Consumer;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
@@ -17,6 +20,11 @@ public class SamenstellenController {
     public GridPane vragenPane;
 
     Runnable vraagToevoegen;
+    Runnable onTentamenOpslaan;
+
+    public void setOnTentamenOpslaan(Runnable onTentamenOpslaan) {
+        this.onTentamenOpslaan = onTentamenOpslaan;
+    }
 
     public void setVraagToevoegen(Runnable vraagToevoegen) {
         this.vraagToevoegen = vraagToevoegen;
@@ -34,9 +42,8 @@ public class SamenstellenController {
 
     public void voegVraagToe(Vraag vraag){
         //Gson gson = new Gson();
-        VraagTest watIsDeVraagVanDeVraag = new Gson().fromJson(vraag.getData(), VraagTest.class);
-        System.out.println(watIsDeVraagVanDeVraag.vraagText);
-        vragenPane.getChildren().add(new Label(vraag.getName()));
+        VraagTest vraagText = new Gson().fromJson(vraag.getData(), VraagTest.class);
+        vragenPane.getChildren().add(new Label(vraagText.vraagText));
     }
 
     @FXML
@@ -69,7 +76,7 @@ public class SamenstellenController {
 
     @FXML
     public void handleTentamenOpslaanButtonAction(ActionEvent event) {
-        System.out.println("Tentamen opslaan");
+        runIfNotNull(onTentamenOpslaan);
         // actie voor voorblad aanmaken
     }
 }

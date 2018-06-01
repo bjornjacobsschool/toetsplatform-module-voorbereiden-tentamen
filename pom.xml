@@ -119,6 +119,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.owlike</groupId>
+            <artifactId>genson</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.bjornjacobsschool</groupId>
             <artifactId>toetsplatform-module-shared</artifactId>
             <version>feature~FECLYK-697-dao-overzetten-naar-module-gebruikmakend-SNAPSHOT</version>

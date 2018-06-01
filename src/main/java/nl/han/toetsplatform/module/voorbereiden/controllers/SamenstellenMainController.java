@@ -1,27 +1,33 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers;
 
 import com.cathive.fx.guice.GuiceFXMLLoader;
-import com.google.gson.Gson;
+import javafx.concurrent.Task;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
+import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenSamenstellen;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.SamenstellenTentamenFXMLFiles;
+import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 //import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class SamenstellenMainController {
     public AnchorPane mainContainer;
     GuiceFXMLLoader fxmlLoader;
     GuiceFXMLLoader.Result samenStellenView;
+    private ITentamenSamenstellen _ITentamenSamenstellen;
 
     private Tentamen tentamen;
 
     @Inject
-    public SamenstellenMainController(GuiceFXMLLoader fxmlLoader) {
+    public SamenstellenMainController(GuiceFXMLLoader fxmlLoader, ITentamenSamenstellen tentamenSamenstellen) {
         this.fxmlLoader = fxmlLoader;
+        this._ITentamenSamenstellen = tentamenSamenstellen;
     }
 
     public void initialize() throws IOException {
@@ -39,7 +45,7 @@ public class SamenstellenMainController {
             samenStellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.TentamenSamenstellen), null);
             showSamenstellenTentamen();
             SamenstellenController samenstellenController = samenStellenView.getController();
-
+            samenstellenController.setOnTentamenOpslaan(this::onTentamenAangemaakt);
             samenstellenController.setVraagToevoegen(this::vraagToevoegen);
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,6 +65,7 @@ public class SamenstellenMainController {
             vraagOpstelController.onVraagSave = (vraag) -> {
                 SamenstellenController samenstellenController = samenStellenView.getController();
                 samenstellenController.voegVraagToe(vraag);
+
                 tentamen.getVragen().add(vraag);
                 showSamenstellenTentamen();
             };
@@ -69,6 +76,33 @@ public class SamenstellenMainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void onTentamenAangemaakt() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+
+        Task task = new Task<Void>() {
+            @Override
+            public Void call() {
+                try {
+                    _ITentamenSamenstellen.opslaan(tentamen);
+                } catch (GatewayCommunicationException e) {
+                    alert.setAlertType(Alert.AlertType.ERROR);
+                    alert.setContentText(e.getMessage());
+                } catch (SQLException e) {
+                    alert.setAlertType(Alert.AlertType.ERROR);
+                    alert.setContentText(e.getMessage());
+                }
+                return null;
+            }
+        };
+
+        alert.setContentText("Tentamen is opgeslagen");
+        task.setOnSucceeded(taskFinishEvent -> alert.showAndWait());
+        new Thread(task).start();
+
     }
 
     private void showSamenstellenTentamen() {

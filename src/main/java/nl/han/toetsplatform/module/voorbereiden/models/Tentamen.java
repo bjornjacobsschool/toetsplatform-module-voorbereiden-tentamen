@@ -2,6 +2,7 @@ package nl.han.toetsplatform.module.voorbereiden.models;
 
 import nl.han.toetsapplicatie.module.model.Vraag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tentamen {
@@ -16,6 +17,9 @@ public class Tentamen {
     private String hash;
     private List<Vraag> vragen;
 
+    public Tentamen() {
+        vragen = new ArrayList<>();
+    }
 
     public String getId() {
         return id;
