@@ -4,12 +4,12 @@ import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgent;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.SQLException;
 
@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@RunWith(MockitoJUnitRunner.class)
 public class TentamenSamenstellenTests {
     private Tentamen _tentamen;
 
@@ -30,8 +30,8 @@ public class TentamenSamenstellenTests {
     @InjectMocks
     private TentamenSamenstellen _sut;
 
-    @BeforeEach
-    private void initialize() {
+    @Before
+    public void initialize() {
         _tentamen = new Tentamen();
     }
 
