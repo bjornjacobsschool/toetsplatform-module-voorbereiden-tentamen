@@ -46,8 +46,8 @@ public class VraagOpstellenMain extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/OpstellenVraag.fxml"));
             Parent toetsMakeParent = loader.load();
             VraagOpstelController controller = loader.getController();
-            controller.setVraagOpslaan(vraagOpslaan);
-            controller.setVraag(vraag);
+            //controller.setVraagOpslaan(vraagOpslaan);
+            //controller.setVraag(vraag);
             primaryStage.getScene().setRoot(toetsMakeParent);
             return toetsMakeParent;
 

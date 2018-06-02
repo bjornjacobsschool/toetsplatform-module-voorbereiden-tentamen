@@ -4,4 +4,5 @@ public enum SamenstellenTentamenFXMLFiles {
     TentamenSamenstellen,
     TentamenSamenstellenVoorblad,
     OpstellenVraag,
+    SamenstellenMain
 }

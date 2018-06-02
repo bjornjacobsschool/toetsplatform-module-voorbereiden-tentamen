@@ -1,20 +1,23 @@
 package nl.han.toetsplatform.module.voorbereiden.serviceagent;
 
-import org.junit.Assert;
+import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
+import nl.han.toetsplatform.module.voorbereiden.models.GatewayTestMessage;
+import org.junit.Before;
 import org.junit.Test;
 
-public class GatewayServiceAgentTests {
-    @Test
-    public void testOfServiceAgentHalloWereldVanGatewayTerugKrijgt() {
-        GatewayServiceAgent serviceAgent = new GatewayServiceAgent();
+import static org.junit.Assert.*;
 
-        try {
-            String returnValue = serviceAgent.get("test");
-            Assert.assertEquals("{\"message\":\"Hallo wereld!\"}",returnValue);
-        }
-        catch(Exception e)
-        {
-            Assert.fail();
-        }
+public class GatewayServiceAgentTests {
+    private GatewayServiceAgent _sut;
+
+    @Before
+    public void initialize() {
+        _sut = new GatewayServiceAgent();
+    }
+
+    @Test
+    public void testOfServiceAgentHalloWereldVanGatewayTerugKrijgt() throws GatewayCommunicationException{// i
+        GatewayTestMessage response = _sut.get("test", GatewayTestMessage.class);
+        assertEquals("Hallo wereld!", response.message);
     }
 }

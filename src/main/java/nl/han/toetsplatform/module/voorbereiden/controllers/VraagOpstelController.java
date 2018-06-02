@@ -4,10 +4,14 @@ import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import nl.han.toetsplatform.module.voorbereiden.data.VraagOpslaanDAO;
 import nl.han.toetsapplicatie.module.model.Vraag;
+import nl.han.toetsplatform.module.voorbereiden.data.VraagOpslaanDAO;
 import nl.han.toetsapplicatie.module.plugin.Plugin;
 import nl.han.toetsapplicatie.module.plugin.PluginLoader;
+
+import java.util.function.Consumer;
+
+import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
 
 public class VraagOpstelController {
@@ -16,12 +20,12 @@ public class VraagOpstelController {
     public AnchorPane opstelContainer;
     Vraag vraag;
     Plugin plugin;
-    VraagOpslaanDAO vraagOpslaan;
 
     Runnable onAnnuleer;
+    Consumer<Vraag> onVraagSave;
 
-    public void setVraagOpslaan(VraagOpslaanDAO vraagOpslaan){
-        this.vraagOpslaan = vraagOpslaan;
+    public void setOnVraagSave(Consumer<Vraag> onVraagSave) {
+        this.onVraagSave = onVraagSave;
     }
 
     public void setOnExit(Runnable onExit) {
@@ -30,7 +34,7 @@ public class VraagOpstelController {
 
     public void setVraag(Vraag vraag) {
         this.vraag = vraag;
-        lblVraagName.setText(vraag.getName());
+//        lblVraagName.setText(vraag.getNaam());
         try {
             plugin = PluginLoader.getPlugin(vraag);
         } catch (ClassNotFoundException e) {
@@ -40,17 +44,14 @@ public class VraagOpstelController {
     }
 
     public void btnAnnuleerPressed(ActionEvent event) {
-        if (onAnnuleer != null)
-            onAnnuleer.run();
-
+        runIfNotNull(onAnnuleer);
     }
 
     public void btnOpslaanPressed(ActionEvent event){
-      String vraag = plugin.getVraagCreatorView().getQuestionData();
-      vraagOpslaan.nieuweVraagOpslaan(vraag);
-      if(onAnnuleer != null)
-          onAnnuleer.run();
+        vraag.setData(plugin.getVraagCreatorView().getQuestionData());
+        vraag.setId(9);
+        vraag.setName("Test naam");
 
-
+        runIfNotNull(onVraagSave, vraag);
     }
 }

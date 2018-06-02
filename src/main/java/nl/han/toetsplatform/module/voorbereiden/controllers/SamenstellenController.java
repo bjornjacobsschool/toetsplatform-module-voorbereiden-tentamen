@@ -1,26 +1,33 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers;
 
-import com.google.inject.Inject;
+import com.google.gson.Gson;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import nl.han.toetsplatform.module.shared.storage.StorageDao;
-import nl.han.toetsplatform.module.voorbereiden.applicationlayer.IInterfaceOmTeDemostrerenDatDIWerkt;
+import nl.han.toetsapplicatie.module.model.Vraag;
+import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
+import nl.han.toetsplatform.module.voorbereiden.models.VraagTest;
+
+import java.util.function.Consumer;
+
+import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
 public class SamenstellenController {
     public AnchorPane childPane;
     public GridPane vragenPane;
 
-    private IInterfaceOmTeDemostrerenDatDIWerkt _interfaceOmTeDemostrerenDatDIWerkt;
-    private StorageDao _storageDAO;
+    Runnable vraagToevoegen;
+    Runnable onTentamenOpslaan;
 
-    @Inject
-    public SamenstellenController(IInterfaceOmTeDemostrerenDatDIWerkt testClass, StorageDao storageDao) {
-        this._interfaceOmTeDemostrerenDatDIWerkt = testClass;
-        this._storageDAO = storageDao;
+    public void setOnTentamenOpslaan(Runnable onTentamenOpslaan) {
+        this.onTentamenOpslaan = onTentamenOpslaan;
+    }
+
+    public void setVraagToevoegen(Runnable vraagToevoegen) {
+        this.vraagToevoegen = vraagToevoegen;
     }
 
     @FXML
@@ -30,12 +37,13 @@ public class SamenstellenController {
 
     @FXML
     protected void handleVraagToevoegenButtonAction(ActionEvent event) {
-        Label label = new Label(_interfaceOmTeDemostrerenDatDIWerkt.getSampleText());
-        label.setId("toegevoegdeLabel");
-        childPane.getChildren().add(label);
+        runIfNotNull(vraagToevoegen);
+    }
 
-        System.out.println(this._storageDAO.getClass());
-        // actie voor inladen vraag toevoegen
+    public void voegVraagToe(Vraag vraag){
+        //Gson gson = new Gson();
+        VraagTest vraagText = new Gson().fromJson(vraag.getData(), VraagTest.class);
+        vragenPane.getChildren().add(new Label(vraagText.vraagText));
     }
 
     @FXML
@@ -46,21 +54,21 @@ public class SamenstellenController {
         label.setId("asyncLabel");
         childPane.getChildren().add(label);
 
-            Task task = new Task<String>() {
-                @Override
-                public String call() {
-                    //SIMULATE A FILE DOWNLOAD
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    return "henk";
+        Task task = new Task<String>() {
+            @Override
+            public String call() {
+                //SIMULATE A FILE DOWNLOAD
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            };
+                return "henk";
+            }
+        };
 
-            task.setOnSucceeded(taskFinishEvent -> label.setText(((Task<String>) task).getValue()));
-            new Thread(task).start();
+        task.setOnSucceeded(taskFinishEvent -> label.setText(((Task<String>) task).getValue()));
+        new Thread(task).start();
 
 
         // actie voor annuleren
@@ -68,7 +76,7 @@ public class SamenstellenController {
 
     @FXML
     public void handleTentamenOpslaanButtonAction(ActionEvent event) {
-        System.out.println("Tentamen opslaan");
+        runIfNotNull(onTentamenOpslaan);
         // actie voor voorblad aanmaken
     }
 }
