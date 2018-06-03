@@ -39,12 +39,21 @@ public class TentamenOverzichtController {
     @FXML
     private TableColumn<Tentamen, String> nameColumn;
     @FXML
-    private TableColumn<Tentamen, String> descriptionColumn;
+    private TableColumn<Tentamen, String> vakColumn;
 
     @FXML
-    private Label NaamLabel;
+    private Label naamLabel;
     @FXML
-    private Label DescriptionLabel;
+    private Label descriptionLabel;
+    @FXML
+    public Label vakLabel;
+    @FXML
+    public Label hulpmiddelenLabel;
+    @FXML
+    public Label versieLabel;
+    @FXML
+    public Label tijdsduurLabel;
+
 
     /**
      * The data as an observable list of Persons.
@@ -63,6 +72,7 @@ public class TentamenOverzichtController {
 
         // Initialize the tentamen table with the two columns.
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNaam()));
+        vakColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVak()));
 
         // Clear tentamen details.
         showTentamenDetails(null);
@@ -81,15 +91,23 @@ public class TentamenOverzichtController {
     private void showTentamenDetails(Tentamen tentamen) {
         if (tentamen != null) {
             // Fill the labels with info from the tentamen object.
-            NaamLabel.setText(tentamen.getNaam());
-            DescriptionLabel.setText(tentamen.getBeschrijving());
+            naamLabel.setText(tentamen.getNaam());
+            descriptionLabel.setText(tentamen.getBeschrijving());
+            hulpmiddelenLabel.setText(tentamen.getToegestaandeHulpmiddelen());
+            vakLabel.setText(tentamen.getVak());
+            tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
+            versieLabel.setText(tentamen.getVersie().getNumber());
+
         } else {
             // Tentamen is null, remove all the text.
-            NaamLabel.setText("");
-            DescriptionLabel.setText("");
+            naamLabel.setText("");
+            descriptionLabel.setText("");
+            hulpmiddelenLabel.setText("");
+            vakLabel.setText("");
+            tijdsduurLabel.setText("");
+            versieLabel.setText("");
         }
     }
-
 
     /**
      * Called when the user clicks the 'Klaarzetten' button.
