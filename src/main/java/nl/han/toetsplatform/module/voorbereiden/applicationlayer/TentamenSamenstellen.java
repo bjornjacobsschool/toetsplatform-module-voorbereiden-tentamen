@@ -25,8 +25,8 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
 
         // tentamen versturen naar gateway
         // todo URL specificeren voor post request opslaan tentamen
-        this._gatewayServiceAgent.post("", tentamen);
-        System.out.println("Gecommuniceerd met gateway");
+//        this._gatewayServiceAgent.post("", tentamen);
+//        System.out.println("Gecommuniceerd met gateway");
 
         // tentamen opslaan in lokale database
         // todo script voor opslaan van tentamen invoegen

@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import nl.han.toetsplatform.module.voorbereiden.controllers.VraagOpstelController;
+import nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen.VraagOpstelController;
 import nl.han.toetsplatform.module.voorbereiden.data.VraagOpslaanDAO;
 import nl.han.toetsapplicatie.module.model.Vraag;
 

@@ -1,8 +1,10 @@
 package nl.han.toetsplatform.module.voorbereiden.config;
 
-public enum SamenstellenTentamenFXMLFiles {
+public enum TentamenVoorbereidenFXMLFiles {
     TentamenSamenstellen,
     TentamenSamenstellenVoorblad,
     OpstellenVraag,
-    SamenstellenMain
+    SamenstellenMain,
+    TentamenOverzicht,
+    TentamenKlaarzetten,
 }

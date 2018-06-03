@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane fx:controller="nl.han.toetsplatform.module.voorbereiden.klaarzettententamen.TentamenKlaarzettenController"
+<AnchorPane fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.KlaarzettenController"
             xmlns:fx="http://javafx.com/fxml" >
 <GridPane hgap="10" vgap="10">
     <padding>
@@ -22,15 +22,15 @@
 
     <!-- Tentamen label en tentamen naam -->
     <Label text="Tentamen:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-    <Label fx:id="lblTentamen" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <Label fx:id="tentamenVeld" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
     <!-- Start label en invoerveld -->
     <Label text="Start datum:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <DatePicker fx:id="startVeld" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <DatePicker fx:id="vanDateVeld" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
     <!-- Eind label en invoerveld -->
     <Label text="Eind datum:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <DatePicker fx:id="eindVeld" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <DatePicker fx:id="totDateVeld" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
     <!-- Sleutel invoerveld -->
     <Label text="Sleutel:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
