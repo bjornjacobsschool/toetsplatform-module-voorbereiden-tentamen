@@ -17,7 +17,7 @@ public class GatewayServiceAgentTests {
 
     @Test
     public void testOfServiceAgentHalloWereldVanGatewayTerugKrijgt() throws GatewayCommunicationException{// i
-        GatewayTestMessage response = _sut.get("test", GatewayTestMessage.class);
-        assertEquals("Hallo wereld!", response.message);
+        GatewayTestMessage response = _sut.get("test/Henk", GatewayTestMessage.class);
+        assertEquals("Welkom Henk", response.message);
     }
 }
