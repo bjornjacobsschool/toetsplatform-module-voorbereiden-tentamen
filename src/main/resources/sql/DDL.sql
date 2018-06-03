@@ -1,16 +1,14 @@
 CREATE TABLE IF NOT EXISTS versie
 (
-  id           INT,
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
   datum        VARCHAR(255),
   number       VARCHAR(255),
-  omschrijving VARCHAR(255),
-
-  PRIMARY KEY (id)
+  omschrijving VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS tentamen
 (
-  id                       INT,
+  id                       VARCHAR(100),
   naam                     VARCHAR(255),
   beschrijving             VARCHAR(1024),
   toegestaandeHulpmiddelen VARCHAR(1024),
@@ -23,7 +21,7 @@ CREATE TABLE IF NOT EXISTS tentamen
 
 CREATE TABLE IF NOT EXISTS vraag
 (
-  id                INT,
+  id                VARCHAR(100),
   naam              VARCHAR(255),
   vraag_type        VARCHAR(255),
   thema             VARCHAR(255),
@@ -38,9 +36,9 @@ CREATE TABLE IF NOT EXISTS vraag
 
 cREATE TABLE IF NOT EXISTS vraag_van_tentamen
 (
-  vraag_id        INT,
+  vraag_id        VARCHAR (100),
   vraag_versie    INT,
-  tentamen_id     INT,
+  tentamen_id     VARCHAR (100),
   tentamen_versie INT,
   PRIMARY KEY (vraag_id, vraag_versie, tentamen_id, tentamen_versie),
   FOREIGN KEY (vraag_id, vraag_versie) REFERENCES vraag,

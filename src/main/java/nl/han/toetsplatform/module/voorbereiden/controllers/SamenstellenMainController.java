@@ -5,9 +5,11 @@ import javafx.concurrent.Task;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
+import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenSamenstellen;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.SamenstellenTentamenFXMLFiles;
+import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 //import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
@@ -25,9 +27,18 @@ public class SamenstellenMainController {
     private Tentamen tentamen;
 
     @Inject
+    StorageDao storageDao;
+
+    @Inject
+    SqlLoader sqlLoader;
+
+
+    @Inject
     public SamenstellenMainController(GuiceFXMLLoader fxmlLoader, ITentamenSamenstellen tentamenSamenstellen) {
         this.fxmlLoader = fxmlLoader;
         this._ITentamenSamenstellen = tentamenSamenstellen;
+
+
     }
 
     public void initialize() throws IOException {
@@ -36,6 +47,13 @@ public class SamenstellenMainController {
         mainContainer.getChildren().add(voorbladView.getRoot());
         VoorbladController voorbladController = voorbladView.getController();
         voorbladController.setOnVoorbladAanmaken(this::onVoorbladAangemaakt);
+
+        //Create the database
+        try {
+            storageDao.executeUpdate(sqlLoader.load("DDL"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onVoorbladAangemaakt(Tentamen voorblad){

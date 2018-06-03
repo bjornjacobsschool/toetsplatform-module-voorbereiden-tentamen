@@ -21,15 +21,9 @@ public class Main extends GuiceApplication {
     @Inject
     private GuiceFXMLLoader fxmlLoader;
 
-    @Inject
-    StorageDao storageDao;
-
-    @Inject
-    SqlLoader sqlLoader;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        storageDao.executeUpdate(sqlLoader.load("DDL"));
 
         Parent root = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles.SamenstellenMain), null).getRoot();
         primaryStage.setTitle("Hello World");

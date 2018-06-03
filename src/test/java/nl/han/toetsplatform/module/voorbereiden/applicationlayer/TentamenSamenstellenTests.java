@@ -9,11 +9,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.SQLException;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -31,8 +34,10 @@ public class TentamenSamenstellenTests {
     private TentamenSamenstellen _sut;
 
     @Before
-    public void initialize() {
-        _tentamen = new Tentamen();
+    public void initialize() throws SQLException {
+        _tentamen = Mockito.spy(new Tentamen());
+        _sut = Mockito.spy(_sut);
+        doNothing().when(_sut).savetoDatabase(_tentamen);
     }
 
     @Test
@@ -45,7 +50,6 @@ public class TentamenSamenstellenTests {
     @Test
     public void opslaanShouldCallExecuteQueryOnStorageDao() throws GatewayCommunicationException, SQLException {
         _sut.opslaan(_tentamen);
-        verify(_storageDAOMock, times(1))
-                .executeQuery(any(String.class));
+        verify(_sut).savetoDatabase(_tentamen);
     }
 }
