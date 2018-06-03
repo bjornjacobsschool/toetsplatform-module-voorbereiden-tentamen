@@ -14,6 +14,7 @@ import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
+import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 //import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import javax.inject.Inject;
@@ -25,19 +26,16 @@ import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNo
 
 public class SamenstellenMainController {
     public AnchorPane mainContainer;
-    GuiceFXMLLoader fxmlLoader;
-    GuiceFXMLLoader.Result samenStellenView;
-    private ITentamenSamenstellen _ITentamenSamenstellen;
-
-    Runnable onAnnuleren;
-    Consumer<Tentamen> onTentamenOpgeslagen;
-
+    private GuiceFXMLLoader fxmlLoader;
+    private GuiceFXMLLoader.Result samenStellenView;
+    private ITentamenSamenstellen _tentamenSamenstellen;
+    private Runnable onAnnuleren;
     private Tentamen tentamen;
 
     @Inject
-    public SamenstellenMainController(GuiceFXMLLoader fxmlLoader, ITentamenSamenstellen tentamenSamenstellen) {
+    public SamenstellenMainController(GuiceFXMLLoader fxmlLoader, ITentamenSamenstellen tentamenSamenstellen, TentamenFile tentamenFile) {
         this.fxmlLoader = fxmlLoader;
-        this._ITentamenSamenstellen = tentamenSamenstellen;
+        this._tentamenSamenstellen = tentamenSamenstellen;
     }
 
     public void initialize() throws IOException {
@@ -46,10 +44,6 @@ public class SamenstellenMainController {
         mainContainer.getChildren().add(voorbladView.getRoot());
         VoorbladController voorbladController = voorbladView.getController();
         voorbladController.setOnVoorbladAanmaken(this::onVoorbladAangemaakt);
-    }
-
-    public void setOnTentamenOpgeslagen( Consumer<Tentamen> onTentamenOpgeslagen) {
-        this.onTentamenOpgeslagen = onTentamenOpgeslagen;
     }
 
     public void setOnAnnuleren(Runnable onAnnuleren) {
@@ -105,7 +99,7 @@ public class SamenstellenMainController {
             @Override
             public Void call() {
                 try {
-                    _ITentamenSamenstellen.opslaan(tentamen);
+                    _tentamenSamenstellen.opslaan(tentamen);
                 } catch (GatewayCommunicationException e) {
                     System.out.println(e.getMessage());
                     alert.setAlertType(Alert.AlertType.ERROR);
@@ -121,7 +115,6 @@ public class SamenstellenMainController {
 
         alert.setContentText("Tentamen is opgeslagen");
         task.setOnSucceeded(taskFinishEvent -> {
-            // Geen gatewayexception en geen sqlexception
             Stage primaryStage = PrimaryStageConfig.getInstance().getPrimaryStage();
             Parent root = null;
             try {
