@@ -26,10 +26,7 @@ public class GatewayServiceAgent implements IGatewayServiceAgent{
             throw new GatewayCommunicationException();
         }
 
-        // getting json string and converting to object
-        Gson gson = new Gson();
-        String json = response.getEntity(String.class);
-        return gson.fromJson(json, type);
+        return response.getEntity(type);
     }
 
     public <T> void post(String resourceUrl, T entity) throws GatewayCommunicationException {
