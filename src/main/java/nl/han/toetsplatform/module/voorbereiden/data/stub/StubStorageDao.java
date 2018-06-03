@@ -20,7 +20,9 @@ public class StubStorageDao implements StorageDao {
 
     @Override
     public boolean executeUpdate(String s) throws SQLException {
-        return false;
+        System.out.println(s);
+
+        return true;
     }
 
     @Override
