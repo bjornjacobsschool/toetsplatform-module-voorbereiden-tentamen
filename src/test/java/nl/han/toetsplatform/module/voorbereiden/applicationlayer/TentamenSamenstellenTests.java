@@ -1,6 +1,6 @@
 package nl.han.toetsplatform.module.voorbereiden.applicationlayer;
 
-import nl.han.toetsplatform.module.shared.storage.StorageDao;
+import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgent;
@@ -10,13 +10,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.SQLException;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -28,7 +26,7 @@ public class TentamenSamenstellenTests {
     private IGatewayServiceAgent _gatewayServiceAgentMock;
 
     @Mock
-    private StorageDao _storageDAOMock;
+    private TentamenDao _tentamenDao;
 
     @InjectMocks
     private TentamenSamenstellen _sut;
@@ -36,8 +34,7 @@ public class TentamenSamenstellenTests {
     @Before
     public void initialize() throws SQLException {
         _tentamen = Mockito.spy(new Tentamen());
-        _sut = Mockito.spy(_sut);
-        doNothing().when(_sut).savetoDatabase(_tentamen);
+
     }
 
     @Test
@@ -50,6 +47,6 @@ public class TentamenSamenstellenTests {
     @Test
     public void opslaanShouldCallExecuteQueryOnStorageDao() throws GatewayCommunicationException, SQLException {
         _sut.opslaan(_tentamen);
-        verify(_sut).savetoDatabase(_tentamen);
+        verify(_tentamenDao).saveTentamen(_tentamen);
     }
 }
