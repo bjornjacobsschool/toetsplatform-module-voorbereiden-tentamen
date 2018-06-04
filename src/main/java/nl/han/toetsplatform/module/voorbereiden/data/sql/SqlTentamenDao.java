@@ -20,13 +20,13 @@ import java.util.logging.Logger;
 public class SqlTentamenDao implements TentamenDao {
     private final static Logger LOGGER = Logger.getLogger(SqlTentamenDao.class.getName());
 
-    StorageDao _storageDao;
+    private StorageDao _storageDao;
 
-    SqlLoader _sqlLoader;
+    private SqlLoader _sqlLoader;
 
-    VersieDao _versieDao;
+    private VersieDao _versieDao;
 
-    VragenDao _vragenDao;
+    private VragenDao _vragenDao;
 
     @Inject
     public SqlTentamenDao(StorageDao storageDao, SqlLoader sqlLoader, VersieDao versieDao, VragenDao vragenDao) {

@@ -32,8 +32,13 @@ import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TentamenOverzichtController {
+
+
+    private final static Logger LOGGER = Logger.getLogger(TentamenOverzichtController.class.getName());
 
     private final TentamenFile _tentamenFile;
     public AnchorPane mainContainer;
@@ -62,10 +67,10 @@ public class TentamenOverzichtController {
     public Label tijdsduurLabel;
 
     @Inject
-    StorageDao storageDao;
+    private StorageDao storageDao;
 
     @Inject
-    SqlLoader sqlLoader;
+    private SqlLoader sqlLoader;
 
 
     /**
@@ -87,7 +92,7 @@ public class TentamenOverzichtController {
         try {
             storageDao.executeUpdate(sqlLoader.load("DDL"));
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Could not create database: " + e.getMessage());
         }
 
         refreshOverzicht();
@@ -205,10 +210,9 @@ public class TentamenOverzichtController {
         try {
             _tentamenFile.ExportToFile(klaargezetTentamen);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Could not create tentamen file");
         }
         //write to db
-        System.out.println(klaargezetTentamen.getSleutel());
         try {
             _tentamenKlaarzetten.opslaan(klaargezetTentamen);
         } catch (GatewayCommunicationException e) {

@@ -18,7 +18,7 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
     private IGatewayServiceAgent _gatewayServiceAgent;
     private StorageDao _storageDAO;
 
-    TentamenDao _tentamenDao;
+    private TentamenDao _tentamenDao;
 
     @Inject
     public TentamenSamenstellen(IGatewayServiceAgent gatewayServiceAgent, StorageDao storageDao, TentamenDao tentamenDao)

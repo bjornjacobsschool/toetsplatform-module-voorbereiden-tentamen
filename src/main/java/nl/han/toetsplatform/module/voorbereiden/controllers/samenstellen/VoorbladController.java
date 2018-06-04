@@ -16,7 +16,7 @@ public class VoorbladController {
     public TextField vakField;
     public TextArea beschrijvingArea;
     public TextArea toegestaandeHulpmiddelenArea;
-    Consumer<Tentamen> onVoorbladAanmaken;
+    private Consumer<Tentamen> onVoorbladAanmaken;
     private Runnable onGeannuleerd;
 
     public void setOnVoorbladAanmaken(Consumer<Tentamen> onVoorbladAanmaken) {

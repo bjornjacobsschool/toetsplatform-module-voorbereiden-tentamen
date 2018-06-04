@@ -23,9 +23,7 @@ public class GuiceModule extends AbstractModule {
         bind(ITentamenSamenstellen.class).to(TentamenSamenstellen.class);
         bind(IGatewayServiceAgent.class).to(GatewayServiceAgent.class);
         bind(ITentamenKlaarzetten.class).to(TentamenKlaarzetten.class);
-        bind(Gson.class);
         bind(TentamenFile.class);
-        bind(SqlLoader.class);
         bind(TentamenDao.class).to(SqlTentamenDao.class);
         bind(VersieDao.class);
         bind(VragenDao.class).to(SqlVragenDao.class);

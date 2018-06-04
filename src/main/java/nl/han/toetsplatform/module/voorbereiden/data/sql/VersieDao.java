@@ -13,10 +13,9 @@ import java.sql.*;
  */
 public class VersieDao {
 
-    StorageDao _storageDao;
+    private StorageDao _storageDao;
 
-    SqlLoader _sqlLoader;
-
+    private SqlLoader _sqlLoader;
 
     @Inject
     public VersieDao(StorageDao _storageDao, SqlLoader sqlLoader) {

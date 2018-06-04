@@ -19,11 +19,11 @@ public class SqlVragenDao implements VragenDao {
 
     private final static Logger LOGGER = Logger.getLogger(SqlVragenDao.class.getName());
 
-    SqlLoader _sqlLoader;
+    private SqlLoader _sqlLoader;
 
-    StorageDao _storageDao;
+    private StorageDao _storageDao;
 
-    VersieDao _versieDao;
+    private VersieDao _versieDao;
 
     @Inject
     public SqlVragenDao(SqlLoader _sqlLoader, StorageDao _storageDao, VersieDao versieDao) {

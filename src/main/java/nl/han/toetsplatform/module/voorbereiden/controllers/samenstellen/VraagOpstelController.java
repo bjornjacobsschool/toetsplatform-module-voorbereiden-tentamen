@@ -20,9 +20,9 @@ public class VraagOpstelController {
 
     public Label lblVraagName;
     public AnchorPane opstelContainer;
-    Plugin plugin;
+    private Plugin plugin;
 
-    Vraag vraag;
+    private Vraag vraag;
 
     Runnable onAnnuleer;
     Consumer<Vraag> onVraagSave;

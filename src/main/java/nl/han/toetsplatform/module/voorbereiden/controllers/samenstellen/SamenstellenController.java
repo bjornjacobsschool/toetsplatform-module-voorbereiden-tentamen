@@ -17,9 +17,9 @@ public class SamenstellenController {
     public AnchorPane childPane;
     public GridPane vragenPane;
 
-    Runnable vraagToevoegen;
-    Runnable onTentamenOpslaan;
-    Runnable onAnnuleren;
+    private Runnable vraagToevoegen;
+    private Runnable onTentamenOpslaan;
+    private Runnable onAnnuleren;
 
     public void setOnTentamenOpslaan(Runnable onTentamenOpslaan) {
         this.onTentamenOpslaan = onTentamenOpslaan;
