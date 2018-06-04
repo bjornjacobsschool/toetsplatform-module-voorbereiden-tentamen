@@ -19,6 +19,7 @@ public class SamenstellenController {
 
     Runnable vraagToevoegen;
     Runnable onTentamenOpslaan;
+    Runnable onAnnuleren;
 
     public void setOnTentamenOpslaan(Runnable onTentamenOpslaan) {
         this.onTentamenOpslaan = onTentamenOpslaan;
@@ -26,6 +27,10 @@ public class SamenstellenController {
 
     public void setVraagToevoegen(Runnable vraagToevoegen) {
         this.vraagToevoegen = vraagToevoegen;
+    }
+
+    public void setOnAnnuleren(Runnable onAnnuleren) {
+        this.onAnnuleren = onAnnuleren;
     }
 
     @FXML
@@ -46,28 +51,7 @@ public class SamenstellenController {
 
     @FXML
     protected void handleAnnulerenButtonAction(ActionEvent event) {
-        System.out.println("Annuleren");
-
-        Label label = new Label("Running...");
-        label.setId("asyncLabel");
-        childPane.getChildren().add(label);
-
-        Task task = new Task<String>() {
-            @Override
-            public String call() {
-                //SIMULATE A FILE DOWNLOAD
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return "henk";
-            }
-        };
-
-        task.setOnSucceeded(taskFinishEvent -> label.setText(((Task<String>) task).getValue()));
-        new Thread(task).start();
-
+        runIfNotNull(onAnnuleren);
 
         // actie voor annuleren
     }
