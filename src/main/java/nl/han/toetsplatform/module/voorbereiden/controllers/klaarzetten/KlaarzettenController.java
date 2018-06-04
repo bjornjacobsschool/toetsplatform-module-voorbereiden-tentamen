@@ -3,16 +3,15 @@ package nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
+import nl.han.toetsplatform.module.voorbereiden.util.DateTimePicker;
 
-import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.function.Consumer;
@@ -25,10 +24,10 @@ public class KlaarzettenController {
     private Label tentamenVeld;
 
     @FXML
-    private DatePicker vanDateVeld;
+    private DateTimePicker vanDateVeld;
 
     @FXML
-    private DatePicker totDateVeld;
+    private DateTimePicker totDateVeld;
 
     @FXML
     private TextField sleutelVeld;
@@ -96,10 +95,10 @@ public class KlaarzettenController {
      * @param field
      * @return
      */
-    public Date getDate(DatePicker field) {
-        LocalDate localDate = field.getValue();
-        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-        return Date.from(instant);
+    public Date getDate(DateTimePicker field) {
+        LocalDateTime ldt = field.getDateTimeValue();
+        Date out = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+        return out;
     }
 
     /**

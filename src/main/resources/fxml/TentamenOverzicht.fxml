@@ -64,7 +64,7 @@
                             <Button mnemonicParsing="false" onAction="#handleNewTentamen" text="New..." />
                             <!--<Button mnemonicParsing="false" onAction="#handleEditTentamen" text="Edit..." />-->
                             <!--<Button mnemonicParsing="false" onAction="#handleDeleteTentamen" text="Delete" />-->
-                            <Button mnemonicParsing="false" onAction="#handleKlaarzettenTentamen" text="Klaarzetten" />
+                            <Button mnemonicParsing="false" fx:id="klaarzettenButton" onAction="#handleKlaarzettenTentamen" text="Klaarzetten" />
                         </buttons>
                     </ButtonBar>
                 </children>

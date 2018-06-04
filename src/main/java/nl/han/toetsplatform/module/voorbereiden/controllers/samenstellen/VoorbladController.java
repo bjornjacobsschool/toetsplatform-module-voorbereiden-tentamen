@@ -7,7 +7,6 @@ import javafx.scene.control.TextField;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
@@ -18,6 +17,7 @@ public class VoorbladController {
     public TextArea beschrijvingArea;
     public TextArea toegestaandeHulpmiddelenArea;
     Consumer<Tentamen> onVoorbladAanmaken;
+    private Runnable onGeannuleerd;
 
     public void setOnVoorbladAanmaken(Consumer<Tentamen> onVoorbladAanmaken) {
         this.onVoorbladAanmaken = onVoorbladAanmaken;
@@ -26,8 +26,14 @@ public class VoorbladController {
     @FXML
     protected void handleAnnulerenButtonAction(ActionEvent event)
     {
+        runIfNotNull(onGeannuleerd);
+
         System.out.println("Annuleren");
         // actie voor annuleren
+    }
+
+    public void setOnGeannuleerd(Runnable onGeannuleerd) {
+        this.onGeannuleerd = onGeannuleerd;
     }
 
     @FXML

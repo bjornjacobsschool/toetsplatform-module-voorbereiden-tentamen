@@ -1,6 +1,5 @@
 package nl.han.toetsplatform.module.voorbereiden.models;
 
-import nl.han.toetsapplicatie.module.model.Vraag;
 
 import java.util.ArrayList;
 import java.util.List;

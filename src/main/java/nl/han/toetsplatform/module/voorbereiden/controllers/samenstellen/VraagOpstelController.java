@@ -4,15 +4,13 @@ import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import nl.han.toetsapplicatie.module.model.Vraag;
-import nl.han.toetsplatform.module.voorbereiden.data.VraagOpslaanDAO;
 import nl.han.toetsapplicatie.module.plugin.Plugin;
 import nl.han.toetsapplicatie.module.plugin.PluginLoader;
+import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import java.util.function.Consumer;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
-
 
 public class VraagOpstelController {
 
@@ -21,22 +19,24 @@ public class VraagOpstelController {
     Vraag vraag;
     Plugin plugin;
 
-    Runnable onAnnuleer;
+    Runnable onGeannuleerd;
     Consumer<Vraag> onVraagSave;
 
     public void setOnVraagSave(Consumer<Vraag> onVraagSave) {
         this.onVraagSave = onVraagSave;
     }
 
-    public void setOnExit(Runnable onExit) {
-        this.onAnnuleer = onExit;
+    public void setOnAnnuleren(Runnable onAnnuleer) {
+
+        this.onGeannuleerd = onAnnuleer;
     }
 
     public void setVraag(Vraag vraag) {
         this.vraag = vraag;
 //        lblVraagName.setText(vraag.getNaam());
         try {
-            plugin = PluginLoader.getPlugin(vraag);
+            // todo pluginloader moet vraag van module voorbereiden tentamen gaan gebruiken i.p.v. toetsapplicatie. Insert the correct vraag when pluginloader is fixed
+            plugin = PluginLoader.getPlugin(null);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -44,13 +44,13 @@ public class VraagOpstelController {
     }
 
     public void btnAnnuleerPressed(ActionEvent event) {
-        runIfNotNull(onAnnuleer);
+        runIfNotNull(onGeannuleerd);
     }
 
     public void btnOpslaanPressed(ActionEvent event){
-        vraag.setData(plugin.getVraagCreatorView().getQuestionData());
-        vraag.setId(9);
-        vraag.setName("Test naam");
+        vraag.setVraagData(plugin.getVraagCreatorView().getQuestionData());
+        vraag.setId("9");
+        vraag.setNaam("Test naam");
 
         runIfNotNull(onVraagSave, vraag);
     }

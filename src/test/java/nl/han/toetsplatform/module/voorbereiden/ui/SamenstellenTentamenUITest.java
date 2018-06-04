@@ -2,6 +2,8 @@ package nl.han.toetsplatform.module.voorbereiden.ui;
 
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.*;
+
+import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.ui.windows.SamenstellenTentamenWindowStub;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +28,5 @@ public class SamenstellenTentamenUITest extends ApplicationTest {
     public void vraagToevoegenButtonClickDanLabelMetTekstDIWerkt() {
         clickOn("#annulerenButton");
 
-        verifyThat("#asyncLabel", hasText("Running..."));
     }
 }

@@ -2,6 +2,7 @@ package nl.han.toetsplatform.module.voorbereiden.util;
 
 import com.google.gson.Gson;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 
 import javax.inject.Inject;
@@ -45,4 +46,5 @@ public class TentamenFile {
 
         ExportToFile(object, selectedDirectory);
     }
+
 }

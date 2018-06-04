@@ -6,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -23,16 +22,18 @@ import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLF
 import nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.KlaarzettenController;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
+import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
 
 public class TentamenOverzichtController {
 
+    private final TentamenFile _tentamenFile;
     public AnchorPane mainContainer;
     GuiceFXMLLoader fxmlLoader;
     GuiceFXMLLoader.Result samenstellenView;
-    private ITentamenKlaarzetten _ITentamenKlaarzetten;
+    private ITentamenKlaarzetten _tentamenKlaarzetten;
 
     @FXML
     private TableView<Tentamen> tentamenTable;
@@ -59,11 +60,13 @@ public class TentamenOverzichtController {
      * The data as an observable list of Persons.
      */
     private ObservableList<Tentamen> tentamenData = FXCollections.observableArrayList();
+    private Stage klaarzettenPopupStage;
 
     @Inject
-    public TentamenOverzichtController(GuiceFXMLLoader fxmlLoader, ITentamenKlaarzetten _ITentamenKlaarzetten) {
+    public TentamenOverzichtController(GuiceFXMLLoader fxmlLoader, ITentamenKlaarzetten _tentamenKlaarzetten, TentamenFile tentamenFile) {
         this.fxmlLoader = fxmlLoader;
-        this._ITentamenKlaarzetten = _ITentamenKlaarzetten;
+        this._tentamenKlaarzetten = _tentamenKlaarzetten;
+        this._tentamenFile = tentamenFile;
     }
 
     @FXML
@@ -110,7 +113,8 @@ public class TentamenOverzichtController {
     }
 
     /**
-     * Called when the user clicks the 'Klaarzetten' button.
+     * Called when the user clicks the 'Klaarzetten' button. It first checks if an item is selected. If there isn't
+     * it shows a warning alert dialog else it shows a new dialog for "het klaarzetten".
      * @param actionEvent
      */
     public void handleKlaarzettenTentamen(ActionEvent actionEvent) {
@@ -132,31 +136,39 @@ public class TentamenOverzichtController {
         }
     }
 
+    /**
+     * Refresh the data for the tentamenTable.
+     */
     public void refreshOverzicht() {
-        tentamenData.addAll(this._ITentamenKlaarzetten.getTentamens());
+        tentamenData.addAll(this._tentamenKlaarzetten.getTentamens());
         tentamenTable.setItems(tentamenData);
     }
 
+    /**
+     * Shows a popup window with the selected Tentamen object.
+     * @param tentamen
+     * @return
+     */
     public boolean showTentamenKlaarzettenDialog(Tentamen tentamen) {
         try {
             GuiceFXMLLoader.Result klaarzettenView = fxmlLoader.load(Main.class.getResource("/fxml/TentamenKlaarzetten.fxml"));
 
             //create the dialog stage
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Tentamen klaarzetten");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
+            klaarzettenPopupStage = new Stage();
+            klaarzettenPopupStage.setTitle("Tentamen klaarzetten");
+            klaarzettenPopupStage.initModality(Modality.WINDOW_MODAL);
+            klaarzettenPopupStage.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
             Scene scene = new Scene(klaarzettenView.getRoot(), 400, 300);
-            dialogStage.setScene(scene);
+            klaarzettenPopupStage.setScene(scene);
 
             // Set the tentamen into the controller.
             KlaarzettenController controller = klaarzettenView.getController();
             controller.setOnKlaarzettenTentamen(this::onTentamenKlaargezet);
-            controller.setDialogStage(dialogStage);
+            controller.setDialogStage(klaarzettenPopupStage);
             controller.setTentamen(tentamen);
 
             // Show the dialog and wait until the user closes it
-            dialogStage.showAndWait();
+            klaarzettenPopupStage.showAndWait();
 
             return controller.isOkClicked();
         } catch (IOException e) {
@@ -165,11 +177,24 @@ public class TentamenOverzichtController {
         }
     }
 
+    /**
+     * Method that should save the given object to the database.
+     * For now this will save a JSON file in the directory you choose.
+     * @param klaargezetTentamen
+     */
     public void onTentamenKlaargezet(KlaargezetTentamen klaargezetTentamen) {
-        //write to db
-        System.out.println(klaargezetTentamen.getSleutel());
+        try {
+            _tentamenFile.ExportToFile(klaargezetTentamen);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * When clicked on "new..." Load the samenstellen view.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleNewTentamen(ActionEvent actionEvent) throws IOException {
         samenstellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.SamenstellenMain), null);
         mainContainer.getChildren().clear();
