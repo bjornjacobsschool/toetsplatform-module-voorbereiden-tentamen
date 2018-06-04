@@ -1,0 +1,48 @@
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import nl.han.toetsplatform.module.voorbereiden.util.DateTimePicker?>
+<AnchorPane fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.KlaarzettenController"
+            xmlns:fx="http://javafx.com/fxml" >
+<GridPane hgap="10" vgap="10">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Naam label en invoerveld -->
+    <Label text="Tentamen klaarzetten"  GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1"><font>
+        <Font size="20.0" />
+    </font></Label>
+
+    <!-- Tentamen label en tentamen naam -->
+    <Label text="Tentamen:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <Label fx:id="tentamenVeld" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <!-- Start label en invoerveld -->
+    <Label text="Start datum:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <DateTimePicker fx:id="vanDateVeld" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <!-- Eind label en invoerveld -->
+    <Label text="Eind datum:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <DateTimePicker fx:id="totDateVeld" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+    <!-- Sleutel invoerveld -->
+    <Label text="Sleutel:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+    <TextField fx:id="sleutelVeld" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+    <!-- Knoppen -->
+    <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6">
+        <Button text="Annuleren" fx:id="closeButton" onAction="#handleAnnulerenButtonAction"/>
+        <Pane HBox.hgrow="ALWAYS" />
+        <Button text="Klaarzetten" onAction="#handleKlaarzettenButtonAction"/>
+    </HBox>
+</GridPane>
+
+</AnchorPane>

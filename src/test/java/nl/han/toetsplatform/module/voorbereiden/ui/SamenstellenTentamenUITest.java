@@ -2,12 +2,13 @@ package nl.han.toetsplatform.module.voorbereiden.ui;
 
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.matcher.control.LabeledMatchers.*;
+
+import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.ui.windows.SamenstellenTentamenWindowStub;
 import org.junit.Before;
+import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
-
-import org.junit.Test;
 
 public class SamenstellenTentamenUITest extends ApplicationTest {
 
@@ -18,13 +19,14 @@ public class SamenstellenTentamenUITest extends ApplicationTest {
         FxToolkit.setupApplication(maintest.getClass());
     }
 
-    @Test public void vraagToevoegenButtonMoetDeTekstVraagToevoegenHebben(){
+    @Test
+    public void vraagToevoegenButtonMoetDeTekstVraagToevoegenHebben(){
         verifyThat("#vraagToevoegenButton", hasText("Vraag toevoegen"));
     }
 
-    @Test public void vraagToevoegenButtonClickDanLabelMetTekstDIWerkt() {
-        clickOn("#vraagToevoegenButton");
+    @Test
+    public void vraagToevoegenButtonClickDanLabelMetTekstDIWerkt() {
+        clickOn("#annulerenButton");
 
-        verifyThat("#toegevoegdeLabel", hasText("DI werkt"));
     }
 }

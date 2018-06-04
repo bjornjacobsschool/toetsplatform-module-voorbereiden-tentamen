@@ -14,14 +14,14 @@ import nl.han.toetsplatform.module.voorbereiden.guice.StubGuiceModule;
 import javax.inject.Inject;
 import java.util.List;
 
-public class SamenstellenTentamenWindowStub extends GuiceApplication {
+public class TentamenOverzichtWindowStub extends GuiceApplication {
 
     @Inject
     private GuiceFXMLLoader fxmlLoader;
 
     @Override
     public void start(Stage primaryStage)  throws Exception{
-        Parent root = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.TentamenSamenstellen), null).getRoot();
+        Parent root = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.TentamenOverzicht), null).getRoot();
         primaryStage.setTitle("Hello Test");
         primaryStage.setScene(new Scene(root, 700, 500));
         primaryStage.show();

@@ -7,14 +7,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.Pane?>
-<GridPane fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.VoorbladController"
+<GridPane fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen.VoorbladController"
           xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
 
     <!-- Naam label en invoerveld -->
-    <Label text="Tentamen voorblad (Hallo Bjorn)"  GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1"><font>
+    <Label text="Tentamen voorblad"  GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1"><font>
         <Font size="20.0" />
     </font></Label>
 
@@ -23,15 +23,16 @@
     <TextField fx:id="naamField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
     <!-- Klas label en invoerveld -->
-    <Label text="Klas:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-    <TextField fx:id="klasField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <Label text="Vak:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <TextField fx:id="vakField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
     <!-- Beschrijving label en invoerveld -->
     <Label text="Beschrijving:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-    <TextField fx:id="beschrijvingField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <TextArea fx:id="beschrijvingArea" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
     <!-- Vrije invoerveld -->
-    <TextArea fx:id="vrijeInvoerField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+    <Label text="Toegestaande hulpmiddelen:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+    <TextArea fx:id="toegestaandeHulpmiddelenArea" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
     <!-- Knoppen -->
     <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6">
