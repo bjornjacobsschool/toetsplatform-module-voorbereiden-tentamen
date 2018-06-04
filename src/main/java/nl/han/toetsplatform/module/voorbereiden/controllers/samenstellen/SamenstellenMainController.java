@@ -8,18 +8,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenSamenstellen;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
+import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
+import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 //import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
@@ -32,11 +36,7 @@ public class SamenstellenMainController {
     private Runnable onAnnuleren;
     private Tentamen tentamen;
 
-    @Inject
-    StorageDao storageDao;
 
-    @Inject
-    SqlLoader sqlLoader;
 
 
     @Inject
@@ -52,12 +52,7 @@ public class SamenstellenMainController {
         VoorbladController voorbladController = voorbladView.getController();
         voorbladController.setOnVoorbladAanmaken(this::onVoorbladAangemaakt);
 
-        //Create the database
-        try {
-            storageDao.executeUpdate(sqlLoader.load("DDL"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void setOnAnnuleren(Runnable onAnnuleren) {
@@ -85,8 +80,8 @@ public class SamenstellenMainController {
             setAnchorFull(vraagOpstellenView.getRoot());
             mainContainer.getChildren().add(vraagOpstellenView.getRoot());
             VraagOpstelController vraagOpstelController = vraagOpstellenView.getController();
-            nl.han.toetsapplicatie.module.model.Vraag moduleVraag = new nl.han.toetsapplicatie.module.model.Vraag();
-            moduleVraag.setPlugin("nl.han.toetsapplicatie.plugin.GraphPlugin");
+            Vraag moduleVraag = new Vraag();
+            moduleVraag.setVraagType("nl.han.toetsapplicatie.plugin.GraphPlugin");
             vraagOpstelController.setVraag(moduleVraag);
             vraagOpstelController.onVraagSave = (vraag) -> {
                 SamenstellenController samenstellenController = samenStellenView.getController();

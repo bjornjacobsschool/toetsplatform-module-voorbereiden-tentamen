@@ -6,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -15,24 +14,28 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.Main;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.KlaarzettenController;
+import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
+import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class TentamenOverzichtController {
 
     public AnchorPane mainContainer;
     GuiceFXMLLoader fxmlLoader;
     GuiceFXMLLoader.Result samenstellenView;
-    private ITentamenKlaarzetten _ITentamenKlaarzetten;
+    private ITentamenKlaarzetten _tentamenKlaarzetten;
 
     @FXML
     private TableView<Tentamen> tentamenTable;
@@ -54,6 +57,12 @@ public class TentamenOverzichtController {
     @FXML
     public Label tijdsduurLabel;
 
+    @Inject
+    StorageDao storageDao;
+
+    @Inject
+    SqlLoader sqlLoader;
+
 
     /**
      * The data as an observable list of Persons.
@@ -63,11 +72,18 @@ public class TentamenOverzichtController {
     @Inject
     public TentamenOverzichtController(GuiceFXMLLoader fxmlLoader, ITentamenKlaarzetten _ITentamenKlaarzetten) {
         this.fxmlLoader = fxmlLoader;
-        this._ITentamenKlaarzetten = _ITentamenKlaarzetten;
+        this._tentamenKlaarzetten = _ITentamenKlaarzetten;
     }
 
     @FXML
     public void initialize() throws IOException {
+        //Create the database
+        try {
+            storageDao.executeUpdate(sqlLoader.load("DDL"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         refreshOverzicht();
 
         // Initialize the tentamen table with the two columns.
@@ -133,7 +149,7 @@ public class TentamenOverzichtController {
     }
 
     public void refreshOverzicht() {
-        tentamenData.addAll(this._ITentamenKlaarzetten.getTentamens());
+        tentamenData.addAll(this._tentamenKlaarzetten.getTentamens());
         tentamenTable.setItems(tentamenData);
     }
 
@@ -168,6 +184,13 @@ public class TentamenOverzichtController {
     public void onTentamenKlaargezet(KlaargezetTentamen klaargezetTentamen) {
         //write to db
         System.out.println(klaargezetTentamen.getSleutel());
+        try {
+            _tentamenKlaarzetten.opslaan(klaargezetTentamen);
+        } catch (GatewayCommunicationException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleNewTentamen(ActionEvent actionEvent) throws IOException {

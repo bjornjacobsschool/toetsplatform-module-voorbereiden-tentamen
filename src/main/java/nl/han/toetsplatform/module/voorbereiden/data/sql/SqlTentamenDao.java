@@ -3,8 +3,11 @@ package nl.han.toetsplatform.module.voorbereiden.data.sql;
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
 import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
+import nl.han.toetsplatform.module.voorbereiden.data.VragenDao;
+import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Versie;
+import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import javax.inject.Inject;
 import java.sql.*;
@@ -23,11 +26,14 @@ public class SqlTentamenDao implements TentamenDao {
 
     VersieDao _versieDao;
 
+    VragenDao _vragenDao;
+
     @Inject
-    public SqlTentamenDao(StorageDao storageDao, SqlLoader sqlLoader, VersieDao versieDao) {
+    public SqlTentamenDao(StorageDao storageDao, SqlLoader sqlLoader, VersieDao versieDao, VragenDao vragenDao) {
         this._storageDao = storageDao;
         this._sqlLoader = sqlLoader;
         this._versieDao = versieDao;
+        this._vragenDao = vragenDao;
     }
 
     private boolean isDatabaseConnected(Connection connection){
@@ -44,21 +50,30 @@ public class SqlTentamenDao implements TentamenDao {
         Connection conn = _storageDao.getConnection();
         if(!isDatabaseConnected(conn))  return;
 
+        tentamen.setId(UUID.randomUUID().toString());
+
+
         PreparedStatement psVersie = null;
         try {
             int versie_id = _versieDao.addVersie(new Versie());
+            tentamen.setVersie(_versieDao.getVersie(versie_id));
 
             PreparedStatement psTentamen = conn.prepareStatement(_sqlLoader.load("insert_tentamen"));
-            psTentamen.setString(1, UUID.randomUUID().toString());
+            psTentamen.setString(1, tentamen.getId());
             psTentamen.setString(2, tentamen.getNaam());
             psTentamen.setString(3, tentamen.getBeschrijving());
             psTentamen.setString(4, tentamen.getToegestaandeHulpmiddelen());
             psTentamen.setString(5, tentamen.getVak());
-            psTentamen.setInt(6, versie_id);
+            psTentamen.setInt(6, tentamen.getVersie().getId());
             psTentamen.execute();
-            _storageDao.closeConnection();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Could not save data to database");
+        }
+
+        for(Vraag vraag : tentamen.getVragen()){
+            System.out.println("Vraag osplaan");
+            _vragenDao.insertVraag(vraag);
+            _vragenDao.insertTentamenVraag(tentamen, vraag);
         }
     }
 
@@ -88,5 +103,24 @@ public class SqlTentamenDao implements TentamenDao {
             LOGGER.log(Level.SEVERE, "Could not load tentamens from database: " + e.getMessage());
         }
         return new ArrayList<>();
+    }
+
+    @Override
+    public void setTentamenKlaar(KlaargezetTentamen tentamen) {
+        Connection conn = _storageDao.getConnection();
+        if(!isDatabaseConnected(conn))return;
+
+        try{
+            PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("insert_klaargezet_tentamen"));
+            ps.setString(1, tentamen.getTentamen().getId());
+            ps.setInt(2, tentamen.getTentamen().getVersie().getId());
+            ps.setDate(3,  new Date(tentamen.getVan().getTime()));
+            ps.setDate(4,  new Date(tentamen.getTot().getTime()));
+            ps.setString(5, tentamen.getSleutel());
+            ps.execute();
+        }
+        catch (SQLException e){
+            LOGGER.log(Level.SEVERE, "Could not insert klaargezet tentamen: " + e.getMessage());
+        }
     }
 }

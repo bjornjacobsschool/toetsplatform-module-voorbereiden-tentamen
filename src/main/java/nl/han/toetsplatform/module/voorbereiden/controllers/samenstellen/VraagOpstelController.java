@@ -4,11 +4,13 @@ import javafx.event.ActionEvent;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import nl.han.toetsapplicatie.module.model.Vraag;
+import nl.han.toetsplatform.module.shared.plugin.Plugin;
+import nl.han.toetsplatform.module.shared.plugin.PluginLoader;
 import nl.han.toetsplatform.module.voorbereiden.data.VraagOpslaanDAO;
-import nl.han.toetsapplicatie.module.plugin.Plugin;
-import nl.han.toetsapplicatie.module.plugin.PluginLoader;
+import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
+
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
@@ -18,8 +20,9 @@ public class VraagOpstelController {
 
     public Label lblVraagName;
     public AnchorPane opstelContainer;
-    Vraag vraag;
     Plugin plugin;
+
+    Vraag vraag;
 
     Runnable onAnnuleer;
     Consumer<Vraag> onVraagSave;
@@ -36,7 +39,7 @@ public class VraagOpstelController {
         this.vraag = vraag;
 //        lblVraagName.setText(vraag.getNaam());
         try {
-            plugin = PluginLoader.getPlugin(vraag);
+            plugin = PluginLoader.getPlugin(vraag.getVraagType(), vraag.getVraagData());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -48,9 +51,9 @@ public class VraagOpstelController {
     }
 
     public void btnOpslaanPressed(ActionEvent event){
-        vraag.setData(plugin.getVraagCreatorView().getQuestionData());
-        vraag.setId(9);
-        vraag.setName("Test naam");
+        vraag.setVraagData(plugin.getVraagCreatorView().getQuestionData());
+        vraag.setId(UUID.randomUUID().toString());
+        vraag.setNaam("Test naam");
 
         runIfNotNull(onVraagSave, vraag);
     }

@@ -37,6 +37,7 @@ public class VersieDao {
             versie.setDatum(rs.getString("datum"));
             versie.setOmschrijving(rs.getString("omschrijving"));
             versie.setNumber(rs.getString("number"));
+            versie.setId(rs.getInt("id"));
         }
 
         return versie;

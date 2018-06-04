@@ -86,12 +86,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.bjornjacobsschool</groupId>
-            <artifactId>toetsplatform-module-pluginsupport</artifactId>
-            <version>develop</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.testfx</groupId>
             <artifactId>testfx-core</artifactId>
             <version>4.0.13-alpha</version>
@@ -127,7 +121,7 @@
         <dependency>
             <groupId>com.github.bjornjacobsschool</groupId>
             <artifactId>toetsplatform-module-shared</artifactId>
-            <version>feature~FECLYK-697-dao-overzetten-naar-module-gebruikmakend</version>
+            <version>develop-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

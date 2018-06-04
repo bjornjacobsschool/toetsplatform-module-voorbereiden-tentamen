@@ -1,0 +1,1 @@
+INSERT INTO klaargezetten_tentamen (tentamen_id, tentamen_versie, start_datum, eind_datum, sleutel) VALUES (?, ?, ?, ?, ?);
