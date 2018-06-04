@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TentamenKlaarzetten implements ITentamenKlaarzetten{
     private IGatewayServiceAgent _gatewayServiceAgent;
@@ -28,11 +29,6 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten{
 
     public void opslaan(KlaargezetTentamen tentamen) throws GatewayCommunicationException, SQLException {
 
-
-        // tentamen opslaan in lokale database
-        // todo script voor opslaan van tentamen invoegen
-        //._storageDAO.executeQuery("");
-        System.out.println("Gecommuniceerd met database");
         _tentamenDao.setTentamenKlaar(tentamen);
 
         // tentamen versturen naar gateway
@@ -40,16 +36,16 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten{
         this._gatewayServiceAgent.post("", tentamen);
         System.out.println("Gecommuniceerd met gateway");
 
-        // tentamen opslaan in lokale database
-        // todo script voor opslaan van tentamen invoegen
-        _storageDAO.executeQuery("");
-        System.out.println("Gecommuniceerd met database");
     }
 
     @Override
     public List<Tentamen> getTentamens() {
         return _tentamenDao.loadTentamens();
-    public ArrayList<Tentamen> getTentamens() {
+
+    }
+}
+
+    /*public ArrayList<Tentamen> getTentamens() {
         ArrayList<Tentamen> list = new ArrayList<>();
         Tentamen tentamen1 = new Tentamen();
         tentamen1.setNaam("App Algorithmes 1");
@@ -103,6 +99,4 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten{
 
         list.add(tentamen1);
         list.add(tentamen);
-        return list;
-    }
-}
+        return list;*/

@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -224,8 +225,17 @@ public class TentamenOverzichtController {
      */
     public void handleNewTentamen(ActionEvent actionEvent) throws IOException {
         samenstellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.SamenstellenMain), null);
+        setAnchorFull(samenstellenView.getRoot());
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(samenstellenView.getRoot());
+    }
+
+
+    private void setAnchorFull(Node node){
+        AnchorPane.setBottomAnchor(node, 0D);
+        AnchorPane.setLeftAnchor(node, 0D);
+        AnchorPane.setRightAnchor(node, 0D);
+        AnchorPane.setTopAnchor(node, 0D);
     }
 
 }

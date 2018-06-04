@@ -65,7 +65,7 @@ public class SamenstellenMainController {
                 tentamen.getVragen().add(vraag);
                 showSamenstellenTentamen();
             };
-            vraagOpstelController.onGeannuleerd = () ->{
+            vraagOpstelController.onAnnuleer = () ->{
                 showSamenstellenTentamen();
             };
         } catch (IOException e) {

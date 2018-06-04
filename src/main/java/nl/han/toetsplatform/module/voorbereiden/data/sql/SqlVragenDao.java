@@ -12,8 +12,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SqlVragenDao implements VragenDao {
+
+    private final static Logger LOGGER = Logger.getLogger(SqlVragenDao.class.getName());
 
     SqlLoader _sqlLoader;
 
@@ -33,7 +37,6 @@ public class SqlVragenDao implements VragenDao {
         Connection conn = _storageDao.getConnection();
         vraag.setId(UUID.randomUUID().toString());
 
-        System.out.println(vraag.getId() + "adfadsf");
         try {
             int id = _versieDao.addVersie(new Versie());
             System.out.println(id);
@@ -52,15 +55,13 @@ public class SqlVragenDao implements VragenDao {
             System.out.println(ps.execute());
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+            LOGGER.log(Level.SEVERE, "Could not insert vraag: " + e.getMessage());
         }
 
         System.out.println("Done insert vraag");
     }
 
     public void insertTentamenVraag(Tentamen tentamen, Vraag vraag){
-        System.out.println("Vraag tentamen " + tentamen.getId());
         Connection conn = _storageDao.getConnection();
 
         try {
@@ -71,7 +72,7 @@ public class SqlVragenDao implements VragenDao {
             ps.setInt(4, tentamen.getVersie().getId());
             ps.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Could not insert tentamen vraag: " + e.getMessage());
         }
     }
 }
