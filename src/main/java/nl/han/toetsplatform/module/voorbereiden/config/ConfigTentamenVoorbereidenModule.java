@@ -6,7 +6,8 @@ import nl.han.toetsplatform.module.voorbereiden.guice.GuiceModule;
 import java.net.URL;
 
 public class ConfigTentamenVoorbereidenModule {
-    public static URL getFXMLTentamenUitvoeren(SamenstellenTentamenFXMLFiles fxmlFile) {
+
+    public static URL getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles fxmlFile) {
         return ConfigTentamenVoorbereidenModule.class.getResource("/fxml/"+fxmlFile+".fxml");
     }
 

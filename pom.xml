@@ -127,9 +127,10 @@
         <dependency>
             <groupId>com.github.bjornjacobsschool</groupId>
             <artifactId>toetsplatform-module-shared</artifactId>
-            <version>feature~FECLYK-697-dao-overzetten-naar-module-gebruikmakend-SNAPSHOT</version>
+            <version>feature~FECLYK-697-dao-overzetten-naar-module-gebruikmakend</version>
         </dependency>
 
     </dependencies>
-    
+
 </project>
+

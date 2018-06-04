@@ -5,7 +5,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.VraagOpstelController">
+            fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen.VraagOpstelController">
     <Label fx:id="lblVraagName" AnchorPane.topAnchor="15"/>
     <ScrollPane AnchorPane.topAnchor="50" AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0"></ScrollPane>
     <AnchorPane fx:id="opstelContainer" AnchorPane.topAnchor="50" AnchorPane.bottomAnchor="50" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0">

@@ -8,9 +8,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
-import nl.han.toetsplatform.module.voorbereiden.config.SamenstellenTentamenFXMLFiles;
-import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
-import nl.han.toetsplatform.module.voorbereiden.guice.GuiceModule;
+import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
+import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.guice.StubGuiceModule;
 
 import javax.inject.Inject;
@@ -21,7 +20,6 @@ public class Main extends GuiceApplication {
     @Inject
     private GuiceFXMLLoader fxmlLoader;
 
-
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -29,6 +27,8 @@ public class Main extends GuiceApplication {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
+
+        PrimaryStageConfig.getInstance().setPrimaryStage(primaryStage);
     }
 
     public static void main(String[] args) {

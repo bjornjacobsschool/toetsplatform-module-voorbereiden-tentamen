@@ -1,5 +1,6 @@
-package nl.han.toetsplatform.module.voorbereiden.controllers;
+package nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen;
 
+import com.cathive.fx.guice.GuiceFXMLLoader;
 import com.google.gson.Gson;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -8,10 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import nl.han.toetsapplicatie.module.model.Vraag;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.VraagTest;
-
-import java.util.function.Consumer;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
@@ -76,6 +74,7 @@ public class SamenstellenController {
 
     @FXML
     public void handleTentamenOpslaanButtonAction(ActionEvent event) {
+
         runIfNotNull(onTentamenOpslaan);
         // actie voor voorblad aanmaken
     }
