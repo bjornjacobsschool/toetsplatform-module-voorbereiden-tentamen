@@ -1,0 +1,1 @@
+SELECT id, naam, beschrijving, toegestaandeHulpmiddelen, vak, versie_id FROM tentamen

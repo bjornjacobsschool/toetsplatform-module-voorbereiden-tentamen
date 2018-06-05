@@ -6,6 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -14,20 +16,29 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.Main;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.KlaarzettenController;
+import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
+import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TentamenOverzichtController {
+
+
+    private final static Logger LOGGER = Logger.getLogger(TentamenOverzichtController.class.getName());
 
     private final TentamenFile _tentamenFile;
     public AnchorPane mainContainer;
@@ -55,6 +66,12 @@ public class TentamenOverzichtController {
     @FXML
     public Label tijdsduurLabel;
 
+    @Inject
+    private StorageDao storageDao;
+
+    @Inject
+    private SqlLoader sqlLoader;
+
 
     /**
      * The data as an observable list of Persons.
@@ -71,6 +88,13 @@ public class TentamenOverzichtController {
 
     @FXML
     public void initialize() throws IOException {
+        //Create the database
+        try {
+            storageDao.executeUpdate(sqlLoader.load("DDL"));
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Could not create database: " + e.getMessage());
+        }
+
         refreshOverzicht();
 
         // Initialize the tentamen table with the two columns.
@@ -186,6 +210,14 @@ public class TentamenOverzichtController {
         try {
             _tentamenFile.ExportToFile(klaargezetTentamen);
         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Could not create tentamen file");
+        }
+        //write to db
+        try {
+            _tentamenKlaarzetten.opslaan(klaargezetTentamen);
+        } catch (GatewayCommunicationException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -197,8 +229,17 @@ public class TentamenOverzichtController {
      */
     public void handleNewTentamen(ActionEvent actionEvent) throws IOException {
         samenstellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.SamenstellenMain), null);
+        setAnchorFull(samenstellenView.getRoot());
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(samenstellenView.getRoot());
+    }
+
+
+    private void setAnchorFull(Node node){
+        AnchorPane.setBottomAnchor(node, 0D);
+        AnchorPane.setLeftAnchor(node, 0D);
+        AnchorPane.setRightAnchor(node, 0D);
+        AnchorPane.setTopAnchor(node, 0D);
     }
 
 }

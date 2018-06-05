@@ -36,7 +36,7 @@ public class KlaarzettenController {
     private Stage dialogStage;
     private boolean okClicked = false;
 
-    Consumer<KlaargezetTentamen> onKlaarzettenTentamen;
+    private Consumer<KlaargezetTentamen> onKlaarzettenTentamen;
 
     public void initialize(){
     }

@@ -12,6 +12,8 @@ import org.testfx.framework.junit.ApplicationTest;
 
 public class SamenstellenTentamenUITest extends ApplicationTest {
 
+
+
     @Before
     public void setup() throws Exception {
         SamenstellenTentamenWindowStub maintest = new SamenstellenTentamenWindowStub();

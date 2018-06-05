@@ -1,7 +1,9 @@
 package nl.han.toetsplatform.module.voorbereiden.applicationlayer;
 
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
+import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
+import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Versie;
 import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
@@ -12,35 +14,38 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TentamenKlaarzetten implements ITentamenKlaarzetten{
     private IGatewayServiceAgent _gatewayServiceAgent;
-    private StorageDao _storageDAO;
+    private TentamenDao _tentamenDao;
 
     @Inject
-    public TentamenKlaarzetten(IGatewayServiceAgent gatewayServiceAgent, StorageDao storageDao)
+    public TentamenKlaarzetten(IGatewayServiceAgent gatewayServiceAgent, TentamenDao tentamenDao)
     {
         this._gatewayServiceAgent = gatewayServiceAgent;
-        this._storageDAO = storageDao;
+        this._tentamenDao = tentamenDao;
     }
 
-    public void opslaan(Tentamen tentamen) throws GatewayCommunicationException, SQLException {
+    public void opslaan(KlaargezetTentamen tentamen) throws GatewayCommunicationException, SQLException {
+
+        _tentamenDao.setTentamenKlaar(tentamen);
 
         // tentamen versturen naar gateway
         // todo URL specificeren voor post request opslaan tentamen
         this._gatewayServiceAgent.post("", tentamen);
         System.out.println("Gecommuniceerd met gateway");
 
-        // tentamen opslaan in lokale database
-        // todo script voor opslaan van tentamen invoegen
-        _storageDAO.executeQuery("");
-        System.out.println("Gecommuniceerd met database");
     }
 
     @Override
-    public ArrayList<Tentamen> getTentamens() {
+    public List<Tentamen> getTentamens() {
+        return _tentamenDao.loadTentamens();
+
+    }
+}
+
+    /*public ArrayList<Tentamen> getTentamens() {
         ArrayList<Tentamen> list = new ArrayList<>();
         Tentamen tentamen1 = new Tentamen();
         tentamen1.setNaam("App Algorithmes 1");
@@ -94,6 +99,4 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten{
 
         list.add(tentamen1);
         list.add(tentamen);
-        return list;
-    }
-}
+        return list;*/

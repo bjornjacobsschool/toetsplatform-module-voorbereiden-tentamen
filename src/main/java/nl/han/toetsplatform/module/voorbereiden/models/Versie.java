@@ -2,6 +2,8 @@ package nl.han.toetsplatform.module.voorbereiden.models;
 
 public class Versie {
 
+    private int id;
+
     private String datum;
     private String number;
     private String omschrijving;
@@ -28,5 +30,13 @@ public class Versie {
 
     public void setOmschrijving(String omschrijving) {
         this.omschrijving = omschrijving;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

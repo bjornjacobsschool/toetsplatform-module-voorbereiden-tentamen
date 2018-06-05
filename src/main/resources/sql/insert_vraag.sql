@@ -1,0 +1,1 @@
+INSERT INTO vraag (id, naam, vraag_type, thema, punten, versie_id, nakijkInstrucites, vraag_data, nakijk_model) VALUES (?,?,?,?,?,?,?,?,?);
