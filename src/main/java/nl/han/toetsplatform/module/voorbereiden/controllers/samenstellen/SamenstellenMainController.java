@@ -7,7 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.han.toetsplatform.module.voorbereiden.Main;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenSamenstellen;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
@@ -48,15 +50,18 @@ public class SamenstellenMainController {
     /**
      * Methode die het toevoegen van een vraag inlaad.
      */
-    public void vraagToevoegen(){
+    public void vraagToevoegen() {
         try {
+            String pluginType = getPluginType();
+            if (pluginType == null) return;
+
             GuiceFXMLLoader.Result vraagOpstellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.OpstellenVraag), null);
             mainContainer.getChildren().clear();
             setAnchorFull(vraagOpstellenView.getRoot());
             mainContainer.getChildren().add(vraagOpstellenView.getRoot());
             VraagOpstelController vraagOpstelController = vraagOpstellenView.getController();
             Vraag moduleVraag = new Vraag();
-            moduleVraag.setVraagType("nl.han.toetsapplicatie.plugin.GraphPlugin");
+            moduleVraag.setVraagType(pluginType);
             vraagOpstelController.setVraag(moduleVraag);
             vraagOpstelController.onVraagSave = (vraag) -> {
                 SamenstellenController samenstellenController = samenStellenView.getController();
@@ -65,7 +70,7 @@ public class SamenstellenMainController {
                 tentamen.getVragen().add(vraag);
                 showSamenstellenTentamen();
             };
-            vraagOpstelController.onAnnuleer = () ->{
+            vraagOpstelController.onAnnuleer = () -> {
                 showSamenstellenTentamen();
             };
         } catch (IOException e) {
@@ -74,10 +79,38 @@ public class SamenstellenMainController {
     }
 
     /**
+     * Opent een dialoog voor het kiezen van een plugin
+     *
+     * @return het type plugin: null als ere niks is gekozen
+     */
+    private String getPluginType() {
+        GuiceFXMLLoader.Result klaarzettenView;
+        try {
+            klaarzettenView = fxmlLoader.load(Main.class.getResource("/fxml/PluginTypeKiezen.fxml"));
+            //create the dialog stage
+            Stage klaarzettenPopupStage = new Stage();
+            klaarzettenPopupStage.setTitle("Plugin selecteren");
+            klaarzettenPopupStage.initModality(Modality.WINDOW_MODAL);
+            klaarzettenPopupStage.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
+            Scene scene = new Scene(klaarzettenView.getRoot(), 400, 300);
+            klaarzettenPopupStage.setScene(scene);
+
+            PluginTypeKiezenController pluginTypeKiezenController = klaarzettenView.getController();
+            pluginTypeKiezenController.setDialogStage(klaarzettenPopupStage);
+
+            klaarzettenPopupStage.showAndWait();
+            return pluginTypeKiezenController.getSelectedPlugin();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    /**
      * Actie voor het aanmaken van het voorblad.
+     *
      * @param voorblad
      */
-    public void onVoorbladAangemaakt(Tentamen voorblad){
+    public void onVoorbladAangemaakt(Tentamen voorblad) {
         try {
             tentamen = voorblad;
 
@@ -143,6 +176,7 @@ public class SamenstellenMainController {
 
     /**
      * Helper method to load a different view.
+     *
      * @param view
      */
     public void showPage(TentamenVoorbereidenFXMLFiles view) {
@@ -164,7 +198,7 @@ public class SamenstellenMainController {
         setAnchorFull(samenStellenView.getRoot());
     }
 
-    private void setAnchorFull(Node node){
+    private void setAnchorFull(Node node) {
         AnchorPane.setBottomAnchor(node, 0D);
         AnchorPane.setLeftAnchor(node, 0D);
         AnchorPane.setRightAnchor(node, 0D);
