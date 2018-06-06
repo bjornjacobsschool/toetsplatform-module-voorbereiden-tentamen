@@ -8,9 +8,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
-/**
- * Created by davor on 6-6-2018.
- */
 public class EditingCell extends TableCell<Vraag, Integer> {
     private TextField textField;
 
