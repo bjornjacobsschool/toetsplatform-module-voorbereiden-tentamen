@@ -23,9 +23,7 @@
         <Button fx:id="vraagToevoegenButton" text="Vraag toevoegen" onAction="#handleVraagToevoegenButtonAction"/>
     </HBox>
 
-    <GridPane fx:id="vragenPane" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="1">
-        <AnchorPane GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" fx:id="childPane"></AnchorPane>
-    </GridPane>
+
 
     <TableView fx:id="vragenTable" editable="true" layoutX="-12.0" layoutY="49.0" prefHeight="298.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>

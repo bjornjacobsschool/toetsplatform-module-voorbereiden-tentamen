@@ -29,8 +29,6 @@ import java.util.function.Consumer;
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
 public class SamenstellenController {
-    public AnchorPane childPane;
-    public GridPane vragenPane;
     public TableView<Vraag> vragenTable;
     public TableColumn<Vraag, String> vraagColumn;
     public TableColumn<Vraag, Integer> puntenColumn;
@@ -55,7 +53,6 @@ public class SamenstellenController {
 
     @FXML
     protected void initialize() {
-        vragenPane.setStyle("-fx-border-style: solid");
         vraagColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNaam()));
         puntenColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<Integer>(cellData.getValue().getPunten()));
         Callback<TableColumn<Vraag, Integer>, TableCell<Vraag, Integer>> cellFactory
