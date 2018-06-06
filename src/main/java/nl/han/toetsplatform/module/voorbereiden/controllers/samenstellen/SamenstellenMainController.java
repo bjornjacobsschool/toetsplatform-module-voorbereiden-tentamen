@@ -60,9 +60,10 @@ public class SamenstellenMainController {
             vraagOpstelController.setVraag(moduleVraag);
             vraagOpstelController.onVraagSave = (vraag) -> {
                 SamenstellenController samenstellenController = samenStellenView.getController();
+                samenstellenController.setTentamen(tentamen);
                 samenstellenController.voegVraagToe(vraag);
 
-                tentamen.getVragen().add(vraag);
+                //tentamen.getVragen().add(vraag);
                 showSamenstellenTentamen();
             };
             vraagOpstelController.onAnnuleer = () ->{
@@ -104,7 +105,7 @@ public class SamenstellenMainController {
     /**
      * Actie voor het opslaan van een tentamen
      */
-    private void onTentamenAangemaakt() {
+    private void onTentamenAangemaakt(Tentamen tentamen) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
@@ -122,6 +123,9 @@ public class SamenstellenMainController {
                     System.out.println(e.getMessage());
                     alert.setAlertType(Alert.AlertType.ERROR);
                     alert.setContentText(e.getMessage());
+                }
+                for(Vraag v: tentamen.getVragen()){
+                    System.out.println(v.getPunten());
                 }
                 return null;
             }
