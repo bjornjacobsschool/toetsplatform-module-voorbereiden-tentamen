@@ -41,7 +41,6 @@ public class SqlTentamenDao implements TentamenDao {
             LOGGER.log(Level.WARNING, "No database connected");
             return false;
         }
-
         return true;
     }
 
