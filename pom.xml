@@ -121,7 +121,7 @@
         <dependency>
             <groupId>com.github.bjornjacobsschool</groupId>
             <artifactId>toetsplatform-module-shared</artifactId>
-            <version>develop-SNAPSHOT</version>
+            <version>9ff166432f</version>
         </dependency>
 
     </dependencies>
