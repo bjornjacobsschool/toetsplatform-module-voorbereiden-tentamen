@@ -4,10 +4,16 @@ import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
+import nl.han.toetsplatform.module.voorbereiden.models.Versie;
+import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgent;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TentamenKlaarzetten implements ITentamenKlaarzetten{
