@@ -62,7 +62,8 @@ public class KlaarzettenController {
 
 
     /**
-     * Handles the event when the user clicks on the 'Klaarzetten' button.
+     * Bij het klikken op 'klaarzetten', maak en nieuwe klaargezetTentamen object en stuur deze door naar de backend.
+     * Geef een warning als niet alle gegevens zijn ingevuld
      * @param event
      */
     @FXML
@@ -79,18 +80,20 @@ public class KlaarzettenController {
             okClicked = true;
             dialogStage.close();
         } else {
-            //error..
+            //warning..
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
-            alert.setTitle("Warning");
-            alert.setHeaderText("Fill in all fields!");
+            String errorWarning = "Error warning";
+            alert.setTitle(errorWarning);
+            String warningMessage = "Vul alle velden in!";
+            alert.setHeaderText(warningMessage);
 
             alert.showAndWait();
         }
     }
 
     /**
-     * Helper method to convert Datepicker values to Date
+     * Methode om DateTime fields om te zette naar Date
      *
      * @param field
      * @return
@@ -102,7 +105,7 @@ public class KlaarzettenController {
     }
 
     /**
-     * Checks if the input is valid
+     * Controleert of de input valide is.
      * @return
      */
     private boolean isInputValid(){

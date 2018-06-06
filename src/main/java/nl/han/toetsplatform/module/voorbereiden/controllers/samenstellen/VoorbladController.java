@@ -19,17 +19,16 @@ public class VoorbladController {
     private Consumer<Tentamen> onVoorbladAanmaken;
     private Runnable onGeannuleerd;
 
-    public void setOnVoorbladAanmaken(Consumer<Tentamen> onVoorbladAanmaken) {
-        this.onVoorbladAanmaken = onVoorbladAanmaken;
-    }
+    /**
+     * Setter
+     * @param onVoorbladAanmaken
+     */
+    public void setOnVoorbladAanmaken(Consumer<Tentamen> onVoorbladAanmaken) { this.onVoorbladAanmaken = onVoorbladAanmaken; }
 
     @FXML
     protected void handleAnnulerenButtonAction(ActionEvent event)
     {
         runIfNotNull(onGeannuleerd);
-
-        System.out.println("Annuleren");
-        // actie voor annuleren
     }
 
     public void setOnGeannuleerd(Runnable onGeannuleerd) {
@@ -39,7 +38,6 @@ public class VoorbladController {
     @FXML
     protected void handleVoorbladAanmakenButtonAction(ActionEvent event)
     {
-        System.out.println("Voorblad aanmaken");
         Tentamen tentamen = new Tentamen();
         tentamen.setNaam(naamField.getText());
         tentamen.setBeschrijving(beschrijvingArea.getText());

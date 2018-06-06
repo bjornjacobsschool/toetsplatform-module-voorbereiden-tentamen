@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="mainContainer" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.TentamenOverzichtController">
+<AnchorPane fx:id="mainContainer" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.han.toetsplatform.module.voorbereiden.controllers.overzicht.TentamenOverzichtController">
 <children>
     <SplitPane dividerPositions="0.29797979797979796" layoutX="153.0" layoutY="70.0" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -61,7 +61,7 @@
                     </GridPane>
                     <ButtonBar layoutX="54.0" layoutY="250.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
                         <buttons>
-                            <Button mnemonicParsing="false" onAction="#handleNewTentamen" text="New..." />
+                            <Button mnemonicParsing="false" onAction="#handleNewTentamen" text="Nieuw" />
                             <!--<Button mnemonicParsing="false" onAction="#handleEditTentamen" text="Edit..." />-->
                             <!--<Button mnemonicParsing="false" onAction="#handleDeleteTentamen" text="Delete" />-->
                             <Button mnemonicParsing="false" fx:id="klaarzettenButton" onAction="#handleKlaarzettenTentamen" text="Klaarzetten" />

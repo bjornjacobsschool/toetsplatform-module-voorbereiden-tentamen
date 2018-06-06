@@ -29,9 +29,7 @@ public class SamenstellenController {
         this.vraagToevoegen = vraagToevoegen;
     }
 
-    public void setOnAnnuleren(Runnable onAnnuleren) {
-        this.onAnnuleren = onAnnuleren;
-    }
+    public void setOnAnnuleren(Runnable onAnnuleren) { this.onAnnuleren = onAnnuleren; }
 
     @FXML
     protected void initialize() {
@@ -52,14 +50,10 @@ public class SamenstellenController {
     @FXML
     protected void handleAnnulerenButtonAction(ActionEvent event) {
         runIfNotNull(onAnnuleren);
-
-        // actie voor annuleren
     }
 
     @FXML
     public void handleTentamenOpslaanButtonAction(ActionEvent event) {
-
         runIfNotNull(onTentamenOpslaan);
-        // actie voor voorblad aanmaken
     }
 }
