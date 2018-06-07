@@ -1,27 +1,15 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen;
 
-import com.cathive.fx.guice.GuiceFXMLLoader;
-import com.google.gson.Gson;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
-import nl.han.toetsplatform.module.voorbereiden.models.VraagTest;
 import nl.han.toetsplatform.module.voorbereiden.util.EditingCell;
 
 import java.util.function.Consumer;

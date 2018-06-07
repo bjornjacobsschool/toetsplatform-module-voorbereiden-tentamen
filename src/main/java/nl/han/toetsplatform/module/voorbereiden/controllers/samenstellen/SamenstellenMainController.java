@@ -16,6 +16,7 @@ import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLF
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
+import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -122,6 +123,7 @@ public class SamenstellenMainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     /**
