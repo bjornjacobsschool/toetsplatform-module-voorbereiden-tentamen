@@ -1,4 +1,4 @@
-package nl.han.toetsplatform.module.voorbereiden.controllers;
+package nl.han.toetsplatform.module.voorbereiden.controllers.overzicht;
 
 import com.cathive.fx.guice.GuiceFXMLLoader;
 import javafx.beans.property.SimpleStringProperty;
@@ -6,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -35,16 +34,16 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TentamenOverzichtController {
+import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
 
+public class TentamenOverzichtController {
 
     private final static Logger LOGGER = Logger.getLogger(TentamenOverzichtController.class.getName());
 
-    private final TentamenFile _tentamenFile;
-    public AnchorPane mainContainer;
-    GuiceFXMLLoader fxmlLoader;
-    GuiceFXMLLoader.Result samenstellenView;
     private ITentamenKlaarzetten _tentamenKlaarzetten;
+    private TentamenFile _tentamenFile;
+    private GuiceFXMLLoader fxmlLoader;
+    public AnchorPane mainContainer;
 
     @FXML
     private TableView<Tentamen> tentamenTable;
@@ -78,6 +77,7 @@ public class TentamenOverzichtController {
      */
     private ObservableList<Tentamen> tentamenData = FXCollections.observableArrayList();
     private Stage klaarzettenPopupStage;
+    private Runnable onNieuwTentamen;
 
     @Inject
     public TentamenOverzichtController(GuiceFXMLLoader fxmlLoader, ITentamenKlaarzetten _tentamenKlaarzetten, TentamenFile tentamenFile) {
@@ -87,7 +87,7 @@ public class TentamenOverzichtController {
     }
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize()  {
         //Create the database
         try {
             storageDao.executeUpdate(sqlLoader.load("DDL"));
@@ -223,24 +223,20 @@ public class TentamenOverzichtController {
     }
 
     /**
-     * When clicked on "new..." Load the samenstellen view.
+     * When clicked on "nieuw" Load the samenstellen view.
      * @param actionEvent
      * @throws IOException
      */
     public void handleNewTentamen(ActionEvent actionEvent) throws IOException {
-        samenstellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.SamenstellenMain), null);
-        setAnchorFull(samenstellenView.getRoot());
-        mainContainer.getChildren().clear();
-        mainContainer.getChildren().add(samenstellenView.getRoot());
+        runIfNotNull(onNieuwTentamen);
     }
 
-
-    private void setAnchorFull(Node node){
-        AnchorPane.setBottomAnchor(node, 0D);
-        AnchorPane.setLeftAnchor(node, 0D);
-        AnchorPane.setRightAnchor(node, 0D);
-        AnchorPane.setTopAnchor(node, 0D);
+    /**
+     * Setter
+     * @param onNieuwTentamen
+     */
+    public void setOnNieuwTentamen(Runnable onNieuwTentamen) {
+        this.onNieuwTentamen = onNieuwTentamen;
     }
-
 }
 

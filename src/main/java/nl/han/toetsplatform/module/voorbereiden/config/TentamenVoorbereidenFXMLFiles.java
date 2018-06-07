@@ -6,5 +6,5 @@ public enum TentamenVoorbereidenFXMLFiles {
     OpstellenVraag,
     SamenstellenMain,
     TentamenOverzicht,
-    TentamenKlaarzetten,
+    VoorbereidenMain
 }

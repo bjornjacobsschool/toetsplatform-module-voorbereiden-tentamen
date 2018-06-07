@@ -6,13 +6,13 @@ import static org.testfx.matcher.control.LabeledMatchers.*;
 import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.ui.windows.SamenstellenTentamenWindowStub;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
+@Ignore
 public class SamenstellenTentamenUITest extends ApplicationTest {
-
-
 
     @Before
     public void setup() throws Exception {
