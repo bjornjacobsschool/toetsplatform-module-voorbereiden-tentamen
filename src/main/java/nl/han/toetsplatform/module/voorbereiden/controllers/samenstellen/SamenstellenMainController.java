@@ -16,6 +16,7 @@ import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLF
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
+import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class SamenstellenMainController {
     private Runnable onAnnulerenVoorblad;
 
     @Inject
-    public SamenstellenMainController(GuiceFXMLLoader fxmlLoader, ITentamenSamenstellen tentamenSamenstellen) {
+    public SamenstellenMainController(GuiceFXMLLoader fxmlLoader, ITentamenSamenstellen tentamenSamenstellen, TentamenFile tentamenFile) {
         this.fxmlLoader = fxmlLoader;
         this._tentamenSamenstellen = tentamenSamenstellen;
     }
@@ -120,8 +121,9 @@ public class SamenstellenMainController {
             klaarzettenPopupStage.showAndWait();
             return pluginTypeKiezenController.getSelectedPlugin();
         } catch (IOException e) {
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -153,7 +155,7 @@ public class SamenstellenMainController {
     /**
      * Actie voor het opslaan van een tentamen
      */
-    private void onTentamenAangemaakt() {
+    private void onTentamenAangemaakt(Tentamen tentamen) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
