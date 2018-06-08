@@ -10,7 +10,10 @@ import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +38,7 @@ public class SqlVragenDao implements VragenDao {
     @Override
     public void insertVraag(Vraag vraag) {
         Connection conn = _storageDao.getConnection();
-        vraag.setId(UUID.randomUUID().toString());
+        vraag.setId(UUID.randomUUID());
 
         try {
             int id = _versieDao.addVersie(new Versie());
@@ -43,13 +46,13 @@ public class SqlVragenDao implements VragenDao {
             vraag.setVersie(_versieDao.getVersie(id));
 
             PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("insert_vraag"));
-            ps.setString(1, vraag.getId());
+            ps.setString(1, vraag.getId().toString());
             ps.setString(2, vraag.getNaam());
-            ps.setString(3, vraag.getVraagType());
+            ps.setString(3, vraag.getVraagtype());
             ps.setString(4, vraag.getThema());
             ps.setInt(5, vraag.getPunten());
             ps.setInt(6, vraag.getVersie().getId());
-            ps.setString(7, vraag.getNakijkInstrucites());
+            ps.setString(7, vraag.getNakijkInstructies());
             ps.setString(8, vraag.getVraagData());
             ps.setString(9, vraag.getNakijkModel());
             System.out.println(ps.execute());
@@ -57,8 +60,6 @@ public class SqlVragenDao implements VragenDao {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Could not insert vraag: " + e.getMessage());
         }
-
-        System.out.println("Done insert vraag");
     }
 
     public void insertTentamenVraag(Tentamen tentamen, Vraag vraag){
@@ -66,13 +67,42 @@ public class SqlVragenDao implements VragenDao {
 
         try {
             PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("insert_tentamen_vraag"));
-            ps.setString(1, vraag.getId());
+            ps.setString(1, vraag.getId().toString());
             ps.setInt(2, vraag.getVersie().getId());
-            ps.setString(3, tentamen.getId());
+            ps.setString(3, tentamen.getId().toString());
             ps.setInt(4, tentamen.getVersie().getId());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Could not insert tentamen vraag: " + e.getMessage());
         }
+    }
+
+    public List<Vraag> getVragen(){
+        Connection conn = _storageDao.getConnection();
+        if(conn == null) return new ArrayList<>();
+
+        try
+        {
+            List<Vraag> vragen = new ArrayList<>();
+            System.out.println("Tentamen vraag");
+            PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("select_vraag"));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Vraag vraag = new Vraag();
+                vraag.setId(UUID.fromString(rs.getString("id")));
+                vraag.setNaam(rs.getString("naam"));
+                vraag.setThema(rs.getString("thema"));
+                vraag.setVraagData(rs.getString("vraag_type"));
+                vraag.setVraagData(rs.getString("vraag_data"));
+                vraag.setVersie(_versieDao.getVersie(rs.getInt("versie_id")));
+                vragen.add(vraag);
+            }
+
+            return vragen;
+        }
+        catch (SQLException e){
+
+        }
+        return new ArrayList<>();
     }
 }

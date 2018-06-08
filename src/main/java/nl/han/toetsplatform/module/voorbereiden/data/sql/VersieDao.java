@@ -33,9 +33,9 @@ public class VersieDao {
         Versie versie = new Versie();
         while (rs.next()){
 
-            versie.setDatum(rs.getString("datum"));
+            versie.setDatum(rs.getLong("datum"));
             versie.setOmschrijving(rs.getString("omschrijving"));
-            versie.setNumber(rs.getString("number"));
+            versie.setNummer(0);
             versie.setId(rs.getInt("id"));
         }
 
@@ -47,8 +47,8 @@ public class VersieDao {
 
         PreparedStatement psVersie = conn.prepareStatement(_sqlLoader.load("insert_versie"));
 
-        psVersie.setString(1, versie.getDatum());
-        psVersie.setString(2, versie.getNumber());
+        psVersie.setString(1,"");
+        psVersie.setString(2, "");
         psVersie.setString(3, versie.getOmschrijving());
         psVersie.execute();
 

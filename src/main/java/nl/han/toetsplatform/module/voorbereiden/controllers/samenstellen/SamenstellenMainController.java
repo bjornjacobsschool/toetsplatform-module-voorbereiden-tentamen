@@ -68,7 +68,7 @@ public class SamenstellenMainController {
 
             //Maak een nieuwe vraag en geef deze mee aan de controller.
             Vraag moduleVraag = new Vraag();
-            moduleVraag.setVraagType("nl.han.toetsapplicatie.plugin.GraphPlugin");
+            moduleVraag.setVraagtype(pluginType);
 
             vraagOpstelController.setVraag(moduleVraag);
             vraagOpstelController.setOnVraagSave(this::onVraagToevoegen);
@@ -91,10 +91,9 @@ public class SamenstellenMainController {
      * @param vraag
      */
     private void onVraagToevoegen(Vraag vraag) {
+        _tentamenSamenstellen.slaVraagOp(vraag);
         SamenstellenController samenstellenController = samenStellenView.getController();
-        samenstellenController.voegVraagToe(vraag);
-
-        tentamen.getVragen().add(vraag);
+        samenstellenController.setVragen(_tentamenSamenstellen.getVragen());
         showView(samenStellenView);
     }
 
@@ -138,6 +137,8 @@ public class SamenstellenMainController {
             showView(samenStellenView);
             SamenstellenController samenstellenController = samenStellenView.getController();
             samenstellenController.setOnTentamenOpslaan(this::onTentamenAangemaakt);
+            samenstellenController.setTentamen(tentamen);
+            samenstellenController.setVragen(_tentamenSamenstellen.getVragen());
             samenstellenController.setVraagToevoegen(this::vraagToevoegen);
             samenstellenController.setOnAnnuleren(this::onAnnulerenSamenstellen);
         } catch (IOException e) {

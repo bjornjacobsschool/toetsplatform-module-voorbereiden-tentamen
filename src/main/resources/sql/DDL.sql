@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS tentamen
 CREATE TABLE IF NOT EXISTS klaargezetten_tentamen(
   tentamen_id VARCHAR (100),
   tentamen_versie INT,
-  start_datum DATETIME,
-  eind_datum DATETIME,
+  start_datum INT(8),
+  eind_datum INT(8),
   sleutel VARCHAR (100),
 
   PRIMARY KEY (tentamen_id, tentamen_versie)

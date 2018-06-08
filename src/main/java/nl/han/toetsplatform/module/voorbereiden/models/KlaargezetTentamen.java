@@ -1,13 +1,18 @@
 package nl.han.toetsplatform.module.voorbereiden.models;
 
+import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
+
 import java.util.Date;
 
-public class KlaargezetTentamen {
+public class KlaargezetTentamen  {
 
     private Tentamen tentamen;
     private Date van;
     private Date tot;
     private String sleutel;
+
+    public KlaargezetTentamen() {
+    }
 
     public KlaargezetTentamen(Tentamen tentamen, Date van, Date tot, String sleutel) {
         this.tentamen = tentamen;

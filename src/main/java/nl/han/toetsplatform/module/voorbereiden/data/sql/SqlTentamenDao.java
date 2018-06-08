@@ -49,7 +49,7 @@ public class SqlTentamenDao implements TentamenDao {
         Connection conn = _storageDao.getConnection();
         if(!isDatabaseConnected(conn))  return;
 
-        tentamen.setId(UUID.randomUUID().toString());
+        tentamen.setId(UUID.randomUUID());
 
 
         PreparedStatement psVersie = null;
@@ -58,7 +58,7 @@ public class SqlTentamenDao implements TentamenDao {
             tentamen.setVersie(_versieDao.getVersie(versie_id));
 
             PreparedStatement psTentamen = conn.prepareStatement(_sqlLoader.load("insert_tentamen"));
-            psTentamen.setString(1, tentamen.getId());
+            psTentamen.setString(1, tentamen.getId().toString());
             psTentamen.setString(2, tentamen.getNaam());
             psTentamen.setString(3, tentamen.getBeschrijving());
             psTentamen.setString(4, tentamen.getToegestaandeHulpmiddelen());
@@ -69,9 +69,8 @@ public class SqlTentamenDao implements TentamenDao {
             LOGGER.log(Level.SEVERE, "Could not save data to database");
         }
 
-        for(Vraag vraag : tentamen.getVragen()){
+        for(Vraag vraag : tentamen.getVragenVraag()){
             System.out.println("Vraag osplaan");
-            _vragenDao.insertVraag(vraag);
             _vragenDao.insertTentamenVraag(tentamen, vraag);
         }
     }
@@ -87,7 +86,7 @@ public class SqlTentamenDao implements TentamenDao {
 
             while (rs.next()){
                 Tentamen tentamen = new Tentamen();
-                tentamen.setId(rs.getString("id"));
+                tentamen.setId(UUID.fromString(rs.getString("id")));
                 tentamen.setNaam(rs.getString("naam"));
                 tentamen.setBeschrijving(rs.getString("beschrijving"));
                 tentamen.setToegestaandeHulpmiddelen(rs.getString("toegestaandeHulpmiddelen"));
@@ -111,7 +110,7 @@ public class SqlTentamenDao implements TentamenDao {
 
         try{
             PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("insert_klaargezet_tentamen"));
-            ps.setString(1, tentamen.getTentamen().getId());
+            ps.setString(1, tentamen.getTentamen().getId().toString());
             ps.setInt(2, tentamen.getTentamen().getVersie().getId());
             ps.setDate(3,  new Date(tentamen.getVan().getTime()));
             ps.setDate(4,  new Date(tentamen.getTot().getTime()));

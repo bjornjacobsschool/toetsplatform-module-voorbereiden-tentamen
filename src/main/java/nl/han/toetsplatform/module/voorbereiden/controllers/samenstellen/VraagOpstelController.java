@@ -1,7 +1,9 @@
 package nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen;
 
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import nl.han.toetsplatform.module.shared.plugin.Plugin;
 import nl.han.toetsplatform.module.shared.plugin.PluginLoader;
@@ -15,8 +17,9 @@ import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNo
 
 public class VraagOpstelController {
 
-    public Label lblVraagName;
     public AnchorPane opstelContainer;
+    public TextField naamField;
+    public TextField themaField;
     private Plugin plugin;
 
     private Vraag vraag;
@@ -46,12 +49,20 @@ public class VraagOpstelController {
      */
     public void setVraag(Vraag vraag) {
         this.vraag = vraag;
+        naamField.setText(vraag.getNaam());
+        themaField.setText(vraag.getThema());
+
         try {
-            plugin = PluginLoader.getPlugin(vraag.getVraagType(), vraag.getVraagData());
+            plugin = PluginLoader.getPlugin(vraag.getVraagtype());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        opstelContainer.getChildren().add(plugin.getVraagCreatorView().getView());
+        Node view = plugin.getVraagCreatorView().getView();
+        AnchorPane.setTopAnchor(view, 0D);
+        AnchorPane.setBottomAnchor(view, 0D);
+        AnchorPane.setLeftAnchor(view, 0D);
+        AnchorPane.setRightAnchor(view, 0D);
+        opstelContainer.getChildren().add(view);
     }
 
     /**
@@ -68,8 +79,9 @@ public class VraagOpstelController {
      */
     public void btnOpslaanPressed(ActionEvent event){
         vraag.setVraagData(plugin.getVraagCreatorView().getQuestionData());
-        vraag.setId(UUID.randomUUID().toString());
-        vraag.setNaam("Test naam");
+        vraag.setId(UUID.randomUUID());
+        vraag.setNaam(naamField.getText());
+        vraag.setThema(themaField.getText());
 
         runIfNotNull(onVraagSave, vraag);
     }

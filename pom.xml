@@ -158,8 +158,15 @@
         <dependency>
             <groupId>com.github.bjornjacobsschool</groupId>
             <artifactId>toetsplatform-module-shared</artifactId>
-            <version>9ff166432f</version>
+            <version>develop-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.bjornjacobsschool</groupId>
+            <artifactId>toetsplatform-api-models</artifactId>
+            <version>master-SNAPSHOT</version>
+        </dependency>
+
 
     </dependencies>
 

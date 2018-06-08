@@ -7,11 +7,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import nl.han.toetsplatform.module.voorbereiden.data.VragenDao;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 import nl.han.toetsplatform.module.voorbereiden.util.EditingCell;
 
+import javax.inject.Inject;
+import java.util.List;
 import java.util.function.Consumer;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
@@ -20,12 +25,16 @@ public class SamenstellenController {
     public TableView<Vraag> vragenTable;
     public TableColumn<Vraag, String> vraagColumn;
     public TableColumn<Vraag, Integer> puntenColumn;
+    public VBox vragenVbox;
     private ObservableList<Vraag> tableData = FXCollections.observableArrayList();
     private Tentamen tentamen;
 
     private Runnable vraagToevoegen;
     private Consumer<Tentamen> onTentamenOpslaan;
     private Runnable onAnnuleren;
+
+    @Inject
+    private VragenDao _vragenDao;
 
     public void setOnTentamenOpslaan(Consumer<Tentamen> onTentamenOpslaan) {
         this.onTentamenOpslaan = onTentamenOpslaan;
@@ -51,7 +60,22 @@ public class SamenstellenController {
                             .setPunten(t.getNewValue());
 
                 });
+    }
 
+    public void setVragen(List<Vraag> vragen){
+        vragenVbox.getChildren().clear();
+
+        for(Vraag vraag : vragen){
+            HBox hBox = new HBox();
+            Label lblNaam = new Label(vraag.getNaam());
+            Button btnAdd = new Button("Add");
+            btnAdd.setOnAction( (e) -> {
+                voegVraagToe(vraag);
+            });
+            hBox.getChildren().add(lblNaam);
+            hBox.getChildren().add(btnAdd);
+            vragenVbox.getChildren().add(hBox);
+        }
     }
 
     @FXML
@@ -72,13 +96,13 @@ public class SamenstellenController {
 
     @FXML
     public void handleTentamenOpslaanButtonAction(ActionEvent event) {
-          int index = 0;
+        int index = 0;
         for(Vraag v: tableData){
             vragenTable.getItems().get(index).setPunten(puntenColumn.getCellData(index));
             index++;
         }
 
-        tentamen.setVragen(tableData);
+        tentamen.setVragenVraag(tableData);
         runIfNotNull(onTentamenOpslaan, tentamen);
         // actie voor voorblad aanmaken
     }

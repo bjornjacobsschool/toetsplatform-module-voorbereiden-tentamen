@@ -123,7 +123,7 @@ public class TentamenOverzichtController {
             hulpmiddelenLabel.setText(tentamen.getToegestaandeHulpmiddelen());
             vakLabel.setText(tentamen.getVak());
             tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
-            versieLabel.setText(tentamen.getVersie().getNumber());
+            versieLabel.setText(tentamen.getVersie().getNummer() + "");
 
         } else {
             // Tentamen is null, remove all the text.
@@ -164,6 +164,7 @@ public class TentamenOverzichtController {
      * Refresh the data for the tentamenTable.
      */
     public void refreshOverzicht() {
+        tentamenData.clear();
         tentamenData.addAll(this._tentamenKlaarzetten.getTentamens());
         tentamenTable.setItems(tentamenData);
     }
