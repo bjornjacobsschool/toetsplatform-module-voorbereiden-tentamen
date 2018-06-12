@@ -2,8 +2,12 @@ package nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 
 import java.util.function.Consumer;

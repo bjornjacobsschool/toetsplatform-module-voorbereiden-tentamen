@@ -30,16 +30,17 @@ public class VersieDao {
         preparedStatement.setInt(1, id);
         ResultSet rs = preparedStatement.executeQuery();
 
-        Versie versie = new Versie();
-        while (rs.next()){
 
+        while (rs.next()){
+            Versie versie = new Versie();
             versie.setDatum(rs.getLong("datum"));
             versie.setOmschrijving(rs.getString("omschrijving"));
             versie.setNummer(0);
             versie.setId(rs.getInt("id"));
+            return versie;
         }
 
-        return versie;
+       return null;
     }
 
     public int addVersie(Versie versie) throws SQLException {
@@ -47,8 +48,8 @@ public class VersieDao {
 
         PreparedStatement psVersie = conn.prepareStatement(_sqlLoader.load("insert_versie"));
 
-        psVersie.setString(1,"");
-        psVersie.setString(2, "");
+        psVersie.setLong(1,versie.getDatum());
+        psVersie.setInt(2, versie.getNummer());
         psVersie.setString(3, versie.getOmschrijving());
         psVersie.execute();
 
@@ -58,6 +59,7 @@ public class VersieDao {
         while (rsVersieId.next()) {
             versie_id = rsVersieId.getInt(1);
         }
+        rsVersieId.close();
 
         return versie_id;
     }

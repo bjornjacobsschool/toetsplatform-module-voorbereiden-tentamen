@@ -1,1 +1,1 @@
-INSERT INTO versie (datum, number, omschrijving) VALUES ( ?, ?, ?);
+INSERT INTO versie (datum, nummer, omschrijving) VALUES ( ?, ?, ?);

@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS versie
 (
   id           INTEGER PRIMARY KEY AUTOINCREMENT,
-  datum        VARCHAR(255),
-  number       VARCHAR(255),
+  datum        INT(8),
+  nummer       INT,
   omschrijving VARCHAR(255)
 );
 

@@ -6,7 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -15,14 +14,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.Main;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
-import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
-import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.KlaarzettenController;
-import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
+import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
@@ -66,10 +62,7 @@ public class TentamenOverzichtController {
     public Label tijdsduurLabel;
 
     @Inject
-    private StorageDao storageDao;
-
-    @Inject
-    private SqlLoader sqlLoader;
+    SqlDataBaseCreator dataBaseCreator;
 
 
     /**
@@ -87,13 +80,8 @@ public class TentamenOverzichtController {
     }
 
     @FXML
-    public void initialize()  {
-        //Create the database
-        try {
-            storageDao.executeUpdate(sqlLoader.load("DDL"));
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Could not create database: " + e.getMessage());
-        }
+    public void initialize() {
+        dataBaseCreator.create();
 
         refreshOverzicht();
 
@@ -139,14 +127,15 @@ public class TentamenOverzichtController {
     /**
      * Called when the user clicks the 'Klaarzetten' button. It first checks if an item is selected. If there isn't
      * it shows a warning alert dialog else it shows a new dialog for "het klaarzetten".
+     *
      * @param actionEvent
      */
     public void handleKlaarzettenTentamen(ActionEvent actionEvent) {
         Tentamen selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
 
-        if(selectedItem != null) {
+        if (selectedItem != null) {
             boolean okClicked = showTentamenKlaarzettenDialog(selectedItem);
-            if(okClicked) {
+            if (okClicked) {
                 showTentamenDetails(selectedItem);
             }
         } else {
@@ -171,6 +160,7 @@ public class TentamenOverzichtController {
 
     /**
      * Shows a popup window with the selected Tentamen object.
+     *
      * @param tentamen
      * @return
      */
@@ -205,6 +195,7 @@ public class TentamenOverzichtController {
     /**
      * Method that should save the given object to the database.
      * For now this will save a JSON file in the directory you choose.
+     *
      * @param klaargezetTentamen
      */
     public void onTentamenKlaargezet(KlaargezetTentamen klaargezetTentamen) {
@@ -225,6 +216,7 @@ public class TentamenOverzichtController {
 
     /**
      * When clicked on "nieuw" Load the samenstellen view.
+     *
      * @param actionEvent
      * @throws IOException
      */
@@ -234,6 +226,7 @@ public class TentamenOverzichtController {
 
     /**
      * Setter
+     *
      * @param onNieuwTentamen
      */
     public void setOnNieuwTentamen(Runnable onNieuwTentamen) {

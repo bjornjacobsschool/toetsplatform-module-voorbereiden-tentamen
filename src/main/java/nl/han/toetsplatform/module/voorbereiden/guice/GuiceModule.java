@@ -9,6 +9,7 @@ import nl.han.toetsplatform.module.voorbereiden.applicationlayer.TentamenSamenst
 import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
 import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.data.VragenDao;
+import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlTentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlVragenDao;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.VersieDao;
@@ -27,5 +28,6 @@ public class GuiceModule extends AbstractModule {
         bind(TentamenDao.class).to(SqlTentamenDao.class);
         bind(VersieDao.class);
         bind(VragenDao.class).to(SqlVragenDao.class);
+        bind(SqlDataBaseCreator.class);
     }
 }

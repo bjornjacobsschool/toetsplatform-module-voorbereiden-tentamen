@@ -17,12 +17,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class TentamenKlaarzetten implements ITentamenKlaarzetten{
     private IGatewayServiceAgent _gatewayServiceAgent;
     private TentamenDao _tentamenDao;
 
+    private final static Logger LOGGER = Logger.getLogger(TentamenKlaarzetten.class.getName());
 
     @Inject
     public TentamenKlaarzetten(IGatewayServiceAgent gatewayServiceAgent, TentamenDao tentamenDao)
@@ -45,7 +47,32 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten{
 
     @Override
     public List<Tentamen> getTentamens() {
-        return _tentamenDao.loadTentamens();
+        List<Tentamen> tentamen = _tentamenDao.loadTentamens();
+
+        Class<List<Tentamen>> clazz = (Class) List.class;
+       // try {
+//           List<Tentamen> serverTentamens = this._gatewayServiceAgent.get("/tentamens/samengesteld", clazz);
+
+
+           /* for(Vraag sT : serverTentamens){
+                boolean exists = false;
+                for(Vraag lV : localVragen){
+                    if(sV.getId().equals(lV.getId())){ //TODO: Check versie
+                        exists = true;
+                        break;
+                    }
+                }
+                if(!exists){
+                    LOGGER.log(Level.INFO, "Nieuwe vraag van server: " + sV.getId().toString());
+                    _vragenDao.insertVraag(sV);
+                }
+            }*/
+
+      //  } catch (GatewayCommunicationException e) {
+        //    LOGGER.log(Level.WARNING, "Could not connect to gateway: " + e.getMessage());
+       // }
+
+        return tentamen;
     }
 }
 

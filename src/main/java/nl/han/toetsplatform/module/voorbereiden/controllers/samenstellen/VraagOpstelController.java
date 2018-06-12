@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import nl.han.toetsplatform.module.shared.plugin.Plugin;
 import nl.han.toetsplatform.module.shared.plugin.PluginLoader;
+import nl.han.toetsplatform.module.voorbereiden.models.Versie;
 import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import java.util.UUID;
@@ -82,6 +83,14 @@ public class VraagOpstelController {
         vraag.setId(UUID.randomUUID());
         vraag.setNaam(naamField.getText());
         vraag.setThema(themaField.getText());
+        vraag.setNakijkModel("");
+        vraag.setPunten(5);
+        vraag.setNakijkInstructies("");
+        Versie versie = new Versie();
+        versie.setNummer(1);
+        versie.setOmschrijving("");
+        versie.setDatum(System.currentTimeMillis());
+        vraag.setVersieVersie(versie);
 
         runIfNotNull(onVraagSave, vraag);
     }

@@ -38,10 +38,10 @@ public class SqlVragenDao implements VragenDao {
     @Override
     public void insertVraag(Vraag vraag) {
         Connection conn = _storageDao.getConnection();
-        vraag.setId(UUID.randomUUID());
+
 
         try {
-            int id = _versieDao.addVersie(new Versie());
+            int id = _versieDao.addVersie(vraag.getVersieVersie());
             System.out.println(id);
             vraag.setVersie(_versieDao.getVersie(id));
 
@@ -51,7 +51,7 @@ public class SqlVragenDao implements VragenDao {
             ps.setString(3, vraag.getVraagtype());
             ps.setString(4, vraag.getThema());
             ps.setInt(5, vraag.getPunten());
-            ps.setInt(6, vraag.getVersie().getId());
+            ps.setInt(6, vraag.getVersieVersie().getId());
             ps.setString(7, vraag.getNakijkInstructies());
             ps.setString(8, vraag.getVraagData());
             ps.setString(9, vraag.getNakijkModel());
@@ -60,6 +60,7 @@ public class SqlVragenDao implements VragenDao {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Could not insert vraag: " + e.getMessage());
         }
+        _storageDao.closeConnection();
     }
 
     public void insertTentamenVraag(Tentamen tentamen, Vraag vraag){
@@ -68,7 +69,7 @@ public class SqlVragenDao implements VragenDao {
         try {
             PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("insert_tentamen_vraag"));
             ps.setString(1, vraag.getId().toString());
-            ps.setInt(2, vraag.getVersie().getId());
+            ps.setInt(2, vraag.getVersieVersie().getId());
             ps.setString(3, tentamen.getId().toString());
             ps.setInt(4, tentamen.getVersie().getId());
             ps.execute();
@@ -94,10 +95,11 @@ public class SqlVragenDao implements VragenDao {
                 vraag.setThema(rs.getString("thema"));
                 vraag.setVraagData(rs.getString("vraag_type"));
                 vraag.setVraagData(rs.getString("vraag_data"));
-                vraag.setVersie(_versieDao.getVersie(rs.getInt("versie_id")));
+                Versie versie = _versieDao.getVersie(rs.getInt("versie_id"));
+                //vraag.setVersieVersie(versie);
                 vragen.add(vraag);
             }
-
+            rs.close();
             return vragen;
         }
         catch (SQLException e){
