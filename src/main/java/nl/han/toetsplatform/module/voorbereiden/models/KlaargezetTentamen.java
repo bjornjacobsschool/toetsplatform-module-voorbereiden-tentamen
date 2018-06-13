@@ -5,7 +5,7 @@ import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 
 import java.util.Date;
 
-public class KlaargezetTentamen  {
+public class KlaargezetTentamen {
 
     private SamengesteldTentamenDto tentamen;
     private Date van;
@@ -14,6 +14,7 @@ public class KlaargezetTentamen  {
 
     public KlaargezetTentamen() {
     }
+
 
     public KlaargezetTentamen(SamengesteldTentamenDto tentamen, Date van, Date tot, String sleutel) {
         this.tentamen = tentamen;
