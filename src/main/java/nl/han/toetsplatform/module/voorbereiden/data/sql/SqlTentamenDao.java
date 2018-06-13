@@ -1,5 +1,7 @@
 package nl.han.toetsplatform.module.voorbereiden.data.sql;
 
+import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
 import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
@@ -105,21 +107,26 @@ public class SqlTentamenDao implements TentamenDao {
     }
 
     @Override
-    public void setTentamenKlaar(KlaargezetTentamen tentamen) {
-        Connection conn = _storageDao.getConnection();
-        if(!isDatabaseConnected(conn))return;
+    public void setTentamenKlaar(KlaargezetTentamenDto tentamen) {
 
-        try{
-            PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("insert_klaargezet_tentamen"));
-            ps.setString(1, tentamen.getTentamen().getId());
-            ps.setInt(2, tentamen.getTentamen().getVersie().getId());
-            ps.setDate(3,  new Date(tentamen.getVan().getTime()));
-            ps.setDate(4,  new Date(tentamen.getTot().getTime()));
-            ps.setString(5, tentamen.getSleutel());
-            ps.execute();
-        }
-        catch (SQLException e){
-            LOGGER.log(Level.SEVERE, "Could not insert klaargezet tentamen: " + e.getMessage());
-        }
     }
+
+//    @Override
+//    public void setTentamenKlaar(KlaargezetTentamen tentamen) {
+//        Connection conn = _storageDao.getConnection();
+//        if(!isDatabaseConnected(conn))return;
+//
+//        try{
+//            PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("insert_klaargezet_tentamen"));
+//            ps.setString(1, String.valueOf(tentamen.getTentamen().getId()));
+//            ps.setInt(2, tentamen.getTentamen().getVersie().getNummer());
+//            ps.setDate(3,  new Date(tentamen.getVan().getTime()));
+//            ps.setDate(4,  new Date(tentamen.getTot().getTime()));
+//            ps.setString(5, tentamen.getSleutel());
+//            ps.execute();
+//        }
+//        catch (SQLException e){
+//            LOGGER.log(Level.SEVERE, "Could not insert klaargezet tentamen: " + e.getMessage());
+//        }
+//    }
 }

@@ -1,5 +1,7 @@
 package nl.han.toetsplatform.module.voorbereiden.applicationlayer;
 
+import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
@@ -8,6 +10,8 @@ import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgen
 
 import javax.inject.Inject;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -36,6 +40,19 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
         // todo URL specificeren voor post request opslaan tentamen
         this._gatewayServiceAgent.post("", tentamen);
         System.out.println("Gecommuniceerd met gateway");
+    }
+
+    @Override
+    public List<SamengesteldTentamenDto> getSamengesteldeTentamens(){
+
+        ArrayList<SamengesteldTentamenDto> samengesteldTentamens = new ArrayList<>();
+        try {
+        samengesteldTentamens.addAll(Arrays.asList(this._gatewayServiceAgent.get("tentamens/samengesteld", SamengesteldTentamenDto[].class)));
+        } catch (GatewayCommunicationException e) {
+            e.printStackTrace();
+        }
+        return samengesteldTentamens;
+
     }
 
 }

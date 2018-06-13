@@ -157,6 +157,12 @@
 
         <dependency>
             <groupId>com.github.bjornjacobsschool</groupId>
+            <artifactId>toetsplatform-api-models</artifactId>
+            <version>7d46806feb</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.bjornjacobsschool</groupId>
             <artifactId>toetsplatform-module-shared</artifactId>
             <version>9ff166432f</version>
         </dependency>

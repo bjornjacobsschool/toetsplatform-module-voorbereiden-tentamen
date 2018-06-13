@@ -1,5 +1,6 @@
 package nl.han.toetsplatform.module.voorbereiden.data;
 
+import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 
@@ -11,5 +12,5 @@ public interface TentamenDao {
 
     List<Tentamen> loadTentamens();
 
-    void setTentamenKlaar(KlaargezetTentamen tentamen);
+    void setTentamenKlaar(KlaargezetTentamenDto tentamen);
 }

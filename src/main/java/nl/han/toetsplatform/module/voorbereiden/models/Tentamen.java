@@ -1,6 +1,7 @@
 package nl.han.toetsplatform.module.voorbereiden.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Tentamen {
@@ -14,6 +15,12 @@ public class Tentamen {
     private boolean isVerzegeld;
     private String hash;
     private List<Vraag> vragen;
+
+    //Klaargezet tentamen values
+    private Date van;
+    private Date tot;
+    private String sleutel;
+
 
     public Tentamen() {
         vragen = new ArrayList<>();
@@ -97,5 +104,29 @@ public class Tentamen {
 
     public void setVak(String vak) {
         this.vak = vak;
+    }
+
+    public Date getVan() {
+        return van;
+    }
+
+    public void setVan(Date van) {
+        this.van = van;
+    }
+
+    public Date getTot() {
+        return tot;
+    }
+
+    public void setTot(Date tot) {
+        this.tot = tot;
+    }
+
+    public String getSleutel() {
+        return sleutel;
+    }
+
+    public void setSleutel(String sleutel) {
+        this.sleutel = sleutel;
     }
 }
