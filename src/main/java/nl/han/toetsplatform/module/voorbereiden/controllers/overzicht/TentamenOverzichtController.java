@@ -52,15 +52,12 @@ public class TentamenOverzichtController {
     @FXML
     private TableView<SamengesteldTentamenDto> tentamenTable;
     @FXML
-    private TableView<SamengesteldTentamenDto> tentamenTable;
     private TableColumn<SamengesteldTentamenDto, String> nameColumn;
     @FXML
-    private TableColumn<SamengesteldTentamenDto, String> nameColumn;
     private TableColumn<SamengesteldTentamenDto, String> vakColumn;
 
     private ObservableList<KlaargezetTentamenDto> klaargezetteData = FXCollections.observableArrayList();
     @FXML
-    private TableColumn<SamengesteldTentamenDto, String> vakColumn;
     private TableView<KlaargezetTentamenDto> klaargezetteTentamenTable;
     @FXML
     private TableColumn<KlaargezetTentamenDto, String> klaargezetNaamColumn;
@@ -94,7 +91,7 @@ public class TentamenOverzichtController {
     /**
      * The data as an observable list of Persons.
      */
-    private ObservableList<SamengesteldTentamenDto> tentamenData = FXCollections.observableArrayList();
+   // private ObservableList<SamengesteldTentamenDto> tentamenData = FXCollections.observableArrayList();
     private Stage klaarzettenPopupStage;
     private Runnable onNieuwTentamen;
 
@@ -225,7 +222,7 @@ public class TentamenOverzichtController {
     public void refreshOverzicht() {
         tentamenData.clear();
         tentamenData.addAll(this._tentamenKlaarzetten.getTentamens());
-        tentamenData.addAll(this._tentamenSamengesteld.getSamengesteldeTentamens());
+        //tentamenData.addAll(this._tentamenSamengesteld.getSamengesteldeTentamens());
         tentamenTable.setItems(tentamenData);
 
         klaargezetteData.addAll(this._tentamenKlaarzetten.getKlaargezetteTentamens());
@@ -239,32 +236,6 @@ public class TentamenOverzichtController {
      * @return
      */
     public boolean showTentamenKlaarzettenDialog(SamengesteldTentamenDto tentamen) {
-    public boolean showTentamenKlaarzettenDialog(SamengesteldTentamenDto tentamen) {
-//        try {
-//            GuiceFXMLLoader.Result klaarzettenView = fxmlLoader.load(Main.class.getResource("/fxml/TentamenKlaarzetten.fxml"));
-//
-//            //create the dialog stage
-//            klaarzettenPopupStage = new Stage();
-//            klaarzettenPopupStage.setTitle("Tentamen klaarzetten");
-//            klaarzettenPopupStage.initModality(Modality.WINDOW_MODAL);
-//            klaarzettenPopupStage.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
-//            Scene scene = new Scene(klaarzettenView.getRoot(), 400, 300);
-//            klaarzettenPopupStage.setScene(scene);
-//
-//            // Set the tentamen into the controller.
-//            KlaarzettenController controller = klaarzettenView.getController();
-//            controller.setOnKlaarzettenTentamen(this::onTentamenKlaargezet);
-//            controller.setDialogStage(klaarzettenPopupStage);
-//            controller.setTentamen(tentamen);
-//
-//            // Show the dialog and wait until the user closes it
-//            klaarzettenPopupStage.showAndWait();
-//
-//            return controller.isOkClicked();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
         KlaargezetTentamenDto klaargezetTentamenDto = new KlaargezetTentamenDto();
         klaargezetTentamenDto.setNaam(tentamen.getNaam());
         klaargezetTentamenDto.setBeschrijving(tentamen.getBeschrijving());

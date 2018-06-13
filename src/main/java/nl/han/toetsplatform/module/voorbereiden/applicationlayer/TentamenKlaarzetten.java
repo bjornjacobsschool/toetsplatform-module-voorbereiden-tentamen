@@ -21,30 +21,21 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TentamenKlaarzetten implements ITentamenKlaarzetten{
+public class TentamenKlaarzetten implements ITentamenKlaarzetten {
     private IGatewayServiceAgent _gatewayServiceAgent;
     private TentamenDao _tentamenDao;
 
     private final static Logger LOGGER = Logger.getLogger(TentamenKlaarzetten.class.getName());
 
     @Inject
-    public TentamenKlaarzetten(IGatewayServiceAgent gatewayServiceAgent, TentamenDao tentamenDao)
-    {
+    public TentamenKlaarzetten(IGatewayServiceAgent gatewayServiceAgent, TentamenDao tentamenDao) {
         this._gatewayServiceAgent = gatewayServiceAgent;
         this._tentamenDao = tentamenDao;
     }
 
     public void opslaan(KlaargezetTentamenDto tentamen) throws GatewayCommunicationException, SQLException {
-
-        _tentamenDao.setTentamenKlaar(tentamen);
-
-        // tentamen versturen naar gateway
-        // todo URL specificeren voor post request opslaan tentamen
+                _tentamenDao.setTentamenKlaar(tentamen);
         this._gatewayServiceAgent.post("/tentamens/samengesteld", tentamen);
-
-        this._gatewayServiceAgent.post("/tentamens/klaargezet", tentamen);
-        System.out.println("Gecommuniceerd met gateway");
-
     }
 
     @Override
@@ -52,17 +43,17 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten{
         List<SamengesteldTentamenDto> tentamen = _tentamenDao.loadTentamens();
 
         try {
-           List<SamengesteldTentamenDto> serverTentamens = Arrays.asList(this._gatewayServiceAgent.get("/tentamens/samengesteld", SamengesteldTentamenDto[].class));
+            List<SamengesteldTentamenDto> serverTentamens = Arrays.asList(this._gatewayServiceAgent.get("/tentamens/samengesteld", SamengesteldTentamenDto[].class));
 
-            for(SamengesteldTentamenDto sT : serverTentamens){
+            for (SamengesteldTentamenDto sT : serverTentamens) {
                 boolean exists = false;
-                for(SamengesteldTentamenDto lT : tentamen){
-                    if(sT.getId().equals(lT.getId())){ //TODO: Check versie
+                for (SamengesteldTentamenDto lT : tentamen) {
+                    if (sT.getId().equals(lT.getId())) { //TODO: Check versie
                         exists = true;
                         break;
                     }
                 }
-                if(!exists){
+                if (!exists) {
                     LOGGER.log(Level.INFO, "Nieuwe tentamen van server: " + sT.getId().toString());
                     _tentamenDao.saveTentamen(sT);
                 }
@@ -73,10 +64,11 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten{
         }
 
         return _tentamenDao.loadTentamens();
-    public List<KlaargezetTentamenDto> getKlaargezetteTentamens() {
-//   return _tentamenDao.loadTentamens();
+    }
 
-            ArrayList<KlaargezetTentamenDto> klaargezetteTentamens = new ArrayList<>();
+    public List<KlaargezetTentamenDto> getKlaargezetteTentamens() {
+
+        ArrayList<KlaargezetTentamenDto> klaargezetteTentamens = new ArrayList<>();
 
         try {
             klaargezetteTentamens.addAll(Arrays.asList(this._gatewayServiceAgent.get("tentamens/klaargezet", KlaargezetTentamenDto[].class)));

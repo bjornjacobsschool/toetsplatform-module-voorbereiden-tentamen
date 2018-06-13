@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.VersieDto;
+import sun.rmi.transport.tcp.TCPEndpoint;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -48,6 +49,7 @@ public class VoorbladController {
         versie.setOmschrijving("Eerste versie.");
         tentamen.setVersie(versie);
         tentamen.setTijdsduur("2 uur");
+        tentamen.setNakijkmodel("");
         tentamen.setNaam(naamField.getText());
         tentamen.setBeschrijving(beschrijvingArea.getText());
         tentamen.setVak(vakField.getText());
