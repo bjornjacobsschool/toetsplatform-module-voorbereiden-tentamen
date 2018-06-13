@@ -1,1 +1,1 @@
-SELECT id, datum, number, omschrijving FROM versie where id = ?;
+SELECT id, datum, nummer, omschrijving FROM versie where id = ?;

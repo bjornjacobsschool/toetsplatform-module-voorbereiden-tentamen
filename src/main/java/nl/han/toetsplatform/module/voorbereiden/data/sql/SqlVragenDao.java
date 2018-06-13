@@ -39,11 +39,9 @@ public class SqlVragenDao implements VragenDao {
     public void insertVraag(Vraag vraag) {
         Connection conn = _storageDao.getConnection();
 
-
         try {
             int id = _versieDao.addVersie(vraag.getVersieVersie());
-            System.out.println(id);
-            vraag.setVersie(_versieDao.getVersie(id));
+            vraag.setVersieVersie(_versieDao.getVersie(id));
 
             PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("insert_vraag"));
             ps.setString(1, vraag.getId().toString());
@@ -71,7 +69,7 @@ public class SqlVragenDao implements VragenDao {
             ps.setString(1, vraag.getId().toString());
             ps.setInt(2, vraag.getVersieVersie().getId());
             ps.setString(3, tentamen.getId().toString());
-            ps.setInt(4, tentamen.getVersie().getId());
+            ps.setInt(4, tentamen.getVersieVersie().getId());
             ps.execute();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Could not insert tentamen vraag: " + e.getMessage());
@@ -96,7 +94,7 @@ public class SqlVragenDao implements VragenDao {
                 vraag.setVraagData(rs.getString("vraag_type"));
                 vraag.setVraagData(rs.getString("vraag_data"));
                 Versie versie = _versieDao.getVersie(rs.getInt("versie_id"));
-                //vraag.setVersieVersie(versie);
+                vraag.setVersieVersie(versie);
                 vragen.add(vraag);
             }
             rs.close();

@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS tentamen
   versie_id                INT
   tijdsduur                INT,
   primary key (id, versie_id),
-  FOREIGN KEY (versie_id) REFERENCES versie (id)
+  FOREIGN KEY (versie_id) REFERENCES versieVersie (id)
 );
 
 CREATE TABLE IF NOT EXISTS klaargezetten_tentamen(
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS vraag
   vraag_data        VARCHAR(10000),
   nakijk_model      VARCHAR(10000),
   primary key (id, versie_id),
-  FOREIGN KEY (versie_id) REFERENCES versie (id)
+  FOREIGN KEY (versie_id) REFERENCES versieVersie (id)
 );
 
 cREATE TABLE IF NOT EXISTS vraag_van_tentamen

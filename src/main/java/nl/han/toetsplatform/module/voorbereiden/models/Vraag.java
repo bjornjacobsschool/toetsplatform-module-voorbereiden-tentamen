@@ -17,8 +17,9 @@ public class Vraag extends VragenbankVraagDto {
 
 
     public void setVersieVersie(Versie versie) {
-        this.versieVersie =versie;
+        this.versieVersie = versie;
         this.setVersie(getVersie());
+        this.versieVersie.setId(versie.getId());
     }
 
     @Override
