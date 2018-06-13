@@ -49,7 +49,6 @@ public class VoorbladController {
         versie.setOmschrijving("Eerste versie.");
         tentamen.setVersie(versie);
         tentamen.setTijdsduur("2 uur");
-        tentamen.setNakijkmodel("");
         tentamen.setNaam(naamField.getText());
         tentamen.setBeschrijving(beschrijvingArea.getText());
         tentamen.setVak(vakField.getText());

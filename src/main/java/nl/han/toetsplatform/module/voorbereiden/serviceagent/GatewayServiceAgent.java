@@ -41,8 +41,10 @@ public class GatewayServiceAgent implements IGatewayServiceAgent{
         // request to server
         WebResource webResource = client.resource(this.baseUrl).path(resourceUrl);
 
+        String json = new Gson().toJson(entity);
+
         // reading response from server
-        ClientResponse response = webResource.post(ClientResponse.class, entity);
+        ClientResponse response = webResource.post(ClientResponse.class, json);
 
         if (response.getStatus() != 200) {
             LOGGER.log(Level.INFO, "Error connecting to gateway POST: " + response.getStatusInfo());
