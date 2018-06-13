@@ -2,13 +2,12 @@ package nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import nl.han.toetsapplicatie.apimodels.dto.VersieDto;
+import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.shared.plugin.Plugin;
 import nl.han.toetsplatform.module.shared.plugin.PluginLoader;
-import nl.han.toetsplatform.module.voorbereiden.models.Versie;
-import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -23,16 +22,16 @@ public class VraagOpstelController {
     public TextField themaField;
     private Plugin plugin;
 
-    private Vraag vraag;
+    private VragenbankVraagDto vraag;
 
     private Runnable onAnnuleer;
-    private Consumer<Vraag> onVraagSave;
+    private Consumer<VragenbankVraagDto> onVraagSave;
 
     /**
      * Setter
      * @param onVraagSave
      */
-    public void setOnVraagSave(Consumer<Vraag> onVraagSave) {
+    public void setOnVraagSave(Consumer<VragenbankVraagDto> onVraagSave) {
         this.onVraagSave = onVraagSave;
     }
 
@@ -48,7 +47,7 @@ public class VraagOpstelController {
      * Methode die de vraag set en de bijbehorende plugin ophaalt.
      * @param vraag
      */
-    public void setVraag(Vraag vraag) {
+    public void setVraag(VragenbankVraagDto vraag) {
         this.vraag = vraag;
         naamField.setText(vraag.getNaam());
         themaField.setText(vraag.getThema());
@@ -86,11 +85,11 @@ public class VraagOpstelController {
         vraag.setNakijkModel("");
         vraag.setPunten(5);
         vraag.setNakijkInstructies("");
-        Versie versie = new Versie();
+        VersieDto versie = new VersieDto();
         versie.setNummer(1);
         versie.setOmschrijving("");
         versie.setDatum(System.currentTimeMillis());
-        vraag.setVersieVersie(versie);
+        vraag.setVersie(versie);
 
         runIfNotNull(onVraagSave, vraag);
     }

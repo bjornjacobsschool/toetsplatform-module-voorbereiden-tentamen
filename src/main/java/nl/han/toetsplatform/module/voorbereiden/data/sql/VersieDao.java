@@ -1,8 +1,9 @@
-package nl.han.toetsplatform.module.voorbereiden.data.sql;
+/*package nl.han.toetsplatform.module.voorbereiden.data.sql;
 
+import nl.han.toetsapplicatie.apimodels.dto.VersieDto;
+import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
-import nl.han.toetsplatform.module.voorbereiden.models.Versie;
 
 import javax.inject.Inject;
 import java.sql.*;
@@ -10,7 +11,8 @@ import java.sql.*;
 
 /**
  * This class should only be used from other classes in this package
- */
+ *//*
+@Deprecated
 public class VersieDao {
 
     private StorageDao _storageDao;
@@ -23,7 +25,7 @@ public class VersieDao {
         this._sqlLoader = sqlLoader;
     }
 
-    public Versie getVersie(int id) throws SQLException {
+    public VragenbankVraagDto getVersie(int id) throws SQLException {
         Connection conn = _storageDao.getConnection();
 
         PreparedStatement preparedStatement = conn.prepareStatement(_sqlLoader.load("select_versie"));
@@ -32,8 +34,8 @@ public class VersieDao {
 
 
         while (rs.next()){
-            Versie versie = new Versie();
-            versie.setDatum(rs.getLong("datum"));
+            VersieDto versie = new VersieDto();
+            versie(rs.getLong("datum"));
             versie.setOmschrijving(rs.getString("omschrijving"));
             versie.setNummer(rs.getInt("nummer"));
             versie.setId(rs.getInt("id"));
@@ -64,3 +66,4 @@ public class VersieDao {
         return versie_id;
     }
 }
+*/

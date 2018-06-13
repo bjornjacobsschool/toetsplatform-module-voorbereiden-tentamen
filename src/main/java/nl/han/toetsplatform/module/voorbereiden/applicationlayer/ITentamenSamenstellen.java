@@ -1,16 +1,16 @@
 package nl.han.toetsplatform.module.voorbereiden.applicationlayer;
 
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface ITentamenSamenstellen {
-    void opslaan(Tentamen tentamen) throws GatewayCommunicationException, SQLException;
+    void opslaan(SamengesteldTentamenDto tentamen) throws GatewayCommunicationException, SQLException;
 
-    void slaVraagOp(Vraag vraag);
+    void slaVraagOp(VragenbankVraagDto vraag);
 
-    List<Vraag> getVragen();
+    List<VragenbankVraagDto> getVragen();
 }

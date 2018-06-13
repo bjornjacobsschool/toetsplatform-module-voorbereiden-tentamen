@@ -6,9 +6,9 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
+import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 
-public class EditingCell extends TableCell<Vraag, Integer> {
+public class EditingCell extends TableCell<VragenbankVraagDto, Integer> {
     private TextField textField;
 
     public EditingCell() {}

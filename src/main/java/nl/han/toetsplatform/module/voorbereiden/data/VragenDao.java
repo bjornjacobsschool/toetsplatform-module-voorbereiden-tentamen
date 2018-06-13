@@ -1,15 +1,15 @@
 package nl.han.toetsplatform.module.voorbereiden.data;
 
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 
 import java.util.List;
 
 public interface VragenDao {
 
-    void insertVraag(Vraag vraag);
+    void insertVraag(VragenbankVraagDto vraag);
 
-    void insertTentamenVraag(Tentamen tentamen, Vraag vraag);
+    void insertTentamenVraag(SamengesteldTentamenDto tentamen, VragenbankVraagDto vraag);
 
-    List<Vraag> getVragen();
+    List<VragenbankVraagDto> getVragen();
 }

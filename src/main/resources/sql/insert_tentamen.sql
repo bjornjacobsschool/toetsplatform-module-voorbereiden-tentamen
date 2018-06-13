@@ -1,1 +1,1 @@
-INSERT INTO tentamen (id, naam, beschrijving, toegestaandeHulpmiddelen, vak, versie_id) values (?, ?, ?, ?, ?, ?);
+INSERT INTO tentamen (id, naam, beschrijving, toegestaandeHulpmiddelen, vak, versie_nummer, versie_datum, versie_omschrijving) values (?, ?, ?, ?, ?, ?, ?, ?);

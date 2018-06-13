@@ -2,14 +2,12 @@ package nl.han.toetsplatform.module.voorbereiden.controllers.samenstellen;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.VersieDto;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
@@ -20,14 +18,14 @@ public class VoorbladController {
     public TextField vakField;
     public TextArea beschrijvingArea;
     public TextArea toegestaandeHulpmiddelenArea;
-    private Consumer<Tentamen> onVoorbladAanmaken;
+    private Consumer<SamengesteldTentamenDto> onVoorbladAanmaken;
     private Runnable onGeannuleerd;
 
     /**
      * Setter
      * @param onVoorbladAanmaken
      */
-    public void setOnVoorbladAanmaken(Consumer<Tentamen> onVoorbladAanmaken) { this.onVoorbladAanmaken = onVoorbladAanmaken; }
+    public void setOnVoorbladAanmaken(Consumer<SamengesteldTentamenDto> onVoorbladAanmaken) { this.onVoorbladAanmaken = onVoorbladAanmaken; }
 
     @FXML
     protected void handleAnnulerenButtonAction(ActionEvent event)
@@ -42,7 +40,14 @@ public class VoorbladController {
     @FXML
     protected void handleVoorbladAanmakenButtonAction(ActionEvent event)
     {
-        Tentamen tentamen = new Tentamen();
+        SamengesteldTentamenDto tentamen = new SamengesteldTentamenDto();
+        tentamen.setId(UUID.randomUUID());
+        VersieDto versie = new VersieDto();
+        versie.setNummer(1);
+        versie.setDatum(System.currentTimeMillis());
+        versie.setOmschrijving("Eerste versie.");
+        tentamen.setVersie(versie);
+        tentamen.setTijdsduur("2 uur");
         tentamen.setNaam(naamField.getText());
         tentamen.setBeschrijving(beschrijvingArea.getText());
         tentamen.setVak(vakField.getText());

@@ -1,12 +1,13 @@
 package nl.han.toetsplatform.module.voorbereiden.models;
 
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 
 import java.util.Date;
 
 public class KlaargezetTentamen  {
 
-    private Tentamen tentamen;
+    private SamengesteldTentamenDto tentamen;
     private Date van;
     private Date tot;
     private String sleutel;
@@ -14,18 +15,18 @@ public class KlaargezetTentamen  {
     public KlaargezetTentamen() {
     }
 
-    public KlaargezetTentamen(Tentamen tentamen, Date van, Date tot, String sleutel) {
+    public KlaargezetTentamen(SamengesteldTentamenDto tentamen, Date van, Date tot, String sleutel) {
         this.tentamen = tentamen;
         this.van = van;
         this.tot = tot;
         this.sleutel = sleutel;
     }
 
-    public Tentamen getTentamen() {
+    public SamengesteldTentamenDto getTentamen() {
         return tentamen;
     }
 
-    public void setTentamen(Tentamen tentamen) {
+    public void setTentamen(SamengesteldTentamenDto tentamen) {
         this.tentamen = tentamen;
     }
 

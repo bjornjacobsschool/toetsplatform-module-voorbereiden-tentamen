@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.Main;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
@@ -21,7 +22,6 @@ import nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.Klaarzet
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 
 import javax.inject.Inject;
@@ -42,11 +42,11 @@ public class TentamenOverzichtController {
     public AnchorPane mainContainer;
 
     @FXML
-    private TableView<Tentamen> tentamenTable;
+    private TableView<SamengesteldTentamenDto> tentamenTable;
     @FXML
-    private TableColumn<Tentamen, String> nameColumn;
+    private TableColumn<SamengesteldTentamenDto, String> nameColumn;
     @FXML
-    private TableColumn<Tentamen, String> vakColumn;
+    private TableColumn<SamengesteldTentamenDto, String> vakColumn;
 
     @FXML
     private Label naamLabel;
@@ -68,7 +68,7 @@ public class TentamenOverzichtController {
     /**
      * The data as an observable list of Persons.
      */
-    private ObservableList<Tentamen> tentamenData = FXCollections.observableArrayList();
+    private ObservableList<SamengesteldTentamenDto> tentamenData = FXCollections.observableArrayList();
     private Stage klaarzettenPopupStage;
     private Runnable onNieuwTentamen;
 
@@ -103,7 +103,7 @@ public class TentamenOverzichtController {
      *
      * @param tentamen the tentamen or null
      */
-    private void showTentamenDetails(Tentamen tentamen) {
+    private void showTentamenDetails(SamengesteldTentamenDto tentamen) {
         if (tentamen != null) {
             // Fill the labels with info from the tentamen object.
             naamLabel.setText(tentamen.getNaam());
@@ -131,7 +131,7 @@ public class TentamenOverzichtController {
      * @param actionEvent
      */
     public void handleKlaarzettenTentamen(ActionEvent actionEvent) {
-        Tentamen selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
+        SamengesteldTentamenDto selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
 
         if (selectedItem != null) {
             boolean okClicked = showTentamenKlaarzettenDialog(selectedItem);
@@ -164,7 +164,7 @@ public class TentamenOverzichtController {
      * @param tentamen
      * @return
      */
-    public boolean showTentamenKlaarzettenDialog(Tentamen tentamen) {
+    public boolean showTentamenKlaarzettenDialog(SamengesteldTentamenDto tentamen) {
         try {
             GuiceFXMLLoader.Result klaarzettenView = fxmlLoader.load(Main.class.getResource("/fxml/TentamenKlaarzetten.fxml"));
 

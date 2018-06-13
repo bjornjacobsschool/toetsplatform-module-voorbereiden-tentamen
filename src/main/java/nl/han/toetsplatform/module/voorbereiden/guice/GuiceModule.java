@@ -12,7 +12,6 @@ import nl.han.toetsplatform.module.voorbereiden.data.VragenDao;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlTentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlVragenDao;
-import nl.han.toetsplatform.module.voorbereiden.data.sql.VersieDao;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.GatewayServiceAgent;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgent;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
@@ -26,7 +25,6 @@ public class GuiceModule extends AbstractModule {
         bind(ITentamenKlaarzetten.class).to(TentamenKlaarzetten.class);
         bind(TentamenFile.class);
         bind(TentamenDao.class).to(SqlTentamenDao.class);
-        bind(VersieDao.class);
         bind(VragenDao.class).to(SqlVragenDao.class);
         bind(SqlDataBaseCreator.class);
     }

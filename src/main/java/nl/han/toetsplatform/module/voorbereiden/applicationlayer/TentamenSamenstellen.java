@@ -1,21 +1,17 @@
 package nl.han.toetsplatform.module.voorbereiden.applicationlayer;
 
-import com.google.gson.reflect.TypeToken;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.data.VragenDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgent;
 
 import javax.inject.Inject;
 
 
-import java.lang.reflect.Type;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -42,7 +38,7 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
         this._vragenDao = vragenDao;
     }
 
-    public void opslaan(Tentamen tentamen) throws GatewayCommunicationException, SQLException {
+    public void opslaan(SamengesteldTentamenDto tentamen) throws GatewayCommunicationException, SQLException {
         // tentamen opslaan in lokale database
         _tentamenDao.saveTentamen(tentamen);
 
@@ -53,7 +49,7 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
     }
 
     @Override
-    public void slaVraagOp(Vraag vraag) {
+    public void slaVraagOp(VragenbankVraagDto vraag) {
         _vragenDao.insertVraag(vraag);
 
         try {
@@ -64,19 +60,19 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
 
     }
 
-    public List<Vraag> getVragen(){
-        List<Vraag> localVragen = _vragenDao.getVragen();
+    public List<VragenbankVraagDto> getVragen(){
+        List<VragenbankVraagDto> localVragen = _vragenDao.getVragen();
 
 
        try {
-            List<Vraag> serverVragen =  Arrays.asList(this._gatewayServiceAgent.get("vragenbank", Vraag[].class));
+            List<VragenbankVraagDto> serverVragen =  Arrays.asList(this._gatewayServiceAgent.get("vragenbank", VragenbankVraagDto[].class));
 
-            for(Vraag sV : serverVragen){
+            for(VragenbankVraagDto sV : serverVragen){
                 String u = sV.getId().toString();
                 UUID u2 =  UUID.fromString(u);
 
                 boolean exists = false;
-                for(Vraag lV : localVragen){
+                for(VragenbankVraagDto lV : localVragen){
                     System.out.println(sV.getId().toString() + " - " + lV.getId().toString());
                     if(sV.getId().toString().equals(lV.getId().toString())){
                         exists = true;
