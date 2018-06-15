@@ -1,1 +1,1 @@
-INSERT INTO vraag_van_tentamen (vraag_id, vraag_versie_nummer, tentamen_id, tentamen_versie_nummer) VALUES (?,?,?,?);
+INSERT INTO voorbereiden_vraag_van_tentamen (vraag_id, vraag_versie_nummer, tentamen_id, tentamen_versie_nummer) VALUES (?,?,?,?);

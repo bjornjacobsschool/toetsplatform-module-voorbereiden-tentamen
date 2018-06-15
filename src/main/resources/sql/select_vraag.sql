@@ -1,1 +1,1 @@
-SELECT * FROM vraag
+SELECT * FROM voorbereiden_vraag

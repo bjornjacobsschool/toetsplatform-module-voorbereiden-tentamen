@@ -6,7 +6,7 @@
   omschrijving VARCHAR(255)
 );*/
 
-CREATE TABLE IF NOT EXISTS tentamen
+CREATE TABLE IF NOT EXISTS voorbereiden_tentamen
 (
   id                       VARCHAR(100),
   naam                     VARCHAR(255),
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS tentamen
   primary key (id, versie_nummer)
 );
 
-CREATE TABLE IF NOT EXISTS klaargezetten_tentamen(
+CREATE TABLE IF NOT EXISTS voorbereiden_klaargezetten_tentamen(
   tentamen_id VARCHAR (100),
   tentamen_versie INT,
   start_datum INT(8),
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS klaargezetten_tentamen(
   PRIMARY KEY (tentamen_id, tentamen_versie)
 );
 
-CREATE TABLE IF NOT EXISTS vraag
+CREATE TABLE IF NOT EXISTS voorbereiden_vraag
 (
   id                VARCHAR(100),
   naam              VARCHAR(255),
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS vraag
   primary key (id, versie_nummer)
 );
 
-cREATE TABLE IF NOT EXISTS vraag_van_tentamen
+cREATE TABLE IF NOT EXISTS voorbereiden_vraag_van_tentamen
 (
   vraag_id        VARCHAR (100),
   vraag_versie_nummer    INT,
