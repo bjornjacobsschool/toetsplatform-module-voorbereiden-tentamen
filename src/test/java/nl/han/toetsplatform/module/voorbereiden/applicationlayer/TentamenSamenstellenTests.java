@@ -41,7 +41,7 @@ public class TentamenSamenstellenTests {
     public void opslaanShouldCallGetOnGatewayServiceAgentWithCorrectParameter() throws GatewayCommunicationException, SQLException {
         _sut.opslaan(_tentamen);
         verify(_gatewayServiceAgentMock, times(1))
-                .post("", _tentamen);
+                .post("tentamens/samengesteld", _tentamen);
     }
 
     @Test
