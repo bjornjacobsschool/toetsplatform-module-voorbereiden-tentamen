@@ -8,6 +8,7 @@ import nl.han.toetsapplicatie.apimodels.dto.VersieDto;
 import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.shared.plugin.Plugin;
 import nl.han.toetsplatform.module.shared.plugin.PluginLoader;
+import nl.han.toetsplatform.module.shared.plugin.VraagCreatorView;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -26,6 +27,8 @@ public class VraagOpstelController {
 
     private Runnable onAnnuleer;
     private Consumer<VragenbankVraagDto> onVraagSave;
+
+    VraagCreatorView vraagCreatorView;
 
     /**
      * Setter
@@ -57,7 +60,8 @@ public class VraagOpstelController {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        Node view = plugin.getVraagCreatorView().getView();
+        vraagCreatorView = plugin.getVraagCreatorView();
+        Node view= vraagCreatorView.getView();
         AnchorPane.setTopAnchor(view, 0D);
         AnchorPane.setBottomAnchor(view, 0D);
         AnchorPane.setLeftAnchor(view, 0D);
@@ -78,7 +82,7 @@ public class VraagOpstelController {
      * @param event
      */
     public void btnOpslaanPressed(ActionEvent event){
-        vraag.setVraagData(plugin.getVraagCreatorView().getQuestionData());
+        vraag.setVraagData(vraagCreatorView.getQuestionData());
         vraag.setId(UUID.randomUUID());
         vraag.setNaam(naamField.getText());
         vraag.setThema(themaField.getText());

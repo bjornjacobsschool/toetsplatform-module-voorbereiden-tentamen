@@ -22,7 +22,6 @@ public class Main extends GuiceApplication {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
         Parent root = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.VoorbereidenMain), null).getRoot();
         primaryStage.setTitle("Docent Applicatie");
         primaryStage.setScene(new Scene(root, 1280, 720));
