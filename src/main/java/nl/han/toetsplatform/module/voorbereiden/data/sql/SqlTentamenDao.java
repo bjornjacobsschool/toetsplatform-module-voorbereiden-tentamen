@@ -88,12 +88,14 @@ public class SqlTentamenDao implements TentamenDao {
                 tentamen.setBeschrijving(rs.getString("beschrijving"));
                 tentamen.setToegestaandeHulpmiddelen(rs.getString("toegestaandeHulpmiddelen"));
                 tentamen.setVak(rs.getString("vak"));
+                tentamen.setTijdsduur("90 minuten");
                 VersieDto versie = new VersieDto();
                 versie.setNummer(rs.getInt("versie_nummer"));
                 versie.setDatum(rs.getLong("versie_datum"));
                 versie.setOmschrijving(rs.getString("versie_omschrijving"));
                 tentamen.setVersie(versie);
-
+                tentamen.setVragen(new ArrayList<>());
+                LOGGER.log(Level.WARNING, "Vragen worden nog niet ingeladen in een samegesteld tentamen!");
                 tentamens.add(tentamen);
             }
             rs.close();

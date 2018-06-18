@@ -6,34 +6,23 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
-import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
-import nl.han.toetsplatform.module.shared.storage.StorageDao;
-import nl.han.toetsplatform.module.voorbereiden.Main;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
-import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenSamenstellen;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
-import nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.KlaarzettenController;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
-import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -201,10 +190,8 @@ public class TentamenOverzichtController {
         SamengesteldTentamenDto selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
 
         if (selectedItem != null) {
-            boolean okClicked = showTentamenKlaarzettenDialog(selectedItem);
-            if (okClicked) {
-                showTentamenDetails(selectedItem);
-            }
+             zetTentamenKlaarzettenDialog(selectedItem);
+             showTentamenDetails(selectedItem);
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
@@ -222,9 +209,9 @@ public class TentamenOverzichtController {
     public void refreshOverzicht() {
         tentamenData.clear();
         tentamenData.addAll(this._tentamenKlaarzetten.getTentamens());
-        //tentamenData.addAll(this._tentamenSamengesteld.getSamengesteldeTentamens());
         tentamenTable.setItems(tentamenData);
 
+        klaargezetteData.clear();
         klaargezetteData.addAll(this._tentamenKlaarzetten.getKlaargezetteTentamens());
         klaargezetteTentamenTable.setItems(klaargezetteData);
     }
@@ -235,8 +222,9 @@ public class TentamenOverzichtController {
      * @param tentamen
      * @return
      */
-    public boolean showTentamenKlaarzettenDialog(SamengesteldTentamenDto tentamen) {
+    public void zetTentamenKlaarzettenDialog(SamengesteldTentamenDto tentamen) {
         KlaargezetTentamenDto klaargezetTentamenDto = new KlaargezetTentamenDto();
+        klaargezetTentamenDto.setId(tentamen.getId());
         klaargezetTentamenDto.setNaam(tentamen.getNaam());
         klaargezetTentamenDto.setBeschrijving(tentamen.getBeschrijving());
         klaargezetTentamenDto.setToegestaandeHulpmiddelen(tentamen.getToegestaandeHulpmiddelen());
@@ -244,15 +232,20 @@ public class TentamenOverzichtController {
         klaargezetTentamenDto.setStartdatum(System.currentTimeMillis());
         klaargezetTentamenDto.setVragen(String.valueOf(tentamen.getVragen()));
         klaargezetTentamenDto.setVersie(tentamen.getVersie());
+
         try {
             _tentamenKlaarzetten.opslaan(klaargezetTentamenDto);
-            return true;
         } catch (GatewayCommunicationException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
+        Alert alert =new Alert(Alert.AlertType.NONE, "Tentamen succesvol klaargezet", ButtonType.OK);
+        alert.initOwner(this.naamLabel.getScene().getWindow());
+        alert.showAndWait();
+
+        refreshOverzicht();
     }
 
     /**
@@ -296,6 +289,12 @@ public class TentamenOverzichtController {
      */
     public void setOnNieuwTentamen(Runnable onNieuwTentamen) {
         this.onNieuwTentamen = onNieuwTentamen;
+    }
+
+    public void keyReleased(KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.F5){
+            refreshOverzicht();
+        }
     }
 }
 
