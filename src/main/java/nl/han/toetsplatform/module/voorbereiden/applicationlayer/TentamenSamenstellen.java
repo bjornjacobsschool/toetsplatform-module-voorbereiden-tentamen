@@ -55,17 +55,17 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
         try {
             List<VragenbankVraagDto> serverVragen = Arrays.asList(this._gatewayServiceAgent.get("vragenbank", VragenbankVraagDto[].class));
 
-            for (VragenbankVraagDto sV : serverVragen) {
+            for (VragenbankVraagDto serverV : serverVragen) {
                 boolean exists = false;
-                for (VragenbankVraagDto lV : localVragen) {
-                    if (sV.getId().toString().equals(lV.getId().toString())) {
+                for (VragenbankVraagDto localV : localVragen) {
+                    if (serverV.getId().equals(localV.getId()) && serverV.getVersie().getNummer() == localV.getVersie().getNummer()) {
                         exists = true;
                         break;
                     }
                 }
                 if (!exists) {
-                    LOGGER.log(Level.INFO, "Nieuwe vraag van server: " + sV.getId().toString());
-                    _vragenDao.insertVraag(sV);
+                    LOGGER.log(Level.INFO, "Nieuwe vraag van server: " + serverV.getId().toString());
+                    _vragenDao.insertVraag(serverV);
                 }
             }
         } catch (GatewayCommunicationException e) {

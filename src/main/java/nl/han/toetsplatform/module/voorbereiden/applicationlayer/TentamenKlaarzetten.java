@@ -45,17 +45,17 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten {
         try {
             List<SamengesteldTentamenDto> serverTentamens = Arrays.asList(this._gatewayServiceAgent.get("/tentamens/samengesteld", SamengesteldTentamenDto[].class));
 
-            for (SamengesteldTentamenDto sT : serverTentamens) {
+            for (SamengesteldTentamenDto serverT : serverTentamens) {
                 boolean exists = false;
-                for (SamengesteldTentamenDto lT : tentamen) {
-                    if (sT.getId().equals(lT.getId())) { //TODO: Check versie
+                for (SamengesteldTentamenDto localT : tentamen) {
+                    if (serverT.getId().equals(localT.getId()) && serverT.getVersie().getNummer() == localT.getVersie().getNummer()) {
                         exists = true;
                         break;
                     }
                 }
                 if (!exists) {
-                    LOGGER.log(Level.INFO, "Nieuwe tentamen van server: " + sT.getId().toString());
-                    _tentamenDao.saveTentamen(sT);
+                    LOGGER.log(Level.INFO, "Nieuwe tentamen van server: " + serverT.getId().toString());
+                    _tentamenDao.saveTentamen(serverT);
                 }
             }
 
