@@ -108,7 +108,22 @@ public class SqlTentamenDao implements TentamenDao {
 
     @Override
     public void setTentamenKlaar(KlaargezetTentamenDto tentamen) {
+        Connection conn = _storageDao.getConnection();
 
+        try {
+            PreparedStatement psVragen =  conn.prepareStatement(_sqlLoader.load("delete_tentamen_vraag"));
+            psVragen.setString(1, tentamen.getId().toString());
+            psVragen.setInt( 2, tentamen.getVersie().getNummer());
+            psVragen.execute();
+
+            PreparedStatement psTentamen = conn.prepareStatement(_sqlLoader.load("delete_tentamen"));
+            psTentamen.setString(1, tentamen.getId().toString());
+            psTentamen.setInt( 2, tentamen.getVersie().getNummer());
+            psTentamen.execute();
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Could not load tentamens from database: " + e.getMessage());
+        }
     }
 
 //    @Override

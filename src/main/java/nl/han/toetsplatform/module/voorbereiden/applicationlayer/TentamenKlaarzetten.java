@@ -34,8 +34,9 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten {
     }
 
     public void opslaan(KlaargezetTentamenDto tentamen) throws GatewayCommunicationException, SQLException {
-        _tentamenDao.setTentamenKlaar(tentamen);
+
         this._gatewayServiceAgent.post("/tentamens/klaargezet", tentamen);
+        _tentamenDao.setTentamenKlaar(tentamen);
     }
 
     @Override
@@ -72,6 +73,7 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten {
 
         try {
             klaargezetteTentamens.addAll(Arrays.asList(this._gatewayServiceAgent.get("tentamens/klaargezet", KlaargezetTentamenDto[].class)));
+
         } catch (GatewayCommunicationException e) {
             e.printStackTrace();
         }
