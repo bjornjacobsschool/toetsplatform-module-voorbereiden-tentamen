@@ -127,6 +127,8 @@ public class TentamenOverzichtController {
      * @param tentamen the tentamen or null
      */
     private void showTentamenDetails(SamengesteldTentamenDto tentamen) {
+        setEmptyStrings();
+
         if (tentamen != null) {
             // Fill the labels with info from the tentamen object.
             naamLabel.setText(tentamen.getNaam());
@@ -135,11 +137,7 @@ public class TentamenOverzichtController {
             vakLabel.setText(tentamen.getVak());
             tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
             versieLabel.setText(String.valueOf(tentamen.getVersie().getNummer()));
-            versieLabel.setText(tentamen.getVersie().getNummer() + "");
 
-        } else {
-            // Tentamen is null, remove all the text.
-            setEmptyStrings();
         }
     }
 
@@ -150,6 +148,8 @@ public class TentamenOverzichtController {
      * @param tentamen the tentamen or null
      */
     private void showKlaargezetteTentamenDetails(KlaargezetTentamenDto tentamen) {
+        setEmptyStrings();
+
         if (tentamen != null) {
             // Fill the labels with info from the tentamen object.
             naamLabel.setText(tentamen.getNaam());
@@ -159,17 +159,13 @@ public class TentamenOverzichtController {
             versieLabel.setText(String.valueOf(tentamen.getVersie().getNummer()));
             startDatumLabel.setText(timestampToDate(tentamen.getStartdatum()));
 
-        } else {
-            setEmptyStrings();
         }
     }
-
 
     /**
      * Methode om de labels te legen
      */
     private void setEmptyStrings() {
-        // Tentamen is null, remove all the text.
         naamLabel.setText("");
         descriptionLabel.setText("");
         hulpmiddelenLabel.setText("");
@@ -241,7 +237,7 @@ public class TentamenOverzichtController {
             e.printStackTrace();
         }
 
-        Alert alert =new Alert(Alert.AlertType.NONE, "Tentamen succesvol klaargezet", ButtonType.OK);
+        Alert alert = new Alert(Alert.AlertType.NONE, "Tentamen succesvol klaargezet", ButtonType.OK);
         alert.initOwner(this.naamLabel.getScene().getWindow());
         alert.showAndWait();
 
@@ -266,9 +262,9 @@ public class TentamenOverzichtController {
         try {
             _tentamenKlaarzetten.opslaan(klaargezetTentamen);
         } catch (GatewayCommunicationException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "GatewayCommunicatie exceptie.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "SQL Exception");
         }
     }
 
