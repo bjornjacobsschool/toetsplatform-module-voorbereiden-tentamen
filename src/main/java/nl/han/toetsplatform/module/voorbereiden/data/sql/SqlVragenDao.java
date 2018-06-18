@@ -58,7 +58,7 @@ public class SqlVragenDao implements VragenDao {
         _storageDao.closeConnection();
     }
 
-    public void insertTentamenVraag(SamengesteldTentamenDto tentamen, VragenbankVraagDto vraag){
+    public void insertTentamenVraag(SamengesteldTentamenDto tentamen, VragenbankVraagDto vraag) {
         Connection conn = _storageDao.getConnection();
 
         try {
@@ -73,36 +73,58 @@ public class SqlVragenDao implements VragenDao {
         }
     }
 
-    public List<VragenbankVraagDto> getVragen(){
+    public List<VragenbankVraagDto> getVragenVanTentamen(SamengesteldTentamenDto tentamen) {
         Connection conn = _storageDao.getConnection();
-        if(conn == null) return new ArrayList<>();
+        try {
+            PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("select_vraag_in_tentamen"));
+            ps.setString(1, tentamen.getId().toString());
+            ps.setInt(2, tentamen.getVersie().getNummer());
 
-        try
-        {
-            List<VragenbankVraagDto> vragen = new ArrayList<>();
-            System.out.println("Tentamen vraag");
-            PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("select_vraag"));
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
-                VragenbankVraagDto vraag = new VragenbankVraagDto();
-                vraag.setId(UUID.fromString(rs.getString("id")));
-                vraag.setNaam(rs.getString("naam"));
-                vraag.setThema(rs.getString("thema"));
-                vraag.setVraagtype(rs.getString("vraag_type"));
-                vraag.setVraagData(rs.getString("vraag_data"));
-                vraag.setNakijkModel(rs.getString("nakijk_model"));
-                vraag.setNakijkInstructies(rs.getString("nakijkInstrucites"));
-                VersieDto versie = new VersieDto();
-                versie.setNummer(rs.getInt("versie_nummer"));
-                versie.setDatum(rs.getLong("versie_datum"));
-                versie.setOmschrijving(rs.getString("versie_omschrijving"));
-                vraag.setVersie(versie);
-                vragen.add(vraag);
-            }
+            List<VragenbankVraagDto> vragen =  readVraagResulSet(rs);
             rs.close();
             return vragen;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        catch (SQLException e){
+
+        return new ArrayList<>();
+    }
+
+    private List<VragenbankVraagDto> readVraagResulSet(ResultSet rs) throws SQLException {
+        List<VragenbankVraagDto> vragen = new ArrayList<>();
+        while (rs.next()) {
+            VragenbankVraagDto vraag = new VragenbankVraagDto();
+            vraag.setId(UUID.fromString(rs.getString("id")));
+            vraag.setNaam(rs.getString("naam"));
+            vraag.setThema(rs.getString("thema"));
+            vraag.setVraagtype(rs.getString("vraag_type"));
+            vraag.setVraagData(rs.getString("vraag_data"));
+            vraag.setNakijkModel(rs.getString("nakijk_model"));
+            vraag.setNakijkInstructies(rs.getString("nakijkInstrucites"));
+            VersieDto versie = new VersieDto();
+            versie.setNummer(rs.getInt("versie_nummer"));
+            versie.setDatum(rs.getLong("versie_datum"));
+            versie.setOmschrijving(rs.getString("versie_omschrijving"));
+            vraag.setVersie(versie);
+
+            vragen.add(vraag);
+        }
+        return vragen;
+    }
+
+    public List<VragenbankVraagDto> getVragen() {
+        Connection conn = _storageDao.getConnection();
+        if (conn == null) return new ArrayList<>();
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(_sqlLoader.load("select_vraag"));
+            ResultSet rs = ps.executeQuery();
+
+            List<VragenbankVraagDto> vragen = readVraagResulSet(rs);
+            rs.close();
+            return vragen;
+        } catch (SQLException e) {
 
         }
         return new ArrayList<>();

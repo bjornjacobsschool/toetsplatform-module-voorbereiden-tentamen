@@ -12,4 +12,6 @@ public interface VragenDao {
     void insertTentamenVraag(SamengesteldTentamenDto tentamen, VragenbankVraagDto vraag);
 
     List<VragenbankVraagDto> getVragen();
+
+    List<VragenbankVraagDto> getVragenVanTentamen(SamengesteldTentamenDto tentamen);
 }
