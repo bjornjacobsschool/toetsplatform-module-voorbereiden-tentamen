@@ -86,6 +86,7 @@
                     </GridPane>
                     <ButtonBar layoutX="54.0" layoutY="250.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
                         <buttons>
+                            <Button text="Export" onAction="#exportToPdf"/>
                             <Button mnemonicParsing="false" onAction="#handleNewTentamen" text="Nieuw" />
                             <!--<Button mnemonicParsing="false" onAction="#handleEditTentamen" text="Edit..." />-->
                             <!--<Button mnemonicParsing="false" onAction="#handleDeleteTentamen" text="Delete" />-->

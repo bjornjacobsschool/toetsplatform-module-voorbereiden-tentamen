@@ -15,6 +15,7 @@ import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
+import nl.han.toetsplatform.module.voorbereiden.data.export.TentamenPdfGenerator;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
@@ -75,6 +76,9 @@ public class TentamenOverzichtController {
 
     @Inject
     SqlDataBaseCreator dataBaseCreator;
+
+    @Inject
+    TentamenPdfGenerator _tentamenPdfGenerator;
 
 
     /**
@@ -295,6 +299,15 @@ public class TentamenOverzichtController {
         if(keyEvent.getCode() == KeyCode.F5){
             refreshOverzicht();
         }
+    }
+
+    public void exportToPdf(ActionEvent actionEvent) {
+        SamengesteldTentamenDto selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
+
+        if (selectedItem != null) {
+            _tentamenPdfGenerator.generatePdf(selectedItem);
+        }
+
     }
 }
 
