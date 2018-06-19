@@ -35,7 +35,7 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
         this._vragenDao = vragenDao;
     }
 
-    public void opslaan(SamengesteldTentamenDto tentamen) throws GatewayCommunicationException, SQLException {
+    public void slaTentamenOp(SamengesteldTentamenDto tentamen) throws GatewayCommunicationException, SQLException {
         _tentamenDao.saveTentamen(tentamen);
         this._gatewayServiceAgent.post("tentamens/samengesteld", tentamen);
     }
@@ -46,7 +46,7 @@ public class TentamenSamenstellen implements ITentamenSamenstellen {
         try {
             this._gatewayServiceAgent.post("vragenbank", (VragenbankVraagDto) vraag);
         } catch (GatewayCommunicationException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Could not save vraag to gateway: " + e.getMessage());
         }
     }
 

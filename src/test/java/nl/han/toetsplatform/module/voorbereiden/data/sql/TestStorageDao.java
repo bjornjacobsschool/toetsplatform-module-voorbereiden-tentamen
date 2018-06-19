@@ -8,12 +8,15 @@ import java.sql.SQLException;
 
 public class TestStorageDao extends StubStorageDao {
 
-    private Connection connection;
+    private  Connection connection;
 
     @Override
     public Connection getConnection() {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:mydb.db");
+            if(connection != null)
+                return connection;
+
+            connection = DriverManager.getConnection("jdbc:sqlite::memory:");
             return connection;
         } catch (SQLException e) {
             e.printStackTrace();
