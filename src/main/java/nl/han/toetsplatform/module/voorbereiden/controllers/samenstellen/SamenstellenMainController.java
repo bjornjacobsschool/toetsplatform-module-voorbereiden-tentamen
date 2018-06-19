@@ -13,7 +13,6 @@ import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.voorbereiden.Main;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenSamenstellen;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
-import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
@@ -110,7 +109,7 @@ public class SamenstellenMainController {
             Stage klaarzettenPopupStage = new Stage();
             klaarzettenPopupStage.setTitle("Plugin selecteren");
             klaarzettenPopupStage.initModality(Modality.WINDOW_MODAL);
-            klaarzettenPopupStage.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
+            klaarzettenPopupStage.initOwner(mainContainer.getScene().getWindow());
             Scene scene = new Scene(klaarzettenView.getRoot(), 400, 300);
             klaarzettenPopupStage.setScene(scene);
 
