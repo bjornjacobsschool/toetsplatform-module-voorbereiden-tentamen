@@ -12,5 +12,5 @@ public interface ITentamenKlaarzetten {
 
     List<SamengesteldTentamenDto> getTentamens();
     List<KlaargezetTentamenDto> getKlaargezetteTentamens();
-    String getSleutel(KlaargezetTentamenDto klaargezetTentamen);
+    String getSleutel(KlaargezetTentamenDto klaargezetTentamen) throws GatewayCommunicationException;
 }

@@ -73,9 +73,11 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten {
         return klaargezetteTentamens;
     }
 
-    public String getSleutel(KlaargezetTentamenDto klaargezetTentamen){
+    public String getSleutel(KlaargezetTentamenDto klaargezetTentamen) throws GatewayCommunicationException {
 
-        return "SLEUTEL";
+        String sleutel = _gatewayServiceAgent.get("tentamens/klaargezet/" + klaargezetTentamen.getId().toString() + "/sleutel", String.class);
+
+        return sleutel;
     }
 }
 
