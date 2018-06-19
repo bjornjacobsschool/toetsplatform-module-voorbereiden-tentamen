@@ -1,7 +1,9 @@
 package nl.han.toetsplatform.module.voorbereiden.data.sql;
 
+import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.VersieDto;
+import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
 import nl.han.toetsplatform.module.voorbereiden.data.stub.StubStorageDao;
@@ -21,7 +23,9 @@ public class SqlTentamenDaoTest {
 
     SqlTentamenDao sqlTentamenDao;
 
-    SamengesteldTentamenDto tentamen = new SamengesteldTentamenDto();
+    SamengesteldTentamenDto tentamen;
+
+    VragenbankVraagDto vraag;
 
     @Before
     public void init(){
@@ -31,10 +35,20 @@ public class SqlTentamenDaoTest {
         dataBaseCreator.create();
 
         sqlTentamenDao = new SqlTentamenDao(storageDao, sqlLoader, new SqlVragenDao(sqlLoader, storageDao));
+        tentamen =  new SamengesteldTentamenDto();
         tentamen.setNaam("Test tenamen");
         tentamen.setId(UUID.randomUUID());
         tentamen.setVersie(new VersieDto());
         tentamen.setVragen(new ArrayList<>());
+        VersieDto versieDto = new VersieDto();
+        versieDto.setNummer(1);
+        tentamen.setVersie(versieDto);
+
+
+        vraag = new VragenbankVraagDto();
+        vraag.setId(UUID.randomUUID());
+        vraag.setVersie(versieDto);
+        tentamen.getVragen().add(vraag);
     }
 
     @Test
@@ -47,8 +61,16 @@ public class SqlTentamenDaoTest {
     }
 
     @Test
-    public void testSelectWrong(){
-        List<SamengesteldTentamenDto> tentamen1 = sqlTentamenDao.loadTentamens();
-        Assert.assertNotEquals(99 , tentamen1.size());
+    public void testKlaarZetten(){
+        tentamen.setId(UUID.randomUUID());
+        sqlTentamenDao.saveTentamen(tentamen);
+        int beforeSize = sqlTentamenDao.loadTentamens().size();
+        KlaargezetTentamenDto klaargezetTentamenDto = new KlaargezetTentamenDto();
+        klaargezetTentamenDto.setId(tentamen.getId());
+        klaargezetTentamenDto.setVersie(tentamen.getVersie());
+
+        sqlTentamenDao.setTentamenKlaar(klaargezetTentamenDto);
+        int afterSize = sqlTentamenDao.loadTentamens().size();
+        Assert.assertEquals(beforeSize - 1, afterSize);
     }
 }
