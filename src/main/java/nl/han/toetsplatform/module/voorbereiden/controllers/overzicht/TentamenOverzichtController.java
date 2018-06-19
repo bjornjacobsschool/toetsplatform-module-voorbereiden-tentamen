@@ -88,6 +88,9 @@ public class TentamenOverzichtController {
     @FXML
     private GridPane dataGridpane;
 
+    @FXML
+    private Button klaarzettenButton;
+
     @Inject
     SqlDataBaseCreator dataBaseCreator;
 
@@ -158,6 +161,8 @@ public class TentamenOverzichtController {
             haalSleutelOpButton.setVisible(false);
             tijdsduurLabelText.setVisible(false);
             sleutelLabelText.setVisible(false);
+
+            klaarzettenButton.setVisible(true);
         }
     }
 
@@ -182,6 +187,7 @@ public class TentamenOverzichtController {
             haalSleutelOpButton.setVisible(true);
             tijdsduurLabelText.setVisible(true);
             sleutelLabelText.setVisible(true);
+            klaarzettenButton.setVisible(false);
         }
 
     }

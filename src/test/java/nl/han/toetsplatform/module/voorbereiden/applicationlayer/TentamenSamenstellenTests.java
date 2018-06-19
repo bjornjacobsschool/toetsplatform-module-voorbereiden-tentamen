@@ -14,7 +14,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.sql.SQLException;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -34,7 +33,6 @@ public class TentamenSamenstellenTests {
     @Before
     public void initialize() throws SQLException {
         _tentamen = Mockito.spy(new SamengesteldTentamenDto());
-
     }
 
     @Test

@@ -61,12 +61,10 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten {
     }
 
     public List<KlaargezetTentamenDto> getKlaargezetteTentamens() {
-
         ArrayList<KlaargezetTentamenDto> klaargezetteTentamens = new ArrayList<>();
 
         try {
             klaargezetteTentamens.addAll(Arrays.asList(this._gatewayServiceAgent.get("tentamens/klaargezet", KlaargezetTentamenDto[].class)));
-
         } catch (GatewayCommunicationException e) {
             e.printStackTrace();
         }
@@ -74,9 +72,7 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten {
     }
 
     public String getSleutel(KlaargezetTentamenDto klaargezetTentamen) throws GatewayCommunicationException {
-
-        String sleutel = _gatewayServiceAgent.get("tentamens/klaargezet/" + klaargezetTentamen.getId().toString() + "/sleutel", String.class);
-
+        String sleutel = _gatewayServiceAgent.get("/tentamens/klaargezet/" + klaargezetTentamen.getId().toString() + "/sleutel", String.class);
         return sleutel;
     }
 }
