@@ -1,0 +1,1 @@
+DELETE FROM voorbereiden_tentamen where id = ? AND versie_nummer = ?;

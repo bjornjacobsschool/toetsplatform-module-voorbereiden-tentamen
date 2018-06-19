@@ -1,1 +1,0 @@
-SELECT id, datum, number, omschrijving FROM versie where id = ?;

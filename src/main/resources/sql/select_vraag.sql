@@ -1,0 +1,1 @@
+SELECT * FROM voorbereiden_vraag

@@ -6,9 +6,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.util.DateTimePicker;
 
 import java.time.LocalDateTime;
@@ -32,7 +32,7 @@ public class KlaarzettenController {
     @FXML
     private TextField sleutelVeld;
 
-    private Tentamen tentamen;
+    private SamengesteldTentamenDto tentamen;
     private Stage dialogStage;
     private boolean okClicked = false;
 
@@ -45,7 +45,7 @@ public class KlaarzettenController {
         this.dialogStage = dialogStage;
     }
 
-    public void setTentamen(Tentamen tentamen) {
+    public void setTentamen(SamengesteldTentamenDto tentamen) {
         this.tentamen = tentamen;
         tentamenVeld.setText(tentamen.getNaam());
     }

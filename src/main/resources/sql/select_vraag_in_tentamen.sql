@@ -1,0 +1,1 @@
+SELECT * FROM voorbereiden_vraag_van_tentamen AS `vt` JOIN voorbereiden_vraag AS `v` ON vt.vraag_id = v.id AND vt.vraag_versie_nummer = v.versie_nummer WHERE vt.tentamen_id = ? AND vt.tentamen_versie_nummer = ?;

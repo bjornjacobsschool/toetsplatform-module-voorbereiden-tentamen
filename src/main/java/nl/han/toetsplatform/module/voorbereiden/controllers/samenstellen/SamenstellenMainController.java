@@ -8,14 +8,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.voorbereiden.Main;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenSamenstellen;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Vraag;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 
 import javax.inject.Inject;
@@ -31,7 +31,7 @@ public class SamenstellenMainController {
     private GuiceFXMLLoader.Result samenStellenView;
     private GuiceFXMLLoader.Result voorbladView;
     private ITentamenSamenstellen _tentamenSamenstellen;
-    private Tentamen tentamen;
+    private SamengesteldTentamenDto tentamen;
     private Runnable onTentamenAangemaakt;
     private Runnable onAnnulerenVoorblad;
 
@@ -67,8 +67,8 @@ public class SamenstellenMainController {
             VraagOpstelController vraagOpstelController = vraagOpstellenView.getController();
 
             //Maak een nieuwe vraag en geef deze mee aan de controller.
-            Vraag moduleVraag = new Vraag();
-            moduleVraag.setVraagType("nl.han.toetsapplicatie.plugin.GraphPlugin");
+            VragenbankVraagDto moduleVraag = new VragenbankVraagDto();
+            moduleVraag.setVraagtype(pluginType);
 
             vraagOpstelController.setVraag(moduleVraag);
             vraagOpstelController.setOnVraagSave(this::onVraagToevoegen);
@@ -90,11 +90,10 @@ public class SamenstellenMainController {
      * Op het toevoegen van een vraag
      * @param vraag
      */
-    private void onVraagToevoegen(Vraag vraag) {
+    private void onVraagToevoegen(VragenbankVraagDto vraag) {
+        _tentamenSamenstellen.slaVraagOp(vraag);
         SamenstellenController samenstellenController = samenStellenView.getController();
-        samenstellenController.voegVraagToe(vraag);
-
-        tentamen.getVragen().add(vraag);
+        samenstellenController.setVragen(_tentamenSamenstellen.getVragen());
         showView(samenStellenView);
     }
 
@@ -130,7 +129,7 @@ public class SamenstellenMainController {
      * Actie voor het aanmaken van het voorblad.
      * @param voorblad
      */
-    public void onVoorbladAangemaakt(Tentamen voorblad) {
+    public void onVoorbladAangemaakt(SamengesteldTentamenDto voorblad) {
         try {
             tentamen = voorblad;
 
@@ -138,6 +137,8 @@ public class SamenstellenMainController {
             showView(samenStellenView);
             SamenstellenController samenstellenController = samenStellenView.getController();
             samenstellenController.setOnTentamenOpslaan(this::onTentamenAangemaakt);
+            samenstellenController.setTentamen(tentamen);
+            samenstellenController.setVragen(_tentamenSamenstellen.getVragen());
             samenstellenController.setVraagToevoegen(this::vraagToevoegen);
             samenstellenController.setOnAnnuleren(this::onAnnulerenSamenstellen);
         } catch (IOException e) {
@@ -155,7 +156,7 @@ public class SamenstellenMainController {
     /**
      * Actie voor het opslaan van een tentamen
      */
-    private void onTentamenAangemaakt(Tentamen tentamen) {
+    private void onTentamenAangemaakt(SamengesteldTentamenDto tentamen) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);

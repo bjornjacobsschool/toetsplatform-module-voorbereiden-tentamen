@@ -6,30 +6,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import nl.han.toetsplatform.module.shared.storage.StorageDao;
-import nl.han.toetsplatform.module.voorbereiden.Main;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
-import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
 import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
-import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
-import nl.han.toetsplatform.module.voorbereiden.controllers.klaarzetten.KlaarzettenController;
-import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
+import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
-import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,43 +31,56 @@ import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNo
 public class TentamenOverzichtController {
 
     private final static Logger LOGGER = Logger.getLogger(TentamenOverzichtController.class.getName());
-
     private ITentamenKlaarzetten _tentamenKlaarzetten;
+
     private TentamenFile _tentamenFile;
     private GuiceFXMLLoader fxmlLoader;
     public AnchorPane mainContainer;
 
+    private ObservableList<SamengesteldTentamenDto> tentamenData = FXCollections.observableArrayList();
     @FXML
-    private TableView<Tentamen> tentamenTable;
+    private TableView<SamengesteldTentamenDto> tentamenTable;
     @FXML
-    private TableColumn<Tentamen, String> nameColumn;
+    private TableColumn<SamengesteldTentamenDto, String> nameColumn;
     @FXML
-    private TableColumn<Tentamen, String> vakColumn;
+    private TableColumn<SamengesteldTentamenDto, String> vakColumn;
+
+    private ObservableList<KlaargezetTentamenDto> klaargezetteData = FXCollections.observableArrayList();
+    @FXML
+    private TableView<KlaargezetTentamenDto> klaargezetteTentamenTable;
+    @FXML
+    private TableColumn<KlaargezetTentamenDto, String> klaargezetNaamColumn;
+    @FXML
+    private TableColumn<KlaargezetTentamenDto, String> startDateColumn;
 
     @FXML
     private Label naamLabel;
     @FXML
     private Label descriptionLabel;
     @FXML
-    public Label vakLabel;
+    private Label vakLabel;
     @FXML
-    public Label hulpmiddelenLabel;
+    private Label hulpmiddelenLabel;
     @FXML
-    public Label versieLabel;
+    private Label versieLabel;
     @FXML
-    public Label tijdsduurLabel;
+    private Label tijdsduurLabel;
+
+    @FXML
+    private Label startDatumLabel;
+    @FXML
+    private Label eindDatumKlaargezetTentamenLabel;
+    @FXML
+    private Label sleutelLabel;
 
     @Inject
-    private StorageDao storageDao;
-
-    @Inject
-    private SqlLoader sqlLoader;
+    SqlDataBaseCreator dataBaseCreator;
 
 
     /**
      * The data as an observable list of Persons.
      */
-    private ObservableList<Tentamen> tentamenData = FXCollections.observableArrayList();
+   // private ObservableList<SamengesteldTentamenDto> tentamenData = FXCollections.observableArrayList();
     private Stage klaarzettenPopupStage;
     private Runnable onNieuwTentamen;
 
@@ -87,13 +92,8 @@ public class TentamenOverzichtController {
     }
 
     @FXML
-    public void initialize()  {
-        //Create the database
-        try {
-            storageDao.executeUpdate(sqlLoader.load("DDL"));
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Could not create database: " + e.getMessage());
-        }
+    public void initialize() {
+        dataBaseCreator.create();
 
         refreshOverzicht();
 
@@ -101,12 +101,23 @@ public class TentamenOverzichtController {
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNaam()));
         vakColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVak()));
 
+        //Initialize the klaargezette table with the two columsn.
+        klaargezetNaamColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNaam()));
+        startDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(timestampToDate(cellData.getValue().getStartdatum())));
+
         // Clear tentamen details.
         showTentamenDetails(null);
+        showKlaargezetteTentamenDetails(null);
 
         // Listen for selection changes and show the tentamen details when changed.
         tentamenTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showTentamenDetails(newValue));
+        klaargezetteTentamenTable.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> showKlaargezetteTentamenDetails(newValue)));
+    }
+
+    public String timestampToDate(long timestamp) {
+        Date date = new Date(timestamp);
+        return String.valueOf(date);
     }
 
     /**
@@ -115,7 +126,9 @@ public class TentamenOverzichtController {
      *
      * @param tentamen the tentamen or null
      */
-    private void showTentamenDetails(Tentamen tentamen) {
+    private void showTentamenDetails(SamengesteldTentamenDto tentamen) {
+        setEmptyStrings();
+
         if (tentamen != null) {
             // Fill the labels with info from the tentamen object.
             naamLabel.setText(tentamen.getNaam());
@@ -123,32 +136,58 @@ public class TentamenOverzichtController {
             hulpmiddelenLabel.setText(tentamen.getToegestaandeHulpmiddelen());
             vakLabel.setText(tentamen.getVak());
             tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
-            versieLabel.setText(tentamen.getVersie().getNumber());
+            versieLabel.setText(String.valueOf(tentamen.getVersie().getNummer()));
 
-        } else {
-            // Tentamen is null, remove all the text.
-            naamLabel.setText("");
-            descriptionLabel.setText("");
-            hulpmiddelenLabel.setText("");
-            vakLabel.setText("");
-            tijdsduurLabel.setText("");
-            versieLabel.setText("");
         }
+    }
+
+    /**
+     * Fills all text fields to show details about the tentamen.
+     * If the specified tentamen is null, all text fields are cleared.
+     *
+     * @param tentamen the tentamen or null
+     */
+    private void showKlaargezetteTentamenDetails(KlaargezetTentamenDto tentamen) {
+        setEmptyStrings();
+
+        if (tentamen != null) {
+            // Fill the labels with info from the tentamen object.
+            naamLabel.setText(tentamen.getNaam());
+            descriptionLabel.setText(tentamen.getBeschrijving());
+            hulpmiddelenLabel.setText(tentamen.getToegestaandeHulpmiddelen());
+            tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
+            versieLabel.setText(String.valueOf(tentamen.getVersie().getNummer()));
+            startDatumLabel.setText(timestampToDate(tentamen.getStartdatum()));
+
+        }
+    }
+
+    /**
+     * Methode om de labels te legen
+     */
+    private void setEmptyStrings() {
+        naamLabel.setText("");
+        descriptionLabel.setText("");
+        hulpmiddelenLabel.setText("");
+        vakLabel.setText("");
+        tijdsduurLabel.setText("");
+        versieLabel.setText("");
+        startDatumLabel.setText("");
+
     }
 
     /**
      * Called when the user clicks the 'Klaarzetten' button. It first checks if an item is selected. If there isn't
      * it shows a warning alert dialog else it shows a new dialog for "het klaarzetten".
+     *
      * @param actionEvent
      */
     public void handleKlaarzettenTentamen(ActionEvent actionEvent) {
-        Tentamen selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
+        SamengesteldTentamenDto selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
 
-        if(selectedItem != null) {
-            boolean okClicked = showTentamenKlaarzettenDialog(selectedItem);
-            if(okClicked) {
-                showTentamenDetails(selectedItem);
-            }
+        if (selectedItem != null) {
+             zetTentamenKlaarzettenDialog(selectedItem);
+             showTentamenDetails(selectedItem);
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
@@ -164,49 +203,56 @@ public class TentamenOverzichtController {
      * Refresh the data for the tentamenTable.
      */
     public void refreshOverzicht() {
+        tentamenData.clear();
         tentamenData.addAll(this._tentamenKlaarzetten.getTentamens());
         tentamenTable.setItems(tentamenData);
+
+        klaargezetteData.clear();
+        klaargezetteData.addAll(this._tentamenKlaarzetten.getKlaargezetteTentamens());
+        klaargezetteTentamenTable.setItems(klaargezetteData);
     }
 
     /**
      * Shows a popup window with the selected Tentamen object.
+     *
      * @param tentamen
      * @return
      */
-    public boolean showTentamenKlaarzettenDialog(Tentamen tentamen) {
+    public void zetTentamenKlaarzettenDialog(SamengesteldTentamenDto tentamen) {
+        KlaargezetTentamenDto klaargezetTentamenDto = new KlaargezetTentamenDto();
+        klaargezetTentamenDto.setId(tentamen.getId());
+        klaargezetTentamenDto.setNaam(tentamen.getNaam());
+        klaargezetTentamenDto.setBeschrijving(tentamen.getBeschrijving());
+        klaargezetTentamenDto.setToegestaandeHulpmiddelen(tentamen.getToegestaandeHulpmiddelen());
+        klaargezetTentamenDto.setTijdsduur(tentamen.getTijdsduur());
+        klaargezetTentamenDto.setStartdatum(System.currentTimeMillis());
+        klaargezetTentamenDto.setVragen(String.valueOf(tentamen.getVragen()));
+        klaargezetTentamenDto.setVersie(tentamen.getVersie());
+
         try {
-            GuiceFXMLLoader.Result klaarzettenView = fxmlLoader.load(Main.class.getResource("/fxml/TentamenKlaarzetten.fxml"));
-
-            //create the dialog stage
-            klaarzettenPopupStage = new Stage();
-            klaarzettenPopupStage.setTitle("Tentamen klaarzetten");
-            klaarzettenPopupStage.initModality(Modality.WINDOW_MODAL);
-            klaarzettenPopupStage.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
-            Scene scene = new Scene(klaarzettenView.getRoot(), 400, 300);
-            klaarzettenPopupStage.setScene(scene);
-
-            // Set the tentamen into the controller.
-            KlaarzettenController controller = klaarzettenView.getController();
-            controller.setOnKlaarzettenTentamen(this::onTentamenKlaargezet);
-            controller.setDialogStage(klaarzettenPopupStage);
-            controller.setTentamen(tentamen);
-
-            // Show the dialog and wait until the user closes it
-            klaarzettenPopupStage.showAndWait();
-
-            return controller.isOkClicked();
-        } catch (IOException e) {
+            _tentamenKlaarzetten.opslaan(klaargezetTentamenDto);
+        } catch (GatewayCommunicationException e) {
             e.printStackTrace();
-            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        Alert alert = new Alert(Alert.AlertType.NONE, "Tentamen succesvol klaargezet", ButtonType.OK);
+        alert.initOwner(this.naamLabel.getScene().getWindow());
+        alert.showAndWait();
+
+        refreshOverzicht();
     }
 
     /**
      * Method that should save the given object to the database.
      * For now this will save a JSON file in the directory you choose.
+     *
      * @param klaargezetTentamen
+     *
      */
-    public void onTentamenKlaargezet(KlaargezetTentamen klaargezetTentamen) {
+    @Deprecated
+    public void onTentamenKlaargezet(KlaargezetTentamenDto klaargezetTentamen) {
         try {
             _tentamenFile.ExportToFile(klaargezetTentamen);
         } catch (IOException e) {
@@ -216,14 +262,15 @@ public class TentamenOverzichtController {
         try {
             _tentamenKlaarzetten.opslaan(klaargezetTentamen);
         } catch (GatewayCommunicationException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "GatewayCommunicatie exceptie.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "SQL Exception");
         }
     }
 
     /**
      * When clicked on "nieuw" Load the samenstellen view.
+     *
      * @param actionEvent
      * @throws IOException
      */
@@ -233,10 +280,17 @@ public class TentamenOverzichtController {
 
     /**
      * Setter
+     *
      * @param onNieuwTentamen
      */
     public void setOnNieuwTentamen(Runnable onNieuwTentamen) {
         this.onNieuwTentamen = onNieuwTentamen;
+    }
+
+    public void keyReleased(KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.F5){
+            refreshOverzicht();
+        }
     }
 }
 

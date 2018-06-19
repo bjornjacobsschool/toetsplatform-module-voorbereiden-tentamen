@@ -31,6 +31,7 @@ public class VoorbereidenMainController {
     public void initialize() throws IOException {
         overzichtView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.TentamenOverzicht));
         mainContainer.getChildren().add(overzichtView.getRoot());
+        setAnchorFull(overzichtView.getRoot());
         TentamenOverzichtController overzichtController = overzichtView.getController();
         overzichtController.setOnNieuwTentamen(this::onNieuwTentamen);
     }
@@ -39,6 +40,7 @@ public class VoorbereidenMainController {
      * Methode die de samenstellen view
      */
     public void onNieuwTentamen(){
+        System.out.println("Nieuw");
         try {
             samenstellenView = fxmlLoader.load(ConfigTentamenVoorbereidenModule.getFXMLTentamenVoorbereiden(TentamenVoorbereidenFXMLFiles.SamenstellenMain));
         } catch (IOException e) {
@@ -53,6 +55,7 @@ public class VoorbereidenMainController {
 
     private void onTentamenAangemaakt() {
         switchView(overzichtView);
+        ((TentamenOverzichtController) overzichtView.getController()).refreshOverzicht();
     }
 
     private void onAnnulerenSamenstellen() {
@@ -67,7 +70,7 @@ public class VoorbereidenMainController {
     private void switchView(GuiceFXMLLoader.Result view) {
         mainContainer.getChildren().clear();
         mainContainer.getChildren().add(view.getRoot());
-        setAnchorFull(mainContainer);
+        setAnchorFull(view.getRoot());
     }
 
     /**
