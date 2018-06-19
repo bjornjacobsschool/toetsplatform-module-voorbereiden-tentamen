@@ -5,11 +5,18 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import nl.han.toetsplatform.module.voorbereiden.applicationlayer.TentamenKlaarzetten;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GatewayServiceAgent implements IGatewayServiceAgent{
     private String baseUrl;
     private Client client;
+
+    private final static Logger LOGGER = Logger.getLogger(TentamenKlaarzetten.class.getName());
+
 
     public GatewayServiceAgent() {
         this.client = Client.create( new DefaultClientConfig());
@@ -23,6 +30,7 @@ public class GatewayServiceAgent implements IGatewayServiceAgent{
         // reading response from server
         ClientResponse response = webResource.get(ClientResponse.class);
         if (response.getStatus() != 200) {
+            LOGGER.log(Level.INFO, "Error connecting to gateway GET: " + response.getStatusInfo());
             throw new GatewayCommunicationException();
         }
 
@@ -33,9 +41,13 @@ public class GatewayServiceAgent implements IGatewayServiceAgent{
         // request to server
         WebResource webResource = client.resource(this.baseUrl).path(resourceUrl);
 
+        String json = new Gson().toJson(entity);
+
         // reading response from server
-        ClientResponse response = webResource.post(ClientResponse.class, entity);
+        ClientResponse response = webResource.post(ClientResponse.class, json);
+
         if (response.getStatus() != 200) {
+            LOGGER.log(Level.INFO, "Error connecting to gateway POST: " + response.getStatusInfo());
             throw new GatewayCommunicationException();
         }
     }

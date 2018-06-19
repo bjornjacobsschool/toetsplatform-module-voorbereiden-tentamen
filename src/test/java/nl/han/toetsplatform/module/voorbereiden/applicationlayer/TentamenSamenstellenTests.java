@@ -1,8 +1,8 @@
 package nl.han.toetsplatform.module.voorbereiden.applicationlayer;
 
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgent;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TentamenSamenstellenTests {
-    private Tentamen _tentamen;
+    private SamengesteldTentamenDto _tentamen;
 
     @Mock
     private IGatewayServiceAgent _gatewayServiceAgentMock;
@@ -33,7 +33,7 @@ public class TentamenSamenstellenTests {
 
     @Before
     public void initialize() throws SQLException {
-        _tentamen = Mockito.spy(new Tentamen());
+        _tentamen = Mockito.spy(new SamengesteldTentamenDto());
 
     }
 
@@ -41,7 +41,7 @@ public class TentamenSamenstellenTests {
     public void opslaanShouldCallGetOnGatewayServiceAgentWithCorrectParameter() throws GatewayCommunicationException, SQLException {
         _sut.opslaan(_tentamen);
         verify(_gatewayServiceAgentMock, times(1))
-                .post("", _tentamen);
+                .post("tentamens/samengesteld", _tentamen);
     }
 
     @Test

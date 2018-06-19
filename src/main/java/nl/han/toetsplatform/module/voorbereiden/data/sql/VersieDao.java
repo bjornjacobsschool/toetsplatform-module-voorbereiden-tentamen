@@ -1,8 +1,9 @@
-package nl.han.toetsplatform.module.voorbereiden.data.sql;
+/*package nl.han.toetsplatform.module.voorbereiden.data.sql;
 
+import nl.han.toetsapplicatie.apimodels.dto.VersieDto;
+import nl.han.toetsapplicatie.apimodels.dto.VragenbankVraagDto;
 import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
-import nl.han.toetsplatform.module.voorbereiden.models.Versie;
 
 import javax.inject.Inject;
 import java.sql.*;
@@ -10,7 +11,8 @@ import java.sql.*;
 
 /**
  * This class should only be used from other classes in this package
- */
+ *//*
+@Deprecated
 public class VersieDao {
 
     private StorageDao _storageDao;
@@ -23,23 +25,24 @@ public class VersieDao {
         this._sqlLoader = sqlLoader;
     }
 
-    public Versie getVersie(int id) throws SQLException {
+    public VragenbankVraagDto getVersie(int id) throws SQLException {
         Connection conn = _storageDao.getConnection();
 
         PreparedStatement preparedStatement = conn.prepareStatement(_sqlLoader.load("select_versie"));
         preparedStatement.setInt(1, id);
         ResultSet rs = preparedStatement.executeQuery();
 
-        Versie versie = new Versie();
-        while (rs.next()){
 
-            versie.setDatum(rs.getString("datum"));
+        while (rs.next()){
+            VersieDto versie = new VersieDto();
+            versie(rs.getLong("datum"));
             versie.setOmschrijving(rs.getString("omschrijving"));
-            versie.setNumber(rs.getString("number"));
+            versie.setNummer(rs.getInt("nummer"));
             versie.setId(rs.getInt("id"));
+            return versie;
         }
 
-        return versie;
+       return null;
     }
 
     public int addVersie(Versie versie) throws SQLException {
@@ -47,8 +50,8 @@ public class VersieDao {
 
         PreparedStatement psVersie = conn.prepareStatement(_sqlLoader.load("insert_versie"));
 
-        psVersie.setString(1, versie.getDatum());
-        psVersie.setString(2, versie.getNumber());
+        psVersie.setLong(1,versie.getDatum());
+        psVersie.setInt(2, versie.getNummer());
         psVersie.setString(3, versie.getOmschrijving());
         psVersie.execute();
 
@@ -58,7 +61,9 @@ public class VersieDao {
         while (rsVersieId.next()) {
             versie_id = rsVersieId.getInt(1);
         }
+        rsVersieId.close();
 
         return versie_id;
     }
 }
+*/

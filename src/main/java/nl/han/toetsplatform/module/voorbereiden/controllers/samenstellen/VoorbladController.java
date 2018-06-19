@@ -4,8 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.VersieDto;
+import sun.rmi.transport.tcp.TCPEndpoint;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNotNull;
@@ -16,20 +19,19 @@ public class VoorbladController {
     public TextField vakField;
     public TextArea beschrijvingArea;
     public TextArea toegestaandeHulpmiddelenArea;
-    private Consumer<Tentamen> onVoorbladAanmaken;
+    private Consumer<SamengesteldTentamenDto> onVoorbladAanmaken;
     private Runnable onGeannuleerd;
 
-    public void setOnVoorbladAanmaken(Consumer<Tentamen> onVoorbladAanmaken) {
-        this.onVoorbladAanmaken = onVoorbladAanmaken;
-    }
+    /**
+     * Setter
+     * @param onVoorbladAanmaken
+     */
+    public void setOnVoorbladAanmaken(Consumer<SamengesteldTentamenDto> onVoorbladAanmaken) { this.onVoorbladAanmaken = onVoorbladAanmaken; }
 
     @FXML
     protected void handleAnnulerenButtonAction(ActionEvent event)
     {
         runIfNotNull(onGeannuleerd);
-
-        System.out.println("Annuleren");
-        // actie voor annuleren
     }
 
     public void setOnGeannuleerd(Runnable onGeannuleerd) {
@@ -39,8 +41,14 @@ public class VoorbladController {
     @FXML
     protected void handleVoorbladAanmakenButtonAction(ActionEvent event)
     {
-        System.out.println("Voorblad aanmaken");
-        Tentamen tentamen = new Tentamen();
+        SamengesteldTentamenDto tentamen = new SamengesteldTentamenDto();
+        tentamen.setId(UUID.randomUUID());
+        VersieDto versie = new VersieDto();
+        versie.setNummer(1);
+        versie.setDatum(System.currentTimeMillis());
+        versie.setOmschrijving("Eerste versie.");
+        tentamen.setVersie(versie);
+        tentamen.setTijdsduur("2 uur");
         tentamen.setNaam(naamField.getText());
         tentamen.setBeschrijving(beschrijvingArea.getText());
         tentamen.setVak(vakField.getText());

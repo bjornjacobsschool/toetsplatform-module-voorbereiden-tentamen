@@ -2,8 +2,7 @@ package nl.han.toetsplatform.module.voorbereiden.util;
 
 import com.google.gson.Gson;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
-import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
+import javafx.stage.Window;
 
 import javax.inject.Inject;
 import java.io.*;
@@ -22,7 +21,7 @@ public class TentamenFile {
     }
 
     //todo: moet nog test voor geschreven worden
-    public <T> void ExportToFile(T object, File directory) throws IOException {
+    public <T> void exportToFile(T object, File directory) throws IOException {
         if(directory != null) {
             Date date = new Date();
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HHmmss");
@@ -40,11 +39,11 @@ public class TentamenFile {
         }
     }
 
-    public <T> void ExportToFile(T object) throws IOException {
+    public <T> void exportToFile(T object, Window window) throws IOException {
         DirectoryChooser directoryChooser = new DirectoryChooser();
-        File selectedDirectory = directoryChooser.showDialog(PrimaryStageConfig.getInstance().getPrimaryStage());
+        File selectedDirectory = directoryChooser.showDialog(window);
 
-        ExportToFile(object, selectedDirectory);
+        exportToFile(object, selectedDirectory);
     }
 
 }

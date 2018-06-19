@@ -6,9 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
-import nl.han.toetsplatform.module.voorbereiden.models.Tentamen;
 import nl.han.toetsplatform.module.voorbereiden.util.DateTimePicker;
 
 import java.time.LocalDateTime;
@@ -32,7 +31,7 @@ public class KlaarzettenController {
     @FXML
     private TextField sleutelVeld;
 
-    private Tentamen tentamen;
+    private SamengesteldTentamenDto tentamen;
     private Stage dialogStage;
     private boolean okClicked = false;
 
@@ -45,7 +44,7 @@ public class KlaarzettenController {
         this.dialogStage = dialogStage;
     }
 
-    public void setTentamen(Tentamen tentamen) {
+    public void setTentamen(SamengesteldTentamenDto tentamen) {
         this.tentamen = tentamen;
         tentamenVeld.setText(tentamen.getNaam());
     }
@@ -62,7 +61,8 @@ public class KlaarzettenController {
 
 
     /**
-     * Handles the event when the user clicks on the 'Klaarzetten' button.
+     * Bij het klikken op 'klaarzetten', maak en nieuwe klaargezetTentamen object en stuur deze door naar de backend.
+     * Geef een warning als niet alle gegevens zijn ingevuld
      * @param event
      */
     @FXML
@@ -79,18 +79,20 @@ public class KlaarzettenController {
             okClicked = true;
             dialogStage.close();
         } else {
-            //error..
+            //warning..
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
-            alert.setTitle("Warning");
-            alert.setHeaderText("Fill in all fields!");
+            alert.initOwner(tentamenVeld.getScene().getWindow());
+            String errorWarning = "Error warning";
+            alert.setTitle(errorWarning);
+            String warningMessage = "Vul alle velden in!";
+            alert.setHeaderText(warningMessage);
 
             alert.showAndWait();
         }
     }
 
     /**
-     * Helper method to convert Datepicker values to Date
+     * Methode om DateTime fields om te zette naar Date
      *
      * @param field
      * @return
@@ -102,7 +104,7 @@ public class KlaarzettenController {
     }
 
     /**
-     * Checks if the input is valid
+     * Controleert of de input valide is.
      * @return
      */
     private boolean isInputValid(){

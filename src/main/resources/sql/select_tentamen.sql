@@ -1,1 +1,1 @@
-SELECT id, naam, beschrijving, toegestaandeHulpmiddelen, vak, versie_id FROM tentamen
+SELECT id, naam, beschrijving, toegestaandeHulpmiddelen, vak, versie_nummer, versie_datum, versie_omschrijving FROM voorbereiden_tentamen
