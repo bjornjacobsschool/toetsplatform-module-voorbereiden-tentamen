@@ -63,6 +63,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints />
                         </rowConstraints>
                         <children>
@@ -78,10 +79,11 @@
                             <Label fx:id="versieLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                             <Label style="-fx-font-weight: bold" text="Tijdsduur:" GridPane.rowIndex="5" />
                             <Label fx:id="tijdsduurLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                            <Label style="-fx-font-weight: bold" text="Start datum" GridPane.rowIndex="7" />
+                            <Label fx:id="tijdsduurLabelText" style="-fx-font-weight: bold" text="Start datum" GridPane.rowIndex="7" />
                             <Label fx:id="startDatumLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                            <Label style="-fx-font-weight: bold" text="Sleutel:" GridPane.rowIndex="8" />
+                            <Label fx:id="sleutelLabelText" style="-fx-font-weight: bold" text="Sleutel:" GridPane.rowIndex="8" />
                             <Label fx:id="sleutelLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                            <Button fx:id="haalSleutelOpButton" text="Haal sleutel op" GridPane.columnIndex="1" GridPane.rowIndex="9" onAction="#haalSleutelOp"/>
                         </children>
                     </GridPane>
                     <ButtonBar layoutX="54.0" layoutY="250.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">

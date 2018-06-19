@@ -11,8 +11,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
@@ -30,6 +30,9 @@ import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNo
 public class TentamenOverzichtController {
 
     private final static Logger LOGGER = Logger.getLogger(TentamenOverzichtController.class.getName());
+
+
+
     private ITentamenKlaarzetten _tentamenKlaarzetten;
 
     private TentamenFile _tentamenFile;
@@ -71,6 +74,15 @@ public class TentamenOverzichtController {
     private Label eindDatumKlaargezetTentamenLabel;
     @FXML
     private Label sleutelLabel;
+
+    @FXML
+    private Label sleutelLabelText;
+
+    @FXML
+    private Button haalSleutelOpButton;
+
+    @FXML
+    private Label tijdsduurLabelText;
 
     @Inject
     SqlDataBaseCreator dataBaseCreator;
@@ -136,7 +148,9 @@ public class TentamenOverzichtController {
             vakLabel.setText(tentamen.getVak());
             tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
             versieLabel.setText(String.valueOf(tentamen.getVersie().getNummer()));
-
+            haalSleutelOpButton.setVisible(false);
+            tijdsduurLabelText.setVisible(false);
+            sleutelLabelText.setVisible(false);
         }
     }
 
@@ -157,9 +171,13 @@ public class TentamenOverzichtController {
             tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
             versieLabel.setText(String.valueOf(tentamen.getVersie().getNummer()));
             startDatumLabel.setText(timestampToDate(tentamen.getStartdatum()));
-
+            haalSleutelOpButton.setVisible(true);
+            tijdsduurLabelText.setVisible(true);
+            sleutelLabelText.setVisible(true);
         }
+
     }
+
 
     /**
      * Methode om de labels te legen
@@ -172,7 +190,7 @@ public class TentamenOverzichtController {
         tijdsduurLabel.setText("");
         versieLabel.setText("");
         startDatumLabel.setText("");
-
+        sleutelLabel.setText("");
     }
 
     /**
@@ -289,6 +307,15 @@ public class TentamenOverzichtController {
     public void keyReleased(KeyEvent keyEvent) {
         if(keyEvent.getCode() == KeyCode.F5){
             refreshOverzicht();
+        }
+    }
+
+    public void haalSleutelOp(ActionEvent actionEvent) {
+        Object item = klaargezetteTentamenTable.getSelectionModel().getSelectedItem();
+        if(item instanceof KlaargezetTentamenDto){
+            KlaargezetTentamenDto tentamen = (KlaargezetTentamenDto)item;
+            String sleutel = _tentamenKlaarzetten.getSleutel(tentamen);
+            sleutelLabel.setText(sleutel);
         }
     }
 }

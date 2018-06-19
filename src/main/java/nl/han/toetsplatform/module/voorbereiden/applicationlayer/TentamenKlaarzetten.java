@@ -1,22 +1,15 @@
 package nl.han.toetsplatform.module.voorbereiden.applicationlayer;
 
-import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
-import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.serviceagent.IGatewayServiceAgent;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,6 +71,11 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten {
             e.printStackTrace();
         }
         return klaargezetteTentamens;
+    }
+
+    public String getSleutel(KlaargezetTentamenDto klaargezetTentamen){
+
+        return "SLEUTEL";
     }
 }
 
