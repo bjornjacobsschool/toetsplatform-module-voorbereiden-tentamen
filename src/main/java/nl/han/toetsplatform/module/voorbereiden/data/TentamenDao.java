@@ -1,8 +1,7 @@
 package nl.han.toetsplatform.module.voorbereiden.data;
 
-import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
-import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 
 import java.util.List;
 
