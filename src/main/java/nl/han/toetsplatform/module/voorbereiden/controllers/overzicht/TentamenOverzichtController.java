@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
-import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
 import nl.han.toetsplatform.module.voorbereiden.util.TentamenFile;
@@ -190,7 +189,7 @@ public class TentamenOverzichtController {
              showTentamenDetails(selectedItem);
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
+            alert.initOwner(naamLabel.getScene().getWindow());
             alert.setTitle("No selection");
             alert.setHeaderText("No tentamen selected");
             alert.setContentText("Please select a tentamen from the list");
@@ -254,7 +253,7 @@ public class TentamenOverzichtController {
     @Deprecated
     public void onTentamenKlaargezet(KlaargezetTentamenDto klaargezetTentamen) {
         try {
-            _tentamenFile.ExportToFile(klaargezetTentamen);
+            _tentamenFile.exportToFile(klaargezetTentamen, naamLabel.getScene().getWindow());
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Could not create tentamen file");
         }

@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nl.han.toetsplatform.module.voorbereiden.config.ConfigTentamenVoorbereidenModule;
-import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.config.TentamenVoorbereidenFXMLFiles;
 import nl.han.toetsplatform.module.voorbereiden.guice.StubGuiceModule;
 
@@ -26,8 +25,6 @@ public class Main extends GuiceApplication {
         primaryStage.setTitle("Docent Applicatie");
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
-
-        PrimaryStageConfig.getInstance().setPrimaryStage(primaryStage);
     }
 
     public static void main(String[] args) {

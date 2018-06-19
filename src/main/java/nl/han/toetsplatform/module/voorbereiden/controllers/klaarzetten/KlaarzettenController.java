@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
-import nl.han.toetsplatform.module.voorbereiden.config.PrimaryStageConfig;
 import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.util.DateTimePicker;
 
@@ -82,7 +81,7 @@ public class KlaarzettenController {
         } else {
             //warning..
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.initOwner(PrimaryStageConfig.getInstance().getPrimaryStage());
+            alert.initOwner(tentamenVeld.getScene().getWindow());
             String errorWarning = "Error warning";
             alert.setTitle(errorWarning);
             String warningMessage = "Vul alle velden in!";
