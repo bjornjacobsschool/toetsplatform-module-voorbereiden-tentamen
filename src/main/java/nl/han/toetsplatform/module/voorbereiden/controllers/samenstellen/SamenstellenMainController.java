@@ -153,7 +153,7 @@ public class SamenstellenMainController {
     }
 
     /**
-     * Actie voor het opslaan van een tentamen
+     * Actie voor het slaTentamenOp van een tentamen
      */
     private void onTentamenAangemaakt(SamengesteldTentamenDto tentamen) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -164,7 +164,7 @@ public class SamenstellenMainController {
             @Override
             public Void call() {
                 try {
-                    _tentamenSamenstellen.opslaan(tentamen);
+                    _tentamenSamenstellen.slaTentamenOp(tentamen);
                 } catch (GatewayCommunicationException e) {
                     System.out.println(e.getMessage());
                     alert.setAlertType(Alert.AlertType.ERROR);

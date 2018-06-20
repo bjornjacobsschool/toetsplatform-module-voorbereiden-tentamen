@@ -27,14 +27,21 @@ public class GatewayServiceAgent implements IGatewayServiceAgent{
         // request to server
         WebResource webResource = client.resource(this.baseUrl).path(resourceUrl);
 
-        // reading response from server
-        ClientResponse response = webResource.get(ClientResponse.class);
-        if (response.getStatus() != 200) {
-            LOGGER.log(Level.INFO, "Error connecting to gateway GET: " + response.getStatusInfo());
-            throw new GatewayCommunicationException();
+        try {
+            // reading response from server
+            ClientResponse response = webResource.get(ClientResponse.class);
+            if (response.getStatus() == 200) {
+                return response.getEntity(type);
+            }
+            else{
+                LOGGER.log(Level.INFO, "Error connecting to gateway GET: " + response.getStatusInfo());
+            }
+        }
+        catch (Exception e){
+            LOGGER.log(Level.WARNING, "Kon niet verbinden met gateway " + e.getMessage());
         }
 
-        return response.getEntity(type);
+        throw new GatewayCommunicationException();
     }
 
     public <T> void post(String resourceUrl, T entity) throws GatewayCommunicationException {
@@ -43,11 +50,16 @@ public class GatewayServiceAgent implements IGatewayServiceAgent{
 
         String json = new Gson().toJson(entity);
 
-        // reading response from server
-        ClientResponse response = webResource.post(ClientResponse.class, json);
+        try{
+            ClientResponse response = webResource.post(ClientResponse.class, json);
 
-        if (response.getStatus() != 200) {
-            LOGGER.log(Level.INFO, "Error connecting to gateway POST: " + response.getStatusInfo());
+            if (response.getStatus() != 200) {
+                LOGGER.log(Level.INFO, "Error connecting to gateway POST: " + response.getStatusInfo());
+                throw new GatewayCommunicationException();
+            }
+        }
+        catch (Exception e){
+            LOGGER.log(Level.WARNING, "Kon niet verbinden met gateway " + e.getMessage());
             throw new GatewayCommunicationException();
         }
     }

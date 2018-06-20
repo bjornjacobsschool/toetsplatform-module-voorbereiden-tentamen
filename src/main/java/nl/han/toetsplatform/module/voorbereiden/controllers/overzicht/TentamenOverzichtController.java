@@ -5,14 +5,18 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
+import javafx.util.Callback;
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
+import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
 import nl.han.toetsplatform.module.voorbereiden.data.sql.SqlDataBaseCreator;
 import nl.han.toetsplatform.module.voorbereiden.exceptions.GatewayCommunicationException;
@@ -30,6 +34,9 @@ import static nl.han.toetsplatform.module.voorbereiden.util.RunnableUtil.runIfNo
 public class TentamenOverzichtController {
 
     private final static Logger LOGGER = Logger.getLogger(TentamenOverzichtController.class.getName());
+
+
+
     private ITentamenKlaarzetten _tentamenKlaarzetten;
 
     private TentamenFile _tentamenFile;
@@ -72,6 +79,21 @@ public class TentamenOverzichtController {
     @FXML
     private Label sleutelLabel;
 
+    @FXML
+    private Label sleutelLabelText;
+
+    @FXML
+    private Button haalSleutelOpButton;
+
+    @FXML
+    private Label tijdsduurLabelText;
+
+    @FXML
+    private GridPane dataGridpane;
+
+    @FXML
+    private Button klaarzettenButton;
+
     @Inject
     SqlDataBaseCreator dataBaseCreator;
 
@@ -92,7 +114,32 @@ public class TentamenOverzichtController {
 
     @FXML
     public void initialize() {
+        tentamenTable.setRowFactory(tableView2 -> {
+            final TableRow<SamengesteldTentamenDto> row = new TableRow<>();
+            row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                final int index = row.getIndex();
+                if (index >= 0 && index < tentamenTable.getItems().size() && tentamenTable.getSelectionModel().isSelected(index)  ) {
+                    tentamenTable.getSelectionModel().clearSelection();
+                    event.consume();
+                }
+            });
+            return row;
+        });
+
+        klaargezetteTentamenTable.setRowFactory(tableView2 -> {
+            final TableRow<KlaargezetTentamenDto> row = new TableRow<>();
+            row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                final int index = row.getIndex();
+                if (index >= 0 && index < tentamenTable.getItems().size() && tentamenTable.getSelectionModel().isSelected(index)  ) {
+                    tentamenTable.getSelectionModel().clearSelection();
+                    event.consume();
+                }
+            });
+            return row;
+        });
+
         dataBaseCreator.create();
+
 
         refreshOverzicht();
 
@@ -112,6 +159,7 @@ public class TentamenOverzichtController {
         tentamenTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showTentamenDetails(newValue));
         klaargezetteTentamenTable.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> showKlaargezetteTentamenDetails(newValue)));
+        dataGridpane.setVisible(false);
     }
 
     public String timestampToDate(long timestamp) {
@@ -127,6 +175,7 @@ public class TentamenOverzichtController {
      */
     private void showTentamenDetails(SamengesteldTentamenDto tentamen) {
         setEmptyStrings();
+        dataGridpane.setVisible(true);
 
         if (tentamen != null) {
             // Fill the labels with info from the tentamen object.
@@ -136,7 +185,11 @@ public class TentamenOverzichtController {
             vakLabel.setText(tentamen.getVak());
             tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
             versieLabel.setText(String.valueOf(tentamen.getVersie().getNummer()));
+            haalSleutelOpButton.setVisible(false);
+            tijdsduurLabelText.setVisible(false);
+            sleutelLabelText.setVisible(false);
 
+            klaarzettenButton.setVisible(true);
         }
     }
 
@@ -148,6 +201,7 @@ public class TentamenOverzichtController {
      */
     private void showKlaargezetteTentamenDetails(KlaargezetTentamenDto tentamen) {
         setEmptyStrings();
+        dataGridpane.setVisible(true);
 
         if (tentamen != null) {
             // Fill the labels with info from the tentamen object.
@@ -157,9 +211,14 @@ public class TentamenOverzichtController {
             tijdsduurLabel.setText(String.valueOf(tentamen.getTijdsduur()));
             versieLabel.setText(String.valueOf(tentamen.getVersie().getNummer()));
             startDatumLabel.setText(timestampToDate(tentamen.getStartdatum()));
-
+            haalSleutelOpButton.setVisible(true);
+            tijdsduurLabelText.setVisible(true);
+            sleutelLabelText.setVisible(true);
+            klaarzettenButton.setVisible(false);
         }
+
     }
+
 
     /**
      * Methode om de labels te legen
@@ -172,7 +231,7 @@ public class TentamenOverzichtController {
         tijdsduurLabel.setText("");
         versieLabel.setText("");
         startDatumLabel.setText("");
-
+        sleutelLabel.setText("");
     }
 
     /**
@@ -185,8 +244,8 @@ public class TentamenOverzichtController {
         SamengesteldTentamenDto selectedItem = tentamenTable.getSelectionModel().getSelectedItem();
 
         if (selectedItem != null) {
-             zetTentamenKlaarzettenDialog(selectedItem);
-             showTentamenDetails(selectedItem);
+             zetTentamenKlaar(selectedItem);
+             dataGridpane.setVisible(false);
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(naamLabel.getScene().getWindow());
@@ -217,7 +276,7 @@ public class TentamenOverzichtController {
      * @param tentamen
      * @return
      */
-    public void zetTentamenKlaarzettenDialog(SamengesteldTentamenDto tentamen) {
+    public void zetTentamenKlaar(SamengesteldTentamenDto tentamen) {
         KlaargezetTentamenDto klaargezetTentamenDto = new KlaargezetTentamenDto();
         klaargezetTentamenDto.setId(tentamen.getId());
         klaargezetTentamenDto.setNaam(tentamen.getNaam());
@@ -228,19 +287,18 @@ public class TentamenOverzichtController {
         klaargezetTentamenDto.setVragen(String.valueOf(tentamen.getVragen()));
         klaargezetTentamenDto.setVersie(tentamen.getVersie());
 
+        Alert alert;
         try {
             _tentamenKlaarzetten.opslaan(klaargezetTentamenDto);
+            alert = new Alert(Alert.AlertType.NONE, "Tentamen succesvol klaargezet", ButtonType.OK);
+            refreshOverzicht();
         } catch (GatewayCommunicationException e) {
-            e.printStackTrace();
+            alert = new Alert(Alert.AlertType.WARNING, "Kon tentamen niet klaarzetten", ButtonType.OK);
         } catch (SQLException e) {
-            e.printStackTrace();
+            alert = new Alert(Alert.AlertType.ERROR, "Tentamen succesvol klaargezet", ButtonType.OK);
         }
-
-        Alert alert = new Alert(Alert.AlertType.NONE, "Tentamen succesvol klaargezet", ButtonType.OK);
         alert.initOwner(this.naamLabel.getScene().getWindow());
         alert.showAndWait();
-
-        refreshOverzicht();
     }
 
     /**
@@ -289,6 +347,22 @@ public class TentamenOverzichtController {
     public void keyReleased(KeyEvent keyEvent) {
         if(keyEvent.getCode() == KeyCode.F5){
             refreshOverzicht();
+        }
+    }
+
+    public void haalSleutelOp(ActionEvent actionEvent) {
+        Object item = klaargezetteTentamenTable.getSelectionModel().getSelectedItem();
+        if(item instanceof KlaargezetTentamenDto){
+            KlaargezetTentamenDto tentamen = (KlaargezetTentamenDto)item;
+            try {
+                String sleutel = _tentamenKlaarzetten.getSleutel(tentamen);
+                sleutelLabel.setText(sleutel);
+            } catch (GatewayCommunicationException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Kon sleutel niet ophalen!", ButtonType.OK);
+                alert.initOwner(naamLabel.getScene().getWindow());
+                alert.showAndWait();
+            }
+
         }
     }
 }

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ITentamenSamenstellen {
-    void opslaan(SamengesteldTentamenDto tentamen) throws GatewayCommunicationException, SQLException;
+    void slaTentamenOp(SamengesteldTentamenDto tentamen) throws GatewayCommunicationException, SQLException;
 
     void slaVraagOp(VragenbankVraagDto vraag);
 
