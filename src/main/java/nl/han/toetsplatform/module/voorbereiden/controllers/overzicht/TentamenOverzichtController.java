@@ -5,13 +5,16 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
 import nl.han.toetsplatform.module.voorbereiden.applicationlayer.ITentamenKlaarzetten;
@@ -111,6 +114,30 @@ public class TentamenOverzichtController {
 
     @FXML
     public void initialize() {
+        tentamenTable.setRowFactory(tableView2 -> {
+            final TableRow<SamengesteldTentamenDto> row = new TableRow<>();
+            row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                final int index = row.getIndex();
+                if (index >= 0 && index < tentamenTable.getItems().size() && tentamenTable.getSelectionModel().isSelected(index)  ) {
+                    tentamenTable.getSelectionModel().clearSelection();
+                    event.consume();
+                }
+            });
+            return row;
+        });
+
+        klaargezetteTentamenTable.setRowFactory(tableView2 -> {
+            final TableRow<KlaargezetTentamenDto> row = new TableRow<>();
+            row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                final int index = row.getIndex();
+                if (index >= 0 && index < tentamenTable.getItems().size() && tentamenTable.getSelectionModel().isSelected(index)  ) {
+                    tentamenTable.getSelectionModel().clearSelection();
+                    event.consume();
+                }
+            });
+            return row;
+        });
+
         dataBaseCreator.create();
 
 
@@ -260,19 +287,18 @@ public class TentamenOverzichtController {
         klaargezetTentamenDto.setVragen(String.valueOf(tentamen.getVragen()));
         klaargezetTentamenDto.setVersie(tentamen.getVersie());
 
+        Alert alert;
         try {
             _tentamenKlaarzetten.opslaan(klaargezetTentamenDto);
+            alert = new Alert(Alert.AlertType.NONE, "Tentamen succesvol klaargezet", ButtonType.OK);
+            refreshOverzicht();
         } catch (GatewayCommunicationException e) {
-            e.printStackTrace();
+            alert = new Alert(Alert.AlertType.WARNING, "Kon tentamen niet klaarzetten", ButtonType.OK);
         } catch (SQLException e) {
-            e.printStackTrace();
+            alert = new Alert(Alert.AlertType.ERROR, "Tentamen succesvol klaargezet", ButtonType.OK);
         }
-
-        Alert alert = new Alert(Alert.AlertType.NONE, "Tentamen succesvol klaargezet", ButtonType.OK);
         alert.initOwner(this.naamLabel.getScene().getWindow());
         alert.showAndWait();
-
-        refreshOverzicht();
     }
 
     /**

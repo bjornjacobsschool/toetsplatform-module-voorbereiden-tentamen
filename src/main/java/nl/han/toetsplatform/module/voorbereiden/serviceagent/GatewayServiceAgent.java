@@ -60,6 +60,7 @@ public class GatewayServiceAgent implements IGatewayServiceAgent{
         }
         catch (Exception e){
             LOGGER.log(Level.WARNING, "Kon niet verbinden met gateway " + e.getMessage());
+            throw new GatewayCommunicationException();
         }
     }
 }
