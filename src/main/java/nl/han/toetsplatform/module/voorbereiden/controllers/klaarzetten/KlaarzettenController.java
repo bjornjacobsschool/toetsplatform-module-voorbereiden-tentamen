@@ -6,8 +6,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import nl.han.toetsapplicatie.apimodels.dto.KlaargezetTentamenDto;
 import nl.han.toetsapplicatie.apimodels.dto.SamengesteldTentamenDto;
-import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 import nl.han.toetsplatform.module.voorbereiden.util.DateTimePicker;
 
 import java.time.LocalDateTime;
@@ -35,7 +35,7 @@ public class KlaarzettenController {
     private Stage dialogStage;
     private boolean okClicked = false;
 
-    private Consumer<KlaargezetTentamen> onKlaarzettenTentamen;
+    private Consumer<KlaargezetTentamenDto> onKlaarzettenTentamen;
 
     public void initialize(){
     }
@@ -72,9 +72,9 @@ public class KlaarzettenController {
             Date van = getDate(vanDateVeld);
             Date tot = getDate(totDateVeld);
 
-            KlaargezetTentamen klaargezetTentamen = new KlaargezetTentamen(tentamen, van, tot, sleutelVeld.getText());
+          //  KlaargezetTentamen klaargezetTentamen = new Klaar(tentamen, van, tot, sleutelVeld.getText());
 
-            runIfNotNull(onKlaarzettenTentamen, klaargezetTentamen);
+            runIfNotNull(onKlaarzettenTentamen, null);
 
             okClicked = true;
             dialogStage.close();
@@ -114,7 +114,7 @@ public class KlaarzettenController {
             return false;
     }
 
-    public void setOnKlaarzettenTentamen(Consumer<KlaargezetTentamen> onTentamenKlaargezet) {
+    public void setOnKlaarzettenTentamen(Consumer<KlaargezetTentamenDto> onTentamenKlaargezet) {
         this.onKlaarzettenTentamen = onTentamenKlaargezet;
     }
 }

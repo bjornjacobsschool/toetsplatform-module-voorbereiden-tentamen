@@ -9,7 +9,6 @@ import nl.han.toetsplatform.module.shared.storage.StorageDao;
 import nl.han.toetsplatform.module.voorbereiden.data.SqlLoader;
 import nl.han.toetsplatform.module.voorbereiden.data.TentamenDao;
 import nl.han.toetsplatform.module.voorbereiden.data.VragenDao;
-import nl.han.toetsplatform.module.voorbereiden.models.KlaargezetTentamen;
 
 import javax.inject.Inject;
 import java.sql.*;
