@@ -68,6 +68,10 @@ public class TentamenKlaarzetten implements ITentamenKlaarzetten {
         } catch (GatewayCommunicationException e) {
             e.printStackTrace();
         }
+        for(KlaargezetTentamenDto tentamen : klaargezetteTentamens){
+            _tentamenDao.setTentamenKlaar(tentamen);
+        }
+
         return klaargezetteTentamens;
     }
 
