@@ -261,13 +261,15 @@ public class TentamenOverzichtController {
      * Refresh the data for the tentamenTable.
      */
     public void refreshOverzicht() {
+        klaargezetteData.clear();
+        klaargezetteData.addAll(this._tentamenKlaarzetten.getKlaargezetteTentamens());
+        klaargezetteTentamenTable.setItems(klaargezetteData);
+
         tentamenData.clear();
         tentamenData.addAll(this._tentamenKlaarzetten.getTentamens());
         tentamenTable.setItems(tentamenData);
 
-        klaargezetteData.clear();
-        klaargezetteData.addAll(this._tentamenKlaarzetten.getKlaargezetteTentamens());
-        klaargezetteTentamenTable.setItems(klaargezetteData);
+
     }
 
     /**
